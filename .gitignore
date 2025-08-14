@@ -1,0 +1,45 @@
+# Secrets & credenziali
+*.env
+*.key
+allowlist.json
+systemd/*.env
+keystore.jks
+*.keystore
+keystore.properties
+
+# Log
+logs/
+*.log
+02-lucy/*.jsonl
+02-lucy/*chain*.sha256
+
+# Cache & temp
+__pycache__/
+*.pyc
+*.pyo
+*.tmp
+.venv/
+venv/
+
+# Output modello
+*.bin
+*.gguf
+
+# Build output
+.dist/
+dist/
+build/
+.gradle/
+
+# Android (se presente)
+android-app/app/build/
+android-app/.gradle/
+android-app/.cxx/
+android-app/.idea/
+android-app/local.properties
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
