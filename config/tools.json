@@ -1,0 +1,121 @@
+{
+  "version": "1.0",
+  "tool_categories": {
+    "network_scanning": {
+      "nmap": {
+        "installed": false,
+        "path": "/usr/bin/nmap",
+        "install_command": "apt-get install -y nmap",
+        "verify_command": "nmap --version",
+        "profiles": {
+          "passive": "-sn",
+          "active": "-sS",
+          "aggressive": "-sS -sV -O -A"
+        }
+      },
+      "masscan": {
+        "installed": false,
+        "path": "/usr/bin/masscan",
+        "install_command": "apt-get install -y masscan",
+        "verify_command": "masscan --version",
+        "profiles": {
+          "fast": "--rate=1000",
+          "aggressive": "--rate=10000"
+        }
+      }
+    },
+    "vulnerability_scanning": {
+      "nuclei": {
+        "installed": false,
+        "path": "/usr/local/bin/nuclei",
+        "install_command": "go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest",
+        "verify_command": "nuclei -version",
+        "templates_update": "nuclei -update-templates"
+      },
+      "nikto": {
+        "installed": false,
+        "path": "/usr/bin/nikto",
+        "install_command": "apt-get install -y nikto",
+        "verify_command": "nikto -Version"
+      }
+    },
+    "web_testing": {
+      "gobuster": {
+        "installed": false,
+        "path": "/usr/bin/gobuster",
+        "install_command": "apt-get install -y gobuster",
+        "verify_command": "gobuster version"
+      },
+      "sqlmap": {
+        "installed": false,
+        "path": "/usr/bin/sqlmap",
+        "install_command": "apt-get install -y sqlmap",
+        "verify_command": "sqlmap --version"
+      }
+    },
+    "reconnaissance": {
+      "subfinder": {
+        "installed": false,
+        "path": "/usr/local/bin/subfinder",
+        "install_command": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest",
+        "verify_command": "subfinder -version"
+      },
+      "amass": {
+        "installed": false,
+        "path": "/usr/bin/amass",
+        "install_command": "apt-get install -y amass",
+        "verify_command": "amass version"
+      }
+    },
+    "exploitation": {
+      "metasploit": {
+        "installed": false,
+        "path": "/usr/bin/msfconsole",
+        "install_command": "curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/msfinstall | bash",
+        "verify_command": "msfconsole --version",
+        "require_wassim": true
+      }
+    },
+    "monitoring": {
+      "netstat": {
+        "installed": true,
+        "path": "/bin/netstat",
+        "verify_command": "netstat --version"
+      },
+      "ss": {
+        "installed": true,
+        "path": "/bin/ss",
+        "verify_command": "ss --version"
+      },
+      "tcpdump": {
+        "installed": false,
+        "path": "/usr/bin/tcpdump",
+        "install_command": "apt-get install -y tcpdump",
+        "verify_command": "tcpdump --version"
+      }
+    }
+  },
+  "tool_workflows": {
+    "basic_scan": ["nmap", "nuclei"],
+    "web_audit": ["gobuster", "nikto", "sqlmap"],
+    "recon_passive": ["subfinder", "amass"],
+    "full_pentest": ["nmap", "nuclei", "gobuster", "metasploit"]
+  },
+  "auto_install": {
+    "enabled": true,
+    "confirm_before_install": true,
+    "update_on_startup": false,
+    "package_managers": {
+      "apt": "apt-get install -y",
+      "yum": "yum install -y", 
+      "dnf": "dnf install -y",
+      "brew": "brew install",
+      "go": "go install -v"
+    }
+  },
+  "integration": {
+    "output_formats": ["json", "xml", "csv", "txt"],
+    "unified_reporting": true,
+    "correlation_enabled": true
+  }
+}

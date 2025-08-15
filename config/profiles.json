@@ -1,0 +1,110 @@
+{
+  "version": "1.0",
+  "profiles": {
+    "DEFEND": {
+      "name": "Defensive Security",
+      "description": "Default defensive posture - monitoring and hardening only",
+      "mode": "defensive",
+      "allowed_actions": ["monitor", "harden", "analyze", "report"],
+      "scan_intensity": "passive",
+      "auto_response": true,
+      "stealth_mode": false,
+      "risk_tolerance": "low",
+      "escalation": {
+        "auto_escalate": false,
+        "require_approval": true
+      }
+    },
+    "TEST": {
+      "name": "Testing Mode", 
+      "description": "Controlled testing environment with Wassim keyword required",
+      "mode": "testing",
+      "allowed_actions": ["scan", "enumerate", "test", "exploit"],
+      "scan_intensity": "active",
+      "auto_response": false,
+      "stealth_mode": false,
+      "risk_tolerance": "medium",
+      "require_keyword": true,
+      "escalation": {
+        "auto_escalate": true,
+        "max_escalation_level": "invasive"
+      }
+    },
+    "STEALTH": {
+      "name": "Stealth Operations",
+      "description": "Undetectable reconnaissance and testing",
+      "mode": "stealth",
+      "allowed_actions": ["passive_scan", "osint", "stealth_enum"],
+      "scan_intensity": "passive",
+      "auto_response": false,
+      "stealth_mode": true,
+      "risk_tolerance": "low",
+      "timing": {
+        "slow_scan": true,
+        "random_delays": true,
+        "avoid_peak_hours": true
+      }
+    },
+    "AGGRESSIVE": {
+      "name": "Aggressive Scanning",
+      "description": "Fast, intensive scanning for comprehensive coverage", 
+      "mode": "aggressive",
+      "allowed_actions": ["intensive_scan", "full_enum", "vuln_scan"],
+      "scan_intensity": "aggressive",
+      "auto_response": true,
+      "stealth_mode": false,
+      "risk_tolerance": "high",
+      "timing": {
+        "fast_scan": true,
+        "parallel_execution": true,
+        "max_threads": 50
+      }
+    },
+    "LEARNING": {
+      "name": "Learning Mode",
+      "description": "Safe learning environment for training and development",
+      "mode": "learning",
+      "allowed_actions": ["monitor", "analyze", "simulate", "learn"],
+      "scan_intensity": "passive",
+      "auto_response": false,
+      "stealth_mode": false,
+      "risk_tolerance": "minimal",
+      "sandbox": {
+        "enabled": true,
+        "dry_run_only": true,
+        "log_everything": true
+      }
+    }
+  },
+  "profile_transitions": {
+    "DEFEND_to_TEST": {
+      "require_keyword": true,
+      "require_admin": true,
+      "automatic": false
+    },
+    "TEST_to_STEALTH": {
+      "require_keyword": true,
+      "require_admin": false,
+      "automatic": true
+    },
+    "any_to_LEARNING": {
+      "require_keyword": false,
+      "require_admin": false,
+      "automatic": true
+    }
+  },
+  "context_awareness": {
+    "environment_detection": {
+      "production": "DEFEND",
+      "staging": "TEST", 
+      "development": "LEARNING",
+      "test_lab": "AGGRESSIVE"
+    },
+    "threat_level_adaptation": {
+      "low": "DEFEND",
+      "medium": "TEST",
+      "high": "AGGRESSIVE",
+      "critical": "STEALTH"
+    }
+  }
+}

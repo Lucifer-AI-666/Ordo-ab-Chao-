@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "users": {
+    "system": {
+      "level": "system",
+      "can_modify_config": true,
+      "can_execute_invasive": true,
+      "require_keyword": false,
+      "description": "System-level access"
+    },
+    "wassim": {
+      "level": "admin", 
+      "can_modify_config": true,
+      "can_execute_invasive": true,
+      "require_keyword": true,
+      "keyword": "Wassim",
+      "description": "Admin user with full access"
+    },
+    "default": {
+      "level": "user",
+      "can_modify_config": false,
+      "can_execute_invasive": false,
+      "require_keyword": false,
+      "description": "Default user permissions"
+    }
+  },
+  "permissions": {
+    "scan": {
+      "passive": ["user", "admin", "system"],
+      "active": ["admin", "system"],
+      "invasive": ["admin", "system"]
+    },
+    "recon": {
+      "osint": ["user", "admin", "system"],
+      "enumeration": ["admin", "system"],
+      "vulnerability_scanning": ["admin", "system"]
+    },
+    "defend": {
+      "monitoring": ["user", "admin", "system"],
+      "hardening": ["admin", "system"],
+      "incident_response": ["admin", "system"]
+    },
+    "attack": {
+      "penetration_testing": ["admin", "system"],
+      "exploitation": ["system"],
+      "privilege_escalation": ["system"]
+    },
+    "intel": {
+      "threat_feeds": ["user", "admin", "system"],
+      "ioc_analysis": ["admin", "system"],
+      "attribution": ["admin", "system"]
+    },
+    "automation": {
+      "orchestration": ["admin", "system"],
+      "response": ["admin", "system"],
+      "learning": ["system"]
+    }
+  },
+  "restrictions": {
+    "rate_limits": {
+      "user": {
+        "commands_per_minute": 10,
+        "scans_per_hour": 5
+      },
+      "admin": {
+        "commands_per_minute": 60,
+        "scans_per_hour": 50
+      },
+      "system": {
+        "commands_per_minute": -1,
+        "scans_per_hour": -1
+      }
+    },
+    "time_restrictions": {
+      "invasive_actions": {
+        "allowed_hours": "09:00-17:00",
+        "timezone": "UTC",
+        "business_days_only": false
+      }
+    }
+  },
+  "audit": {
+    "log_all_actions": true,
+    "require_justification": {
+      "invasive": true,
+      "admin_level": true
+    },
+    "retention_days": 90
+  }
+}

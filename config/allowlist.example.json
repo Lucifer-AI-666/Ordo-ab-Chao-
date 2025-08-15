@@ -1,0 +1,51 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-01-01T00:00:00Z",
+  "auto_detection": {
+    "enabled": true,
+    "local_networks": true,
+    "docker_networks": true,
+    "kubernetes_networks": false
+  },
+  "allowed_targets": {
+    "localhost": {
+      "hosts": ["localhost", "127.0.0.1", "::1"],
+      "ports": ["all"],
+      "scan_level": "aggressive",
+      "always_allowed": true
+    },
+    "local_network": {
+      "cidrs": ["192.168.1.0/24", "10.0.0.0/8", "172.16.0.0/12"],
+      "auto_detected": true,
+      "ports": ["22", "80", "443", "8080", "3389"],
+      "scan_level": "moderate"
+    },
+    "test_lab": {
+      "hosts": ["testlab.local"],
+      "cidrs": ["192.168.100.0/24"],
+      "ports": ["all"],
+      "scan_level": "aggressive",
+      "notes": "Dedicated test environment"
+    }
+  },
+  "blacklist": {
+    "honeypots": [],
+    "known_production": [],
+    "critical_infrastructure": []
+  },
+  "escalation_rules": {
+    "passive_to_active": {
+      "require_confirmation": true,
+      "max_ports_per_host": 1000
+    },
+    "active_to_invasive": {
+      "require_wassim_keyword": true,
+      "require_admin": true
+    }
+  },
+  "metadata": {
+    "created_by": "Copilot Private Agent",
+    "environment": "development",
+    "compliance_notes": "For authorized testing only"
+  }
+}
