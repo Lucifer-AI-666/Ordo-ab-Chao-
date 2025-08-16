@@ -1,0 +1,356 @@
+# LOCCHIO Monitoring Configuration for Tauros/Lucy CopilotPrivateAgent
+# Creator: Lucifer-AI-666 (@Lucifer-AI-666)
+# Ecosystem: Tauros/Lucy Intelligence Platform
+# Deploy Time: 2025-08-16 09:40:35 UTC
+
+# Global monitoring configuration
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  external_labels:
+    ecosystem: "tauros-lucy"
+    deployment: "copilot-private-agent"
+    environment: "production"
+
+# Agent configuration
+agent:
+  name: "CopilotPrivateAgent-Monitor"
+  version: "1.0"
+  type: "ollama-service"
+  ecosystem_role: "security-agent"
+
+# Monitoring endpoints
+endpoints:
+  # Main Ollama service
+  - name: "ollama-api"
+    url: "http://127.0.0.1:11434/api/health"
+    interval: 30s
+    timeout: 10s
+    method: "GET"
+    expected_status: 200
+    critical: true
+    
+  # Model availability check
+  - name: "model-availability"
+    url: "http://127.0.0.1:11434/api/tags"
+    interval: 60s
+    timeout: 15s
+    method: "GET"
+    expected_status: 200
+    json_check:
+      path: "models"
+      contains: "copilot_private"
+    critical: true
+    
+  # Service response time
+  - name: "response-time-test"
+    url: "http://127.0.0.1:11434/api/generate"
+    interval: 300s  # Every 5 minutes
+    timeout: 30s
+    method: "POST"
+    headers:
+      Content-Type: "application/json"
+    body: |
+      {
+        "model": "copilot_private",
+        "prompt": "health check",
+        "stream": false
+      }
+    response_time_threshold: 10s
+    critical: false
+
+# System resource monitoring
+system_metrics:
+  # CPU monitoring
+  cpu:
+    enabled: true
+    interval: 30s
+    thresholds:
+      warning: 70
+      critical: 90
+    process_filter: "ollama"
+    
+  # Memory monitoring
+  memory:
+    enabled: true
+    interval: 30s
+    thresholds:
+      warning: 75
+      critical: 90
+    process_filter: "ollama"
+    
+  # Disk space monitoring
+  disk:
+    enabled: true
+    interval: 60s
+    paths:
+      - "/"
+      - "/var/log/tauros-lucy"
+      - "/opt/tauros-lucy"
+      - "/var/backups/tauros-lucy"
+    thresholds:
+      warning: 80
+      critical: 90
+      
+  # Network monitoring
+  network:
+    enabled: true
+    interval: 30s
+    port_checks:
+      - port: 11434
+        protocol: "tcp"
+        bind_address: "127.0.0.1"
+        
+  # Process monitoring
+  processes:
+    enabled: true
+    interval: 30s
+    monitored_processes:
+      - name: "ollama"
+        min_instances: 1
+        max_instances: 5
+        cpu_threshold: 80
+        memory_threshold: 1024  # MB
+
+# Security monitoring
+security:
+  # File integrity monitoring
+  file_integrity:
+    enabled: true
+    interval: 300s  # Every 5 minutes
+    monitored_files:
+      - "/opt/tauros-lucy/CopilotPrivateAgent.Modelfile"
+      - "/etc/systemd/system/ollama.service.d/tauros-lucy.conf"
+      - "/opt/tauros-lucy/config/allowlist.json"
+    algorithm: "sha256"
+    
+  # Log analysis
+  log_analysis:
+    enabled: true
+    log_files:
+      - path: "/var/log/tauros-lucy/*.log"
+        patterns:
+          - name: "emergency_activation"
+            regex: "EMERGENCY.*LOCKDOWN"
+            severity: "critical"
+          - name: "unauthorized_access"
+            regex: "unauthorized|denied|failed.*auth"
+            severity: "warning"
+          - name: "test_mode_activation"
+            regex: "Wassim.*TEST"
+            severity: "info"
+            
+  # Failed authentication monitoring
+  auth_monitoring:
+    enabled: true
+    sources:
+      - "/var/log/nginx/tauros-lucy.access.log"
+      - "/var/log/tauros-lucy/emergency.log"
+    failed_attempts_threshold: 5
+    time_window: "10m"
+
+# Alert configuration
+alerts:
+  # Service down alert
+  - name: "ollama-service-down"
+    condition: "ollama_service_status != 1"
+    duration: "60s"
+    severity: "critical"
+    message: "Ollama service is down on {{ $labels.instance }}"
+    actions:
+      - "emergency_response"
+      - "admin_notification"
+      
+  # High response time
+  - name: "high-response-time"
+    condition: "response_time > 10s"
+    duration: "2m"
+    severity: "warning"
+    message: "High response time detected: {{ $value }}s"
+    actions:
+      - "performance_alert"
+      
+  # Model not available
+  - name: "model-unavailable"
+    condition: "model_available != 1"
+    duration: "30s"
+    severity: "critical"
+    message: "CopilotPrivate model not available"
+    actions:
+      - "emergency_response"
+      - "model_recovery"
+      
+  # Resource exhaustion
+  - name: "resource-critical"
+    condition: "cpu_usage > 90 OR memory_usage > 90 OR disk_usage > 90"
+    duration: "5m"
+    severity: "critical"
+    message: "Critical resource usage detected"
+    actions:
+      - "resource_optimization"
+      - "admin_notification"
+      
+  # Security incident
+  - name: "security-incident"
+    condition: "failed_auth_attempts > 5"
+    duration: "1m"
+    severity: "critical"
+    message: "Multiple failed authentication attempts detected"
+    actions:
+      - "security_lockdown"
+      - "incident_response"
+      
+  # File integrity violation
+  - name: "file-integrity-violation"
+    condition: "file_checksum_changed == 1"
+    duration: "0s"  # Immediate
+    severity: "critical"
+    message: "Critical file modification detected: {{ $labels.file }}"
+    actions:
+      - "emergency_response"
+      - "forensic_collection"
+
+# Action handlers
+actions:
+  emergency_response:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/emergency_response.sh"
+    args: ["--auto", "--incident-id", "{{ .AlertName }}_{{ .Timestamp }}"]
+    timeout: "300s"
+    
+  admin_notification:
+    type: "webhook"
+    url: "http://admin.tauros-lucy.local/api/alerts"
+    method: "POST"
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ .AdminToken }}"
+    body: |
+      {
+        "alert": "{{ .AlertName }}",
+        "severity": "{{ .Severity }}",
+        "message": "{{ .Message }}",
+        "timestamp": "{{ .Timestamp }}",
+        "instance": "{{ .Instance }}",
+        "ecosystem": "tauros-lucy"
+      }
+      
+  performance_alert:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/performance_tuning.sh"
+    args: ["--auto-optimize"]
+    timeout: "120s"
+    
+  model_recovery:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/model_recovery.sh"
+    args: ["--model", "copilot_private"]
+    timeout: "180s"
+    
+  resource_optimization:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/resource_cleanup.sh"
+    args: ["--aggressive"]
+    timeout: "60s"
+    
+  security_lockdown:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/emergency_response.sh"
+    args: ["--lockdown", "--notify-admin"]
+    timeout: "30s"
+    
+  incident_response:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/emergency_response.sh"
+    args: ["--collect-evidence", "--incident-id", "SEC_{{ .Timestamp }}"]
+    timeout: "300s"
+    
+  forensic_collection:
+    type: "script"
+    command: "/opt/tauros-lucy/scripts/forensic_collection.sh"
+    args: ["--file", "{{ .TriggerFile }}", "--incident-id", "FILE_{{ .Timestamp }}"]
+    timeout: "180s"
+
+# Integration settings
+integrations:
+  # Tauros platform integration
+  tauros_platform:
+    enabled: true
+    endpoint: "http://tauros.local:8080/api/monitoring"
+    api_key: "{{ .TaurosAPIKey }}"
+    sync_interval: "60s"
+    
+  # Lucy AI suite coordination
+  lucy_coordination:
+    enabled: true
+    endpoint: "http://lucy.local:8081/api/agents"
+    sync_interval: "120s"
+    
+  # NEA network registration
+  nea_network:
+    enabled: true
+    endpoint: "http://nea.local:8082/api/register"
+    agent_type: "security"
+    priority: "high"
+
+# Retention and cleanup
+retention:
+  metrics: "30d"
+  logs: "90d"
+  alerts: "1y"
+  incidents: "2y"
+  
+cleanup:
+  enabled: true
+  schedule: "0 2 * * 0"  # Weekly on Sunday at 2 AM
+  compress_after: "7d"
+  delete_after: "retention_period"
+
+# Dashboard configuration
+dashboard:
+  enabled: true
+  refresh_interval: "30s"
+  panels:
+    - name: "System Overview"
+      type: "status"
+      metrics: ["service_status", "model_availability", "response_time"]
+      
+    - name: "Resource Usage"
+      type: "graph"
+      metrics: ["cpu_usage", "memory_usage", "disk_usage"]
+      time_range: "1h"
+      
+    - name: "Security Status"
+      type: "alert_list"
+      filters: ["security", "critical"]
+      
+    - name: "Ecosystem Integration"
+      type: "status"
+      metrics: ["tauros_sync", "lucy_coord", "nea_status"]
+
+# Export configuration for external monitoring systems
+exports:
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    
+  grafana:
+    enabled: true
+    dashboard_url: "http://grafana.tauros-lucy.local/d/tauros-lucy"
+    
+  elastic:
+    enabled: false
+    endpoint: "http://elastic.tauros-lucy.local:9200"
+    index: "tauros-lucy-monitoring"
+
+# Health check for the monitoring system itself
+self_monitoring:
+  enabled: true
+  interval: "60s"
+  checks:
+    - "config_file_readable"
+    - "log_directory_writable"
+    - "script_executability"
+    - "network_connectivity"
+    - "disk_space_adequate"

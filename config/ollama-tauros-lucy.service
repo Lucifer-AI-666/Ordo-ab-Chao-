@@ -1,0 +1,56 @@
+[Unit]
+Description=Ollama Tauros/Lucy CopilotPrivateAgent
+Documentation=https://github.com/Lucifer-AI-666/priv-cyber-agents-private
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+Environment="OLLAMA_HOST=127.0.0.1:11434"
+Environment="OLLAMA_ORIGINS=http://127.0.0.1:*"
+Environment="TAUROS_LUCY_MODE=DEFEND"
+Environment="TAUROS_LUCY_LOG_DIR=/var/log/tauros-lucy"
+Environment="TAUROS_LUCY_BACKUP_DIR=/var/backups/tauros-lucy"
+Environment="TAUROS_LUCY_ECOSYSTEM=enabled"
+Environment="COPILOT_EMERGENCY_MODE=0"
+Environment="COPILOT_DISABLE_TEST=0"
+
+ExecStart=/usr/local/bin/ollama serve
+ExecReload=/bin/kill -HUP $MAINPID
+
+User=ollama
+Group=ollama
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/tauros-lucy /var/lib/ollama
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+
+# Resource limits
+LimitNOFILE=1048576
+LimitMEMLOCK=infinity
+
+# Restart settings
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ollama-tauros-lucy
+
+# Health check
+ExecStartPost=/bin/bash -c 'timeout 60 sh -c "until curl -s http://127.0.0.1:11434/api/health; do sleep 2; done"'
+
+[Install]
+WantedBy=multi-user.target
+
+# Tauros/Lucy Ecosystem Configuration
+# Creator: Lucifer-AI-666 (@Lucifer-AI-666)
+# Organization: @lasuperbia
+# Deploy Time: 2025-08-16 09:40:35 UTC

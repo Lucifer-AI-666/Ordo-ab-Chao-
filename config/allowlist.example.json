@@ -1,0 +1,138 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-08-16T09:40:35Z",
+  "description": "Template allowlist for Tauros/Lucy CopilotPrivateAgent",
+  "creator": "Lucifer-AI-666 (@Lucifer-AI-666)",
+  "ecosystem": "Tauros/Lucy Intelligence Platform",
+  
+  "authorized_targets": {
+    "hosts": [
+      "127.0.0.1",
+      "localhost",
+      "::1"
+    ],
+    "cidrs": [
+      "192.168.1.0/24",
+      "10.0.0.0/24"
+    ],
+    "domains": [
+      "tauros.local",
+      "lucy.local",
+      "tauros-lucy.local"
+    ],
+    "excluded": [
+      "192.168.1.1",
+      "10.0.0.1"
+    ]
+  },
+  
+  "permissions": {
+    "scan_intensive": {
+      "allowed_targets": ["127.0.0.1", "192.168.1.0/24"],
+      "tools": ["nmap", "masscan", "zmap"],
+      "max_threads": 10,
+      "rate_limit": "100/minute"
+    },
+    "install_tools": {
+      "allowed_targets": ["127.0.0.1", "localhost"],
+      "tools": ["nmap", "hydra", "john", "hashcat", "metasploit"],
+      "require_admin": true
+    },
+    "firewall_modify": {
+      "allowed_targets": ["localhost"],
+      "operations": ["rule_add", "rule_remove", "status_check"],
+      "require_admin": true,
+      "backup_required": true
+    },
+    "service_management": {
+      "allowed_targets": ["localhost"],
+      "services": ["ollama", "nginx", "ssh"],
+      "operations": ["start", "stop", "restart", "status"],
+      "require_admin": true
+    },
+    "log_access": {
+      "allowed_targets": ["localhost"],
+      "paths": ["/var/log/tauros-lucy", "/var/log/nginx", "/var/log/auth.log"],
+      "operations": ["read", "search", "tail"],
+      "max_lines": 1000
+    }
+  },
+  
+  "security_policies": {
+    "keyword_required": true,
+    "keyword": "Wassim",
+    "max_failed_attempts": 3,
+    "lockout_duration": "30m",
+    "audit_all_requests": true,
+    "require_privilege_escalation": true,
+    "emergency_lockdown": {
+      "triggers": ["multiple_failures", "unauthorized_targets", "privilege_escalation_failure"],
+      "auto_response": true,
+      "notification_required": true
+    }
+  },
+  
+  "ecosystem_integration": {
+    "tauros_platform": {
+      "enabled": true,
+      "sync_allowlist": true,
+      "endpoint": "http://tauros.local:8080/api/security/allowlist",
+      "api_key_env": "TAUROS_API_KEY"
+    },
+    "lucy_coordination": {
+      "enabled": true,
+      "share_intel": true,
+      "endpoint": "http://lucy.local:8081/api/security/intel",
+      "coordination_level": "high"
+    },
+    "locchio_monitoring": {
+      "enabled": true,
+      "report_violations": true,
+      "endpoint": "http://locchio.local:8082/api/security/violations"
+    },
+    "nea_network": {
+      "enabled": true,
+      "network_discovery": true,
+      "auto_update_cidrs": true,
+      "trust_level": "medium"
+    }
+  },
+  
+  "compliance": {
+    "frameworks": ["ISO27001", "NIST", "PCI-DSS"],
+    "audit_retention": "2y",
+    "encryption_required": true,
+    "data_classification": "restricted",
+    "geographic_restrictions": {
+      "allowed_countries": ["IT", "EU"],
+      "blocked_countries": [],
+      "compliance_framework": "GDPR"
+    }
+  },
+  
+  "operational_constraints": {
+    "time_restrictions": {
+      "working_hours_only": false,
+      "timezone": "Europe/Rome",
+      "emergency_override": true
+    },
+    "resource_limits": {
+      "max_concurrent_scans": 3,
+      "max_scan_duration": "1h",
+      "max_cpu_usage": "70%",
+      "max_memory_usage": "2GB"
+    },
+    "notification_requirements": {
+      "admin_approval_required": false,
+      "post_action_report": true,
+      "real_time_monitoring": true
+    }
+  },
+  
+  "validation": {
+    "checksum": "sha256:placeholder_for_actual_checksum",
+    "signed_by": "Lucifer-AI-666",
+    "signature": "placeholder_for_digital_signature",
+    "last_validated": "2025-08-16T09:40:35Z"
+  }
+}
