@@ -1,0 +1,34 @@
+# Hosts file for Tauros/Lucy CopilotPrivateAgent multi-host deployment
+# Creator: Lucifer-AI-666 (@Lucifer-AI-666)
+# Ecosystem: Tauros/Lucy Intelligence Platform
+# Deploy Time: 2025-08-16 09:40:35 UTC
+
+# Primary Tauros/Lucy nodes
+tauros@tauros-01.local
+lucy@lucy-01.local
+
+# Secondary nodes
+tauros@tauros-02.local
+lucy@lucy-02.local
+
+# Development environments
+dev@tauros-dev.local
+dev@lucy-dev.local
+
+# Monitoring nodes
+monitor@locchio-01.local
+monitor@nea-01.local
+
+# Example with custom SSH ports
+# admin@secure-node.local:2222
+
+# Example with IP addresses
+# tauros@192.168.1.100
+# lucy@192.168.1.101
+
+# Comments start with # and are ignored
+# Empty lines are also ignored
+
+# Format: [user@]hostname[:port]
+# If user is omitted, current user is used
+# If port is omitted, default SSH port 22 is used
