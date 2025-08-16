@@ -148,7 +148,7 @@ Istruzioni base (offline)
 - Gateway (opzionale, sempre 127.0.0.1 di default):
   - cd gateway && python3 -m venv .venv && source .venv/bin/activate
   - pip install -r requirements.txt
-  - export AGENT_GATEWAY_TOKEN=$(python3 - <<<'import secrets;print(secrets.token_hex(16))')
+  - export AGENT_GATEWAY_TOKEN=\$(python3 -c \"import secrets;print(secrets.token_hex(16))\")
   - uvicorn gateway.agent_gateway:app --host 127.0.0.1 --port 8787
 ````'
 
