@@ -1,0 +1,34 @@
+🤖 **CopilotPrivateAgent Bot**
+🛡️ *DibTauroS Cybersecurity Framework*
+
+**Ordo ab Chao** - From Chaos, Order
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔒 **Privacy-First Framework**
+👤 Owner: Dib Anouar
+📜 License: LUP v1.0 (Personal Use Only)
+🎯 Purpose: Ethical Cybersecurity & OSINT
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚙️ **Available Commands:**
+
+🛡️ `/defend <target>` - Defensive operations
+🧪 `/test <target> Wassim <command>` - Advanced testing
+📊 `/status` - Agent status check
+📋 `/allowlist` - View allowed targets
+🔍 `/scan <target>` - Basic reconnaissance
+📝 `/logs` - Recent operation logs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 **Security Features:**
+• Allowlist-based target validation
+• Audit logging with integrity chain
+• Two-tier operational modes
+• Local-only operations (no external data sharing)
+
+⚠️ **Important:** All operations are logged and monitored. Use responsibly and ethically.
+
+Type `/help` for detailed command information.
