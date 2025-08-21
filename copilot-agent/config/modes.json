@@ -1,0 +1,79 @@
+{
+  "DEFEND": {
+    "description": "Defensive operations only - monitoring and analysis",
+    "allowed_actions": [
+      "scan",
+      "monitor", 
+      "analyze",
+      "report",
+      "log_review",
+      "system_status",
+      "network_status"
+    ],
+    "requires_authorization": false,
+    "max_intensity": "low",
+    "allowed_tools": [
+      "ps",
+      "netstat",
+      "ss",
+      "df",
+      "uptime",
+      "who",
+      "last",
+      "w",
+      "top",
+      "htop"
+    ],
+    "restrictions": {
+      "no_modification": true,
+      "read_only": true,
+      "safe_commands_only": true
+    }
+  },
+  "TEST": {
+    "description": "Advanced testing operations - requires Wassim keyword",
+    "allowed_actions": [
+      "scan",
+      "monitor",
+      "analyze", 
+      "report",
+      "install",
+      "firewall",
+      "suid_check",
+      "network_scan",
+      "vulnerability_scan",
+      "penetration_test",
+      "service_enumeration"
+    ],
+    "requires_authorization": true,
+    "authorization_keyword": "Wassim",
+    "max_intensity": "high",
+    "allowed_tools": [
+      "nmap",
+      "ncat",
+      "curl",
+      "wget",
+      "dig",
+      "ping",
+      "traceroute",
+      "nc",
+      "telnet",
+      "ssh",
+      "scp",
+      "rsync"
+    ],
+    "restrictions": {
+      "target_must_be_in_allowlist": true,
+      "requires_explicit_confirmation": true,
+      "audit_log_required": true,
+      "dry_run_first": true,
+      "rate_limited": true
+    },
+    "advanced_features": {
+      "custom_payloads": false,
+      "exploit_modules": false,
+      "privilege_escalation": false,
+      "data_exfiltration": false
+    }
+  }
+}

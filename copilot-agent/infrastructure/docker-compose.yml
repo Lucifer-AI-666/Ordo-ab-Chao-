@@ -1,0 +1,182 @@
+# CopilotPrivateAgent Docker Compose Configuration
+# DibTauroS/Ordo-ab-Chao cybersecurity framework
+# Owner: Dib Anouar
+# License: LUP v1.0 (personal and non-commercial use only)
+
+version: '3.8'
+
+services:
+  copilot-agent:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.copilot
+    container_name: copilot_private_agent
+    restart: unless-stopped
+    
+    # Security settings
+    user: "1000:1000"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_RAW  # For network scanning capabilities
+    
+    # Network configuration - localhost only
+    network_mode: "host"
+    
+    # Environment variables
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - COPILOT_CONFIG_DIR=/app/config
+      - COPILOT_LOGS_DIR=/app/logs
+      - MONICA_DISABLE=${MONICA_DISABLE:-0}
+    
+    # Volume mounts
+    volumes:
+      # Configuration (read-only)
+      - ./config:/app/config:ro
+      - ./branding:/app/branding:ro
+      
+      # Logs (read-write, tmpfs for security)
+      - copilot_logs:/app/logs
+      
+      # Temporary files
+      - /tmp:/tmp
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python3", "-c", "from core.copilot_agent import CopilotPrivateAgent; agent = CopilotPrivateAgent(); print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service,owner,framework"
+        env: "COPILOT_CONFIG_DIR,MONICA_DISABLE"
+    
+    # Labels for identification
+    labels:
+      - "com.dibtauros.service=copilot-agent"
+      - "com.dibtauros.owner=dib-anouar"
+      - "com.dibtauros.framework=ordo-ab-chao"
+      - "com.dibtauros.license=LUP-v1.0"
+      - "com.dibtauros.privacy=local-only"
+
+  # Optional: Ollama service for local AI model
+  ollama:
+    image: ollama/ollama:latest
+    container_name: copilot_ollama
+    restart: unless-stopped
+    
+    # Only bind to localhost
+    ports:
+      - "127.0.0.1:11434:11434"
+    
+    # GPU support (uncomment if needed)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    
+    volumes:
+      - ollama_data:/root/.ollama
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+    
+    # Environment for Ollama
+    environment:
+      - OLLAMA_HOST=127.0.0.1
+      - OLLAMA_ORIGINS=http://localhost:*,http://127.0.0.1:*
+    
+    labels:
+      - "com.dibtauros.service=ollama"
+      - "com.dibtauros.framework=ordo-ab-chao"
+
+  # Optional: Web interface service
+  copilot-web:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.copilot
+    container_name: copilot_web_interface
+    restart: unless-stopped
+    
+    # Override command for web service
+    command: ["python3", "-m", "uvicorn", "core.web_server:app", "--host", "127.0.0.1", "--port", "8787"]
+    
+    # Only bind to localhost
+    ports:
+      - "127.0.0.1:8787:8787"
+    
+    # Same security settings as main agent
+    user: "1000:1000"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    
+    # Depends on main agent
+    depends_on:
+      copilot-agent:
+        condition: service_healthy
+    
+    # Shared volumes with main agent
+    volumes:
+      - ./config:/app/config:ro
+      - ./branding:/app/branding:ro
+      - copilot_logs:/app/logs:ro
+    
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - COPILOT_CONFIG_DIR=/app/config
+      - COPILOT_LOGS_DIR=/app/logs
+      - COPILOT_WEB_HOST=127.0.0.1
+      - COPILOT_WEB_PORT=8787
+    
+    labels:
+      - "com.dibtauros.service=copilot-web"
+      - "com.dibtauros.framework=ordo-ab-chao"
+
+# Named volumes for persistent data
+volumes:
+  copilot_logs:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=100m,uid=1000,gid=1000
+  
+  ollama_data:
+    driver: local
+
+# Networks (using host network for security scanning capabilities)
+networks:
+  default:
+    driver: bridge
+    internal: true  # No external access by default
