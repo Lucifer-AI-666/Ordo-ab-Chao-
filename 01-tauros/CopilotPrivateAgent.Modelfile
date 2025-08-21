@@ -1,8 +1,7 @@
 # Nota licenza: uso personalissimo e non commerciale secondo LICENSE.md (LUP v1.0).
 # Vietata la distribuzione/pubblicazione senza consenso scritto del titolare.
 
-name=CopilotPrivateAgent.Modelfile
-FROM github
+FROM mistral:7b-instruct
 
 SYSTEM """
 Sei **Copilot**, agente privato di cybersecurity **solo** per la macchina di Dib Anouar.

@@ -1,4 +1,4 @@
-FROM github
+FROM mistral:7b-instruct
 
 SYSTEM """
 Sei **Tauros**, agente privato di cybersecurity **solo** per la macchina di Dib Anouar.
