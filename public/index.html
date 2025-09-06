@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Cleopatra Viva - DibTauroS Cybersecurity Framework</title>
+    <meta name="description" content="Advanced cybersecurity operations interface - DibTauroS/Ordo-ab-Chao framework">
+    <meta name="author" content="Dib Anouar">
+    
+    <!-- Security headers -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👁️</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/neo-cleopatra.css">
+</head>
+<body>
+    <!-- Egyptian-themed header -->
+    <header class="neo-header">
+        <div class="pyramid-pattern"></div>
+        <div class="header-content">
+            <div class="neo-logo">
+                <div class="eye-of-horus">👁️</div>
+                <h1>Neo Cleopatra Viva</h1>
+                <p class="subtitle">DibTauroS • Ordo ab Chao • Advanced Cybersecurity Operations</p>
+            </div>
+            <div class="status-panel">
+                <div class="hieroglyph-status">
+                    <span id="connection-status" class="status-indicator">⚡</span>
+                    <span id="mode-indicator" class="mode-text">DEFEND</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main interface container -->
+    <main class="neo-interface">
+        <div class="papyrus-container">
+            <!-- Command Interface -->
+            <section class="command-scroll">
+                <h2>⚔️ Cybersecurity Operations</h2>
+                
+                <div class="hieroglyph-form">
+                    <div class="input-group">
+                        <label for="target-input">🎯 Target Domain/IP:</label>
+                        <input type="text" id="target-input" value="localhost" placeholder="Enter target system">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="operation-input">📜 Operation Command:</label>
+                        <textarea id="operation-input" placeholder="Enter your cybersecurity operation command..."></textarea>
+                    </div>
+                    
+                    <div class="control-hieroglyphs">
+                        <label class="hieroglyph-checkbox">
+                            <input type="checkbox" id="dry-run-mode" checked>
+                            <span class="checkmark">🛡️</span>
+                            Simulation Mode (Safe)
+                        </label>
+                        
+                        <label class="hieroglyph-checkbox">
+                            <input type="checkbox" id="test-mode">
+                            <span class="checkmark">⚡</span>
+                            Advanced Mode (Requires Wassim)
+                        </label>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="execute-btn" class="golden-button">
+                            <span>⚔️ Execute Operation</span>
+                        </button>
+                        <button id="status-btn" class="silver-button">
+                            <span>📊 Check Status</span>
+                        </button>
+                        <button id="clear-btn" class="silver-button">
+                            <span>🧹 Clear Log</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Display -->
+            <section class="results-scroll">
+                <h2>📊 Operation Results</h2>
+                <div class="papyrus-log">
+                    <div class="log-header">
+                        <span>🔍 Security Analysis Log</span>
+                        <span id="timestamp-display"></span>
+                    </div>
+                    <div id="operation-log" class="hieroglyph-output">
+                        <div class="welcome-message">
+                            <p>🌟 Welcome to Neo Cleopatra Viva</p>
+                            <p>Advanced cybersecurity operations interface</p>
+                            <p>Framework: DibTauroS/Ordo-ab-Chao</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Egyptian-themed footer -->
+    <footer class="neo-footer">
+        <div class="footer-content">
+            <div class="copyright">
+                <span>👑 Owner: Dib Anouar • License: LUP v1.0 (Personal & Non-Commercial)</span>
+            </div>
+            <div class="framework-info">
+                <span>🏛️ Privacy-First Cybersecurity Framework • Local Operations Only</span>
+            </div>
+        </div>
+        <div class="hieroglyph-border"></div>
+    </footer>
+
+    <!-- Auto-initialization container for CopilotPrivateAgent -->
+    <div id="copilot-auto-init" style="display: none;"></div>
+
+    <!-- JavaScript -->
+    <script src="js/copilot-agent.js"></script>
+    <script src="js/neo-cleopatra.js"></script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+/* Neo Cleopatra Viva - Egyptian Cybersecurity Theme */
+/* Owner: Dib Anouar | License: LUP v1.0 | Framework: DibTauroS/Ordo-ab-Chao */
+
+:root {
+    --cleopatra-gold: #FFD700;
+    --pyramid-bronze: #CD7F32;
+    --hieroglyph-blue: #1E3A8A;
+    --papyrus-cream: #F5F5DC;
+    --desert-sand: #EDC9AF;
+    --nile-blue: #003D82;
+    --scarab-green: #228B22;
+    --pharaoh-purple: #663399;
+    --shadow-dark: rgba(0, 0, 0, 0.8);
+    --glow-gold: rgba(255, 215, 0, 0.6);
+    --glow-blue: rgba(30, 58, 138, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: linear-gradient(135deg, 
+        var(--desert-sand) 0%, 
+        var(--papyrus-cream) 30%, 
+        var(--hieroglyph-blue) 70%, 
+        var(--nile-blue) 100%);
+    min-height: 100vh;
+    color: var(--hieroglyph-blue);
+    overflow-x: hidden;
+}
+
+/* Header Styling */
+.neo-header {
+    position: relative;
+    background: linear-gradient(135deg, var(--cleopatra-gold), var(--pyramid-bronze));
+    border-bottom: 4px solid var(--hieroglyph-blue);
+    box-shadow: 0 4px 20px var(--shadow-dark);
+    overflow: hidden;
+}
+
+.pyramid-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 0, 0, 0.1) 10px,
+            rgba(0, 0, 0, 0.1) 20px);
+    pointer-events: none;
+}
+
+.header-content {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    z-index: 2;
+}
+
+.neo-logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.eye-of-horus {
+    font-size: 3em;
+    filter: drop-shadow(0 0 10px var(--glow-gold));
+    animation: pulse-eye 3s ease-in-out infinite;
+}
+
+@keyframes pulse-eye {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.neo-logo h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px var(--shadow-dark);
+    background: linear-gradient(45deg, var(--hieroglyph-blue), var(--pharaoh-purple));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 0.9em;
+    color: var(--hieroglyph-blue);
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.status-panel {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px 25px;
+    border-radius: 25px;
+    border: 2px solid var(--hieroglyph-blue);
+}
+
+.hieroglyph-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-indicator {
+    font-size: 1.5em;
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 5px var(--glow-gold)); }
+    50% { filter: drop-shadow(0 0 15px var(--glow-gold)); }
+}
+
+.mode-text {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--hieroglyph-blue);
+}
+
+/* Main Interface */
+.neo-interface {
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.papyrus-container {
+    background: var(--papyrus-cream);
+    border: 3px solid var(--pyramid-bronze);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px var(--shadow-dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 30px;
+    position: relative;
+}
+
+.papyrus-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    border-radius: 12px;
+}
+
+.command-scroll, .results-scroll {
+    position: relative;
+    z-index: 2;
+}
+
+.command-scroll h2, .results-scroll h2 {
+    font-size: 1.8em;
+    color: var(--hieroglyph-blue);
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Styling */
+.hieroglyph-form {
+    space-y: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    color: var(--hieroglyph-blue);
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--pyramid-bronze);
+    border-radius: 8px;
+    background: white;
+    font-family: inherit;
+    font-size: 1em;
+    color: var(--hieroglyph-blue);
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus, .input-group textarea:focus {
+    outline: none;
+    border-color: var(--cleopatra-gold);
+    box-shadow: 0 0 10px var(--glow-gold);
+}
+
+.input-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Checkboxes */
+.control-hieroglyphs {
+    margin: 25px 0;
+}
+
+.hieroglyph-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: var(--hieroglyph-blue);
+}
+
+.hieroglyph-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    margin-right: 10px;
+    font-size: 1.3em;
+    transition: all 0.3s ease;
+}
+
+.hieroglyph-checkbox input[type="checkbox"]:checked + .checkmark {
+    filter: drop-shadow(0 0 8px var(--glow-gold));
+    transform: scale(1.2);
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.golden-button, .silver-button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 25px;
+    font-family: inherit;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.golden-button {
+    background: linear-gradient(135deg, var(--cleopatra-gold), var(--pyramid-bronze));
+    color: var(--hieroglyph-blue);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.golden-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+}
+
+.silver-button {
+    background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
+    color: var(--hieroglyph-blue);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.silver-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Results Display */
+.papyrus-log {
+    background: white;
+    border: 2px solid var(--pyramid-bronze);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.log-header {
+    background: var(--hieroglyph-blue);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.hieroglyph-output {
+    height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+    background: linear-gradient(to bottom, white, var(--papyrus-cream));
+}
+
+.welcome-message {
+    text-align: center;
+    color: var(--hieroglyph-blue);
+    font-style: italic;
+}
+
+.welcome-message p {
+    margin-bottom: 8px;
+}
+
+.welcome-message hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--pyramid-bronze), transparent);
+    margin: 15px 0;
+}
+
+/* Log Entries */
+.log-entry {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 4px solid var(--scarab-green);
+    background: rgba(34, 139, 34, 0.05);
+    border-radius: 0 8px 8px 0;
+}
+
+.log-entry.error {
+    border-left-color: #DC2626;
+    background: rgba(220, 38, 38, 0.05);
+}
+
+.log-entry.warning {
+    border-left-color: #F59E0B;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.log-entry.success {
+    border-left-color: var(--scarab-green);
+    background: rgba(34, 139, 34, 0.1);
+}
+
+.log-timestamp {
+    color: #666;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.log-message {
+    color: var(--hieroglyph-blue);
+    margin-top: 5px;
+    white-space: pre-wrap;
+}
+
+/* Footer */
+.neo-footer {
+    margin-top: 40px;
+    background: var(--hieroglyph-blue);
+    color: var(--papyrus-cream);
+    position: relative;
+}
+
+.footer-content {
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hieroglyph-border {
+    height: 8px;
+    background: linear-gradient(90deg, 
+        var(--cleopatra-gold) 0%, 
+        var(--pyramid-bronze) 25%, 
+        var(--scarab-green) 50%, 
+        var(--pharaoh-purple) 75%, 
+        var(--cleopatra-gold) 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .neo-logo {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .neo-logo h1 {
+        font-size: 2em;
+    }
+    
+    .papyrus-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .neo-interface {
+        padding: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Animations */
+@keyframes hieroglyph-glow {
+    0%, 100% {
+        text-shadow: 0 0 5px var(--glow-gold);
+    }
+    50% {
+        text-shadow: 0 0 15px var(--glow-gold), 0 0 25px var(--glow-gold);
+    }
+}
+
+/* Special Effects */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--cleopatra-gold);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Scrollbar Styling */
+.hieroglyph-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.hieroglyph-output::-webkit-scrollbar-track {
+    background: var(--desert-sand);
+}
+
+.hieroglyph-output::-webkit-scrollbar-thumb {
+    background: var(--pyramid-bronze);
+    border-radius: 4px;
+}
+
+.hieroglyph-output::-webkit-scrollbar-thumb:hover {
+    background: var(--cleopatra-gold);
+}

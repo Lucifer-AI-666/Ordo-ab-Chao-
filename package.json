@@ -1,0 +1,32 @@
+{
+  "name": "neo-cleopatra-viva",
+  "version": "1.0.0",
+  "description": "Neo Cleopatra Viva - Egyptian-themed cybersecurity interface for DibTauroS/Ordo-ab-Chao framework",
+  "author": "Dib Anouar",
+  "license": "LUP-1.0",
+  "homepage": "https://github.com/Lucifer-AI-666/Ordo-ab-Chao-",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lucifer-AI-666/Ordo-ab-Chao-.git"
+  },
+  "scripts": {
+    "dev": "npx http-server public -p 3000 -o",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "cybersecurity",
+    "security-framework",
+    "egyptian-theme",
+    "dibtauros",
+    "ordo-ab-chao",
+    "privacy-first",
+    "web-interface"
+  ],
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
