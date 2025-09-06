@@ -9,7 +9,7 @@ import os
 import sys
 import shutil
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 def print_emoji(emoji, message):
@@ -63,7 +63,7 @@ def main():
                 "127.0.0.1",
                 "192.168.1.0/24"
             ],
-            "last_updated": datetime.utcnow().isoformat() + "Z"
+            "last_updated": datetime.now(timezone.utc).isoformat() + "Z"
         }
         with open(allowlist_path, 'w') as f:
             json.dump(allowlist_data, f, indent=2)

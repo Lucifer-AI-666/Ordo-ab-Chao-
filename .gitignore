@@ -30,6 +30,7 @@ venv/
 dist/
 build/
 .gradle/
+gradle/wrapper/gradle-wrapper.jar
 
 # Android (se presente)
 android-app/app/build/
