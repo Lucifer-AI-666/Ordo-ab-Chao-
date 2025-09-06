@@ -38,6 +38,7 @@ android-app/.gradle/
 android-app/.cxx/
 android-app/.idea/
 android-app/local.properties
+local.properties
 
 # Editor/OS
 .vscode/
