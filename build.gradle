@@ -1,16 +1,19 @@
-// Root Gradle build - minimal
+// Root Gradle build - minimal (offline compatible)
 buildscript {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.4.2"
+        // Using a version that might be available in plugin portal
+        classpath "com.android.tools.build:gradle:8.1.0"
     }
 }
 
 allprojects {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
     }

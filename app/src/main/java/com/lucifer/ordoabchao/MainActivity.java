@@ -1,5 +1,6 @@
 package com.lucifer.ordoabchao;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,14 +10,12 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 /**
  * Minimal MainActivity:
  * - mostra titolo e pulsanti
  * - apre la pagina web integrata in assets (file:///android_asset/index.html)
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private WebView webView;
     private static final String WEB_URL = "file:///android_asset/index.html";
