@@ -184,7 +184,14 @@ write "$DEST/01-tauros/README.md" '````markdown
 
 Modello Ollama con guardrail ferrei per uso personale/privato di Dib Anouar.
 
-Creazione modello
+## Setup
 ```bash
 cd 01-tauros
 ollama create tauros_private -f TaurosPrivateAgent.Modelfile
+ollama run tauros_private
+```
+
+## Utilizzo
+- DEFEND (sempre consentito): comandi di ispezione e monitoraggio
+- TEST (gated): richiede keyword "Wassim" + allowlist + privilegi admin
+````'
