@@ -85,7 +85,7 @@ def check_commit_integrity():
             ["git", "fsck", "--no-progress"],
             capture_output=True,
             text=True,
-            timeout=30
+            timeout=120
         )
         
         if result.returncode == 0:
@@ -171,7 +171,7 @@ def check_copilot_agent():
             ["python3", str(copilot_verify)],
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=120
         )
         
         print(result.stdout)
@@ -198,7 +198,7 @@ def generate_report():
     print(f"User: {os.environ.get('USER', 'unknown')}")
     
     # Count files
-    total_files = sum(1 for _ in Path('.').rglob('*') if _.is_file() and '.git' not in str(_))
+    total_files = sum(1 for _ in Path('.').rglob('*') if _.is_file() and '.git' not in _.parts)
     print(f"Total files (excluding .git): {total_files}")
     
     # Check important files

@@ -3,13 +3,14 @@
 # Wrapper for controlla_commit.py
 # Usage: ./controlla_commit.sh
 
-set -euo pipefail
+set -uo pipefail
 
 echo "🔍 Controlla Commit - Git Verification"
 echo ""
 
 # Run the Python verification script
 python3 controlla_commit.py
+exit_code=$?
 
 # Exit with the Python script's exit code
-exit $?
+exit $exit_code

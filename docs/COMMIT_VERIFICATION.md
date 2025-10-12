@@ -95,7 +95,7 @@ This tool can be integrated into:
 
 ## Requirements
 
-- Python 3.6+
+- Python 3.8+
 - Git
 - Access to repository files
 
