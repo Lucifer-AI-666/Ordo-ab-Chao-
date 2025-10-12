@@ -25,6 +25,22 @@ Istruzioni rapide:
 4. APK risultante: `app/build/outputs/apk/debug/app-debug.apk`
 5. Per testare la pagina web senza APK, apri `web/index.html` nel browser.
 
+## Verifica Repository
+
+Per verificare lo stato del repository e dei commit:
+```bash
+# Verifica completa (Python - consigliato)
+python3 controlla_commit.py
+
+# Verifica rapida (Shell)
+./controlla_commit.sh
+
+# Verifica inizializzazione
+python3 verifica.py
+```
+
+Vedi [docs/COMMIT_VERIFICATION.md](docs/COMMIT_VERIFICATION.md) per dettagli.
+
 Nota di sicurezza:
 - Questa app è minimale e richiede poche dipendenze. Disabilita JavaScript nella WebView per sicurezza.
 - Non eseguire l'APK su dispositivi che non controlli.

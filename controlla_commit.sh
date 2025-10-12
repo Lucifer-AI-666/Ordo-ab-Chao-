@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Controlla Commit - Quick Git Verification Script
+# Wrapper for controlla_commit.py
+# Usage: ./controlla_commit.sh
+
+set -euo pipefail
+
+echo "🔍 Controlla Commit - Git Verification"
+echo ""
+
+# Run the Python verification script
+python3 controlla_commit.py
+
+# Exit with the Python script's exit code
+exit $?
