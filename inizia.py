@@ -63,7 +63,7 @@ def main():
                 "127.0.0.1",
                 "192.168.1.0/24"
             ],
-            "last_updated": datetime.now(timezone.utc).isoformat()
+            "last_updated": datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
         }
         with open(allowlist_path, 'w') as f:
             json.dump(allowlist_data, f, indent=2)
