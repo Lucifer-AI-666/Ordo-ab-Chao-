@@ -42,7 +42,11 @@
 - **API Token**: Generato automaticamente (64 caratteri hex)
 - **Backup**: File `.env.copilot.backup.*` con timestamp
 
-⚠️ **IMPORTANTE**: Non condividere mai i token di sicurezza!
+⚠️ **IMPORTANTE**: 
+- Non condividere mai i token di sicurezza!
+- Il file `.env.copilot` NON deve mai essere committato in Git
+- Usa `.env.copilot.example` come template per la configurazione
+- I token vengono generati automaticamente durante la ricostituzione account
 
 ### Modalità Operative
 

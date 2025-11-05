@@ -48,13 +48,17 @@ Thumbs.db
 *.backup.*
 .env.local
 .env.copilot
-copilot-agent/config/.env*
+copilot-agent/config/.env.copilot
+copilot-agent/config/.env.*.backup.*
 copilot-agent/config/account.json
 **/logs/*.log
 **/logs/*.jsonl
 **/*.db
 **/*.sqlite
 **/*.sqlite3
+# Allow example files
+!*.example
+!**/.env*.example
 
 # Backups (account backups contain sensitive data)
 backups/
