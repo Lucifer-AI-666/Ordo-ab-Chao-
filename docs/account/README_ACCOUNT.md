@@ -5,7 +5,7 @@
 - **Owner**: Dib Anouar
 - **Framework**: DibTauroS/Ordo-ab-Chao
 - **License**: LUP v1.0 (uso personale e non commerciale)
-- **Ricostituito**: 2025-11-05T19:49:17.689814+00:00
+- **Ricostituito**: 2025-11-05T19:55:43.972629+00:00
 
 ## Configurazione Account
 
@@ -42,11 +42,7 @@
 - **API Token**: Generato automaticamente (64 caratteri hex)
 - **Backup**: File `.env.copilot.backup.*` con timestamp
 
-⚠️ **IMPORTANTE**: 
-- Non condividere mai i token di sicurezza!
-- Il file `.env.copilot` NON deve mai essere committato in Git
-- Usa `.env.copilot.example` come template per la configurazione
-- I token vengono generati automaticamente durante la ricostituzione account
+⚠️ **IMPORTANTE**: Non condividere mai i token di sicurezza!
 
 ### Modalità Operative
 
