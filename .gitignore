@@ -64,3 +64,5 @@ copilot-agent/config/account.json
 backups/
 *.tar.gz
 *.zip
+
+copilot-agent/config/.env*

@@ -217,9 +217,9 @@ def main():
         print()
         
         print_emoji("📖", "Prossimi passi:")
-        print("   1. Verifica integrità: tar -tzf", archive_name)
-        print("   2. Sposta in posizione sicura: mv", archive_name, "/percorso/sicuro/")
-        print("   3. (Opzionale) Cifra: gpg -c", archive_name)
+        print(f"   1. Verifica integrità: tar -tzf {archive_name}")
+        print(f"   2. Sposta in posizione sicura: mv {archive_name} /percorso/sicuro/")
+        print(f"   3. (Opzionale) Cifra: gpg -c {archive_name}")
         print()
         
         return 0
