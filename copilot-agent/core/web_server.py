@@ -93,21 +93,35 @@ async def serve_js():
 
 @app.get("/branding/banner")
 async def get_banner():
-    """Get HTML banner for branding"""
+    """Get HTML banner for branding (optimized with async I/O)"""
+    import aiofiles
     banner_file = Path(__file__).parent.parent / "branding" / "html_banner.html"
     if banner_file.exists():
-        with open(banner_file, 'r') as f:
-            return HTMLResponse(content=f.read())
+        try:
+            async with aiofiles.open(banner_file, 'r') as f:
+                content = await f.read()
+            return HTMLResponse(content=content)
+        except ImportError:
+            # Fallback to sync I/O if aiofiles not available
+            with open(banner_file, 'r') as f:
+                return HTMLResponse(content=f.read())
     else:
         return {"message": "Banner not found"}
 
 @app.get("/branding/splash")
 async def get_splash():
-    """Get text splash banner"""
+    """Get text splash banner (optimized with async I/O)"""
+    import aiofiles
     splash_file = Path(__file__).parent.parent / "branding" / "splash.txt"
     if splash_file.exists():
-        with open(splash_file, 'r') as f:
-            return {"splash": f.read()}
+        try:
+            async with aiofiles.open(splash_file, 'r') as f:
+                content = await f.read()
+            return {"splash": content}
+        except ImportError:
+            # Fallback to sync I/O if aiofiles not available
+            with open(splash_file, 'r') as f:
+                return {"splash": f.read()}
     else:
         return {"splash": "CopilotPrivateAgent - DibTauroS Framework"}
 

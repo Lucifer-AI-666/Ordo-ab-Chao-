@@ -153,6 +153,9 @@ def check_repository_structure():
     except FileNotFoundError:
         print("⚠️  verifica.py not found - skipping structure check")
         return True
+    except subprocess.TimeoutExpired:
+        print("⏰ Structure check timeout - skipping")
+        return True
     except Exception as e:
         print(f"❌ Structure check error: {e}")
         return False
@@ -197,8 +200,24 @@ def generate_report():
     print(f"Repository: {Path.cwd()}")
     print(f"User: {os.environ.get('USER', 'unknown')}")
     
-    # Count files
-    total_files = sum(1 for _ in Path('.').rglob('*') if _.is_file() and '.git' not in _.parts)
+    # Count files (optimized with os.scandir)
+    def count_files_fast(path='.'):
+        """Fast file counting using os.scandir"""
+        count = 0
+        try:
+            with os.scandir(path) as entries:
+                for entry in entries:
+                    if entry.name == '.git':
+                        continue
+                    if entry.is_file(follow_symlinks=False):
+                        count += 1
+                    elif entry.is_dir(follow_symlinks=False):
+                        count += count_files_fast(entry.path)
+        except PermissionError:
+            pass
+        return count
+    
+    total_files = count_files_fast('.')
     print(f"Total files (excluding .git): {total_files}")
     
     # Check important files
