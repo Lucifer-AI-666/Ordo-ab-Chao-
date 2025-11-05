@@ -43,12 +43,12 @@ def check_required_files():
 
 def check_modelfiles():
     """Verifica i Modelfiles"""
-    modelfiles = []
-    for modelfile in Path("01-tauros").glob("*.Modelfile"):
-        modelfiles.append(str(modelfile))
-    for modelfile in Path("02-lucy").glob("*.Modelfile"):
-        modelfiles.append(str(modelfile))
-    
+    # Optimized: single list comprehension with multiple paths
+    modelfiles = [
+        str(modelfile) 
+        for directory in ["01-tauros", "02-lucy"]
+        for modelfile in Path(directory).glob("*.Modelfile")
+    ]
     return modelfiles
 
 def main():

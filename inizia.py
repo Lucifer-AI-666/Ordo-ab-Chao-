@@ -152,26 +152,21 @@ uvicorn gateway.agent_gateway:app --host 127.0.0.1 --port 8787
                 f.write('\n'.join(packages) + '\n')
             print(f"   ✅ {file_path} creato")
 
-    # Clean up temporary files
+    # Clean up temporary files (optimized batch operation)
     print_emoji("🧹", "Pulizia file temporanei...")
-    temp_files = [
+    temp_patterns = [
         "Nuovo Documento di testo.txt",
-        "invoice_*.pdf"
+        "invoice_*.pdf",
+        "files*.zip"
     ]
     
-    for pattern in temp_files:
+    # Batch cleanup - single pass through patterns
+    for pattern in temp_patterns:
         for file_path in Path(".").glob(pattern):
             try:
                 file_path.unlink()
             except OSError:
                 pass
-
-    # Clean up zip files
-    for zip_file in Path(".").glob("files*.zip"):
-        try:
-            zip_file.unlink()
-        except OSError:
-            pass
 
     print("")
     print_emoji("✅", "Inizializzazione completata!")

@@ -14,6 +14,7 @@ import logging
 import hashlib
 import datetime
 import subprocess
+import ipaddress
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
@@ -61,6 +62,10 @@ class CopilotPrivateAgent:
         # Security state
         self.current_mode = OperationMode.DEFEND
         self.monica_disabled = os.getenv('MONICA_DISABLE', '0') == '1'
+        
+        # Cache for parsed IP networks (performance optimization)
+        self._allowlist_cache = {}
+        self._parse_allowlist_cache()
         
         self.logger.info("CopilotPrivateAgent initialized - DibTauroS/Ordo-ab-Chao")
         self.logger.info(f"Mode: {self.current_mode.value}, MONICA disabled: {self.monica_disabled}")
@@ -130,17 +135,24 @@ class CopilotPrivateAgent:
             return default_config
 
     def _update_log_chain(self):
-        """Update SHA-256 audit trail for log integrity"""
+        """Update SHA-256 audit trail for log integrity (optimized with streaming)"""
         chain_file = self.logs_dir / "audit_chain.json"
         
-        # Calculate current log hash
-        log_content = ""
+        # Calculate current log hash using streaming for large files
         log_file = self.logs_dir / "copilot_agent.log"
-        if log_file.exists():
-            with open(log_file, 'rb') as f:
-                log_content = f.read().decode('utf-8', errors='ignore')
+        hasher = hashlib.sha256()
         
-        current_hash = hashlib.sha256(log_content.encode()).hexdigest()
+        if log_file.exists():
+            try:
+                with open(log_file, 'rb') as f:
+                    # Read in chunks to handle large log files efficiently
+                    for chunk in iter(lambda: f.read(65536), b''):
+                        hasher.update(chunk)
+            except (IOError, OSError):
+                # If file can't be read, use empty hash
+                pass
+        
+        current_hash = hasher.hexdigest()
         
         # Load existing chain
         try:
@@ -162,28 +174,38 @@ class CopilotPrivateAgent:
         with open(chain_file, 'w') as f:
             json.dump(chain, f, indent=2)
 
-    def _check_target_allowed(self, target: str) -> bool:
-        """Check if target is in allowlist"""
-        allowed_targets = self.allowlist.get("allowed_targets", [])
+    def _parse_allowlist_cache(self):
+        """Parse and cache IP networks from allowlist (performance optimization)"""
+        self._allowlist_cache = {
+            'hostnames': [],
+            'networks': []
+        }
         
-        # Direct match
-        if target in allowed_targets:
+        allowed_targets = self.allowlist.get("allowed_targets", [])
+        for target in allowed_targets:
+            if '/' in target:  # CIDR notation
+                try:
+                    network = ipaddress.ip_network(target, strict=False)
+                    self._allowlist_cache['networks'].append(network)
+                except ValueError:
+                    self._allowlist_cache['hostnames'].append(target)
+            else:
+                self._allowlist_cache['hostnames'].append(target)
+    
+    def _check_target_allowed(self, target: str) -> bool:
+        """Check if target is in allowlist (optimized with caching)"""
+        # Direct match with cached hostnames
+        if target in self._allowlist_cache['hostnames']:
             return True
         
-        # Check for IP ranges (basic CIDR support)
-        import ipaddress
+        # Check cached IP networks
         try:
             target_ip = ipaddress.ip_address(target)
-            for allowed in allowed_targets:
-                if '/' in allowed:  # CIDR notation
-                    try:
-                        network = ipaddress.ip_network(allowed, strict=False)
-                        if target_ip in network:
-                            return True
-                    except ValueError:
-                        continue
+            for network in self._allowlist_cache['networks']:
+                if target_ip in network:
+                    return True
         except ValueError:
-            # Not an IP address, continue with string matching
+            # Not an IP address, only hostname match applies
             pass
         
         return False
