@@ -14,6 +14,7 @@ import logging
 import hashlib
 import datetime
 import subprocess
+import ipaddress
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
@@ -175,7 +176,6 @@ class CopilotPrivateAgent:
 
     def _parse_allowlist_cache(self):
         """Parse and cache IP networks from allowlist (performance optimization)"""
-        import ipaddress
         self._allowlist_cache = {
             'hostnames': [],
             'networks': []
@@ -199,7 +199,6 @@ class CopilotPrivateAgent:
             return True
         
         # Check cached IP networks
-        import ipaddress
         try:
             target_ip = ipaddress.ip_address(target)
             for network in self._allowlist_cache['networks']:
