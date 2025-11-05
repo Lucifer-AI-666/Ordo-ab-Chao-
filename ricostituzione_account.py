@@ -131,10 +131,12 @@ RECONSTITUTION_DATE={datetime.now(timezone.utc).isoformat()}
     
     os.chmod(env_file, 0o600)
     print(f"   ✅ File ambiente ricostituito con nuovi token di sicurezza")
-    print(f"   🔒 Secret Key: {secret_key[:8]}...{secret_key[-8:]}")
-    print(f"   🔒 API Token: {api_token[:8]}...{api_token[-8:]}")
+    # Note: Token preview for initial setup only. Store tokens securely!
+    print(f"   🔒 Secret Key: {secret_key[:4]}...{secret_key[-4:]} (vedere .env.copilot)")
+    print(f"   🔒 API Token: {api_token[:4]}...{api_token[-4:]} (vedere .env.copilot)")
     
-    return {"secret_key": secret_key, "api_token": api_token}
+    return {"secret_key": secret_key[:4] + "..." + secret_key[-4:], 
+            "api_token": api_token[:4] + "..." + api_token[-4:]}
 
 def setup_allowlist():
     """Setup allowlist.json from example"""
@@ -432,9 +434,10 @@ def main():
         print()
         
         print_emoji("🔒", "Sicurezza:")
-        print(f"   🔑 Secret Key: {tokens['secret_key'][:16]}...{tokens['secret_key'][-16:]}")
-        print(f"   🔑 API Token: {tokens['api_token'][:16]}...{tokens['api_token'][-16:]}")
-        print(f"   ⚠️  CONSERVARE QUESTI TOKEN IN MODO SICURO!")
+        print(f"   🔑 Secret Key: {tokens['secret_key']} (vedere copilot-agent/config/.env.copilot)")
+        print(f"   🔑 API Token: {tokens['api_token']} (vedere copilot-agent/config/.env.copilot)")
+        print(f"   ⚠️  I TOKEN COMPLETI SONO NEL FILE .env.copilot - CONSERVARLI IN MODO SICURO!")
+        print(f"   ⚠️  NON CONDIVIDERE MAI I TOKEN COMPLETI!")
         print()
         
         print_emoji("📖", "Prossimi passi:")
