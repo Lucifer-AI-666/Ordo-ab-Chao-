@@ -1,0 +1,14 @@
+{
+  "snapshots": [
+    {
+      "name": "snapshot_20251117_214945",
+      "timestamp": "20251117_214945",
+      "datetime": "2025-11-17T21:49:45.659227",
+      "description": "PWA completata con login e backup system",
+      "files_count": 55,
+      "size": 256315
+    }
+  ],
+  "last_backup": "2025-11-17T21:49:45.659227",
+  "total_backups": 1
+}

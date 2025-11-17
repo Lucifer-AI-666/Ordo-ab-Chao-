@@ -1,0 +1,33 @@
+# Python dependencies for CopilotPrivateAgent
+# DibTauroS/Ordo-ab-Chao framework
+
+# Core dependencies
+psutil>=5.9.0
+requests>=2.28.0
+cryptography>=3.4.8
+
+# Web interface dependencies
+fastapi>=0.95.0
+uvicorn[standard]>=0.20.0
+websockets>=11.0.0
+python-multipart>=0.0.6
+
+# Configuration and data handling
+toml>=0.10.2
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Security and logging
+bcrypt>=4.0.0
+python-jose[cryptography]>=3.3.0
+
+# Network and system tools
+python-nmap>=0.7.1
+scapy>=2.5.0
+
+# Optional: Async file I/O for better performance
+aiofiles>=23.1.0
+
+# Optional: AI/ML for advanced analysis
+# numpy>=1.24.0
+# scikit-learn>=1.2.0

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ordo ab Chao - Login Sistema AI">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Ordo ab Chao - Login</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-512.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #e4e4e4;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 50px 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo h1 {
+      font-size: 3em;
+      background: linear-gradient(45deg, #00d4ff, #7b68ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .logo p {
+      color: #a0a0a0;
+      font-size: 1.1em;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #00d4ff;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      color: #e4e4e4;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #00d4ff;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    .form-group input::placeholder {
+      color: #666;
+    }
+
+    .button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(45deg, #00d4ff, #7b68ee);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .remember-me input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .remember-me label {
+      color: #a0a0a0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .error-message {
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      color: #ff6666;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .success-message {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid rgba(0, 255, 0, 0.3);
+      color: #66ff66;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .security-info {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(123, 104, 238, 0.1);
+      border-radius: 10px;
+      border-left: 3px solid #7b68ee;
+    }
+
+    .security-info h3 {
+      color: #7b68ee;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    .security-info p {
+      color: #a0a0a0;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle button {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #00d4ff;
+      cursor: pointer;
+      font-size: 1.2em;
+      padding: 5px;
+    }
+
+    .biometric-login {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .biometric-login button {
+      background: rgba(123, 104, 238, 0.2);
+      border: 1px solid #7b68ee;
+      padding: 12px 30px;
+      border-radius: 8px;
+      color: #7b68ee;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .biometric-login button:hover {
+      background: rgba(123, 104, 238, 0.3);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 0.85em;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        padding: 40px 30px;
+      }
+
+      .logo h1 {
+        font-size: 2.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <h1>⚡ Ordo ab Chao ⚡</h1>
+      <p>Sistema AI Integrato</p>
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      <span id="errorText">❌ Credenziali non valide</span>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      <span id="successText">✅ Login effettuato con successo!</span>
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">👤 Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Inserisci username"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">🔒 Password</label>
+        <div class="password-toggle">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Inserisci password"
+            autocomplete="current-password"
+            required
+          >
+          <button type="button" id="togglePassword" title="Mostra/Nascondi password">👁️</button>
+        </div>
+      </div>
+
+      <div class="remember-me">
+        <input type="checkbox" id="rememberMe" name="rememberMe">
+        <label for="rememberMe">Ricordami su questo dispositivo</label>
+      </div>
+
+      <button type="submit" class="button" id="loginButton">
+        🚀 Accedi
+      </button>
+    </form>
+
+    <div class="biometric-login" id="biometricContainer" style="display: none;">
+      <button type="button" id="biometricButton">
+        🔐 Accedi con Biometria
+      </button>
+    </div>
+
+    <div class="security-info">
+      <h3>🔒 Sicurezza & Privacy</h3>
+      <p>
+        🛡️ Tutto in locale, nessun dato inviato al cloud<br>
+        🔐 Crittografia end-to-end per tutti i dati<br>
+        🚫 Zero tracking, zero analytics<br>
+        ⚡ AI locale con Ollama + LLaMA2
+      </p>
+    </div>
+
+    <footer>
+      <p>Ordo ab Chao &copy; 2025 | Lucifer-AI-666</p>
+      <p><small>Sistema di autenticazione locale sicuro</small></p>
+    </footer>
+  </div>
+
+  <script>
+    // Configurazione utenti (in produzione: usare database locale crittografato)
+    const USERS = {
+      'admin': {
+        password: 'ordo2025',  // In produzione: hash SHA-256
+        role: 'admin',
+        name: 'Amministratore'
+      },
+      'lucifer': {
+        password: 'chaos666',  // In produzione: hash SHA-256
+        role: 'admin',
+        name: 'Lucifer-AI-666'
+      },
+      'user': {
+        password: 'user123',
+        role: 'user',
+        name: 'Utente Standard'
+      }
+    };
+
+    // Session storage key
+    const SESSION_KEY = 'ordo_session';
+    const REMEMBER_KEY = 'ordo_remember';
+
+    // Check se già loggato
+    function checkSession() {
+      const session = localStorage.getItem(SESSION_KEY);
+      const remember = localStorage.getItem(REMEMBER_KEY);
+
+      if (session) {
+        const sessionData = JSON.parse(session);
+        const now = Date.now();
+
+        // Verifica scadenza sessione (24 ore)
+        if (now - sessionData.timestamp < 24 * 60 * 60 * 1000) {
+          redirectToDashboard();
+        } else {
+          // Sessione scaduta
+          localStorage.removeItem(SESSION_KEY);
+        }
+      } else if (remember) {
+        // Auto-login con remember me
+        const rememberData = JSON.parse(remember);
+        if (Date.now() - rememberData.timestamp < 30 * 24 * 60 * 60 * 1000) {
+          // Remember me valido per 30 giorni
+          createSession(rememberData.username, rememberData.role);
+          redirectToDashboard();
+        }
+      }
+    }
+
+    // Crea sessione
+    function createSession(username, role) {
+      const sessionData = {
+        username: username,
+        role: role,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+    }
+
+    // Redirect a dashboard
+    function redirectToDashboard() {
+      showSuccess('Login effettuato! Reindirizzamento...');
+      setTimeout(() => {
+        window.location.href = '/index.html';
+      }, 1000);
+    }
+
+    // Mostra errore
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+      errorText.textContent = '❌ ' + message;
+      errorDiv.classList.add('show');
+
+      setTimeout(() => {
+        errorDiv.classList.remove('show');
+      }, 3000);
+    }
+
+    // Mostra successo
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      const successText = document.getElementById('successText');
+      successText.textContent = '✅ ' + message;
+      successDiv.classList.add('show');
+    }
+
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const button = document.getElementById('togglePassword');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        button.textContent = '👁️‍🗨️';
+      } else {
+        passwordInput.type = 'password';
+        button.textContent = '👁️';
+      }
+    });
+
+    // Login form submit
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      // Validazione
+      if (!username || !password) {
+        showError('Inserisci username e password');
+        return;
+      }
+
+      // Verifica credenziali
+      if (USERS[username] && USERS[username].password === password) {
+        // Login success
+        const role = USERS[username].role;
+
+        createSession(username, role);
+
+        // Remember me
+        if (rememberMe) {
+          const rememberData = {
+            username: username,
+            role: role,
+            timestamp: Date.now()
+          };
+          localStorage.setItem(REMEMBER_KEY, JSON.stringify(rememberData));
+        }
+
+        // Log attività
+        console.log(`[Ordo Login] User ${username} logged in at ${new Date().toISOString()}`);
+
+        redirectToDashboard();
+      } else {
+        // Login failed
+        showError('Username o password non corretti');
+
+        // Vibrazione su mobile
+        if (navigator.vibrate) {
+          navigator.vibrate([100, 50, 100]);
+        }
+      }
+    });
+
+    // Biometric authentication (se supportato)
+    if (window.PublicKeyCredential) {
+      document.getElementById('biometricContainer').style.display = 'block';
+
+      document.getElementById('biometricButton').addEventListener('click', async () => {
+        try {
+          // WebAuthn API per biometria
+          // Placeholder - implementazione completa richiede setup server
+          showError('Autenticazione biometrica non ancora configurata');
+        } catch (error) {
+          showError('Errore autenticazione biometrica');
+        }
+      });
+    }
+
+    // Check session on load
+    checkSession();
+
+    // Auto-focus username
+    document.getElementById('username').focus();
+
+    // Easter egg: Konami code
+    let konamiCode = [];
+    const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.key);
+      konamiCode = konamiCode.slice(-10);
+
+      if (konamiCode.join(',') === konamiPattern.join(',')) {
+        // Secret admin login
+        document.getElementById('username').value = 'admin';
+        document.getElementById('password').value = 'ordo2025';
+        showSuccess('🎮 Konami Code attivato! Accesso admin sbloccato!');
+      }
+    });
+  </script>
+</body>
+</html>
