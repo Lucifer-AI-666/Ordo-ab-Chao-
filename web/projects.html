@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mission Control - Gestione Progetti Lucifer-AI-666">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Mission Control - Progetti</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #e4e4e4;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px rgba(255, 0, 128, 0.5)); }
+      to { filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.8)); }
+    }
+
+    .subtitle {
+      color: #a0a0a0;
+      font-size: 1.1em;
+    }
+
+    .user-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+    }
+
+    .user-info .badge {
+      padding: 8px 16px;
+      background: linear-gradient(45deg, #ff0080, #ff8c00);
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #a0a0a0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: linear-gradient(45deg, #ff0080, #ff8c00);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 5px 20px rgba(255, 0, 128, 0.4);
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0);
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 0, 128, 0.5);
+      box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+    }
+
+    .project-card h3 {
+      color: #ff8c00;
+      margin-bottom: 10px;
+      font-size: 1.4em;
+    }
+
+    .project-card p {
+      color: #b0b0b0;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .project-status {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .status-active {
+      background: rgba(0, 255, 0, 0.2);
+      color: #00ff00;
+      border: 1px solid rgba(0, 255, 0, 0.5);
+    }
+
+    .status-development {
+      background: rgba(255, 165, 0, 0.2);
+      color: #ffa500;
+      border: 1px solid rgba(255, 165, 0, 0.5);
+    }
+
+    .status-archived {
+      background: rgba(128, 128, 128, 0.2);
+      color: #888;
+      border: 1px solid rgba(128, 128, 128, 0.5);
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #ff0080, #ff8c00);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(64, 224, 208, 0.2);
+      color: #40e0d0;
+      border: 1px solid rgba(64, 224, 208, 0.5);
+    }
+
+    .btn-github {
+      background: rgba(36, 41, 46, 0.8);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 0, 128, 0.4);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .social-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .social-card:hover {
+      transform: translateX(5px);
+      border-color: rgba(255, 0, 128, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .social-icon {
+      font-size: 2.5em;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .social-info h4 {
+      color: #ff8c00;
+      margin-bottom: 5px;
+    }
+
+    .social-info p {
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5em;
+      font-weight: bold;
+      background: linear-gradient(45deg, #ff0080, #40e0d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .quick-action {
+      flex: 1;
+      min-width: 200px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .quick-action:hover {
+      background: rgba(255, 0, 128, 0.1);
+      border-color: rgba(255, 0, 128, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .quick-action .icon {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2em; }
+      .grid { grid-template-columns: 1fr; }
+      .user-info { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 MISSION CONTROL 🚀</h1>
+      <p class="subtitle">Centro Comando Lucifer-AI-666</p>
+      <div class="user-info">
+        <span class="badge">👑 Admin</span>
+        <span class="badge">📱 +39 333 525 5525</span>
+        <span class="badge">🐙 Lucifer-AI-666</span>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <div class="tab active" onclick="switchTab('overview')">📊 Overview</div>
+      <div class="tab" onclick="switchTab('github')">🐙 GitHub Repos</div>
+      <div class="tab" onclick="switchTab('vercel')">▲ Vercel</div>
+      <div class="tab" onclick="switchTab('projects')">🚀 Progetti</div>
+      <div class="tab" onclick="switchTab('social')">🌐 Social</div>
+      <div class="tab" onclick="switchTab('whatsapp')">💬 WhatsApp</div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="section active" id="overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="repoCount">7</div>
+          <div class="stat-label">Repository GitHub</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="deployCount">3</div>
+          <div class="stat-label">Deploy Attivi</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="projectCount">10</div>
+          <div class="stat-label">Progetti Totali</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Uptime Sistema</div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="quick-action" onclick="window.open('https://github.com/Lucifer-AI-666', '_blank')">
+          <div class="icon">🐙</div>
+          <div>GitHub Profile</div>
+        </div>
+        <div class="quick-action" onclick="window.open('https://vercel.com', '_blank')">
+          <div class="icon">▲</div>
+          <div>Vercel Dashboard</div>
+        </div>
+        <div class="quick-action" onclick="window.open('https://wa.me/393335255525', '_blank')">
+          <div class="icon">💬</div>
+          <div>WhatsApp Business</div>
+        </div>
+        <div class="quick-action" onclick="switchTab('projects')">
+          <div class="icon">🚀</div>
+          <div>Gestisci Progetti</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GITHUB REPOS -->
+    <div class="section" id="github">
+      <div class="grid" id="githubRepos"></div>
+    </div>
+
+    <!-- VERCEL -->
+    <div class="section" id="vercel">
+      <div class="grid" id="vercelProjects"></div>
+    </div>
+
+    <!-- PROGETTI -->
+    <div class="section" id="projects">
+      <div class="grid" id="allProjects"></div>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="section" id="social">
+      <div class="social-grid" id="socialLinks"></div>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div class="section" id="whatsapp">
+      <div class="project-card" style="max-width: 600px; margin: 0 auto;">
+        <h3>💬 WhatsApp Business</h3>
+        <p><strong>Numero:</strong> +39 333 525 5525</p>
+        <p>Centro comunicazioni diretto per contatti, supporto e collaborazioni.</p>
+
+        <div class="project-actions">
+          <a href="https://wa.me/393335255525" target="_blank" class="btn btn-primary">
+            💬 Apri Chat
+          </a>
+          <a href="https://wa.me/393335255525?text=Ciao!%20Ti%20contatto%20da%20Mission%20Control" target="_blank" class="btn btn-secondary">
+            📱 Messaggio Rapido
+          </a>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background: rgba(37, 211, 102, 0.1); border-radius: 10px; border-left: 3px solid #25d366;">
+          <strong>✨ Quick Actions:</strong><br>
+          <button class="btn btn-secondary" style="margin-top: 10px;" onclick="openWhatsApp('Supporto urgente necessario')">🆘 Supporto</button>
+          <button class="btn btn-secondary" style="margin-top: 10px;" onclick="openWhatsApp('Nuovo progetto da discutere')">🚀 Nuovo Progetto</button>
+          <button class="btn btn-secondary" style="margin-top: 10px;" onclick="openWhatsApp('Aggiornamento sistema richiesto')">📊 Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Authentication check
+    const SESSION_KEY = 'ordo_session';
+    if (!localStorage.getItem(SESSION_KEY)) {
+      window.location.href = '/login.html';
+    }
+
+    // GitHub Repositories Data
+    const githubRepos = [
+      {
+        name: 'Taurosweb',
+        description: 'Telegram bot avanzato con Ollama, memoria e TTS italiana',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/Taurosweb',
+        language: 'Python',
+        stars: 0
+      },
+      {
+        name: 'tauro',
+        description: 'Bot Telegram con OpenAI e Google TTS',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/tauro',
+        language: 'Python',
+        stars: 0
+      },
+      {
+        name: 'NEA_bot',
+        description: 'Bot Telegram con python-telegram-bot',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/NEA_bot',
+        language: 'Python',
+        stars: 0
+      },
+      {
+        name: 'TaurosApp_Mistral_Ready',
+        description: 'Web app HTML/JS/CSS',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/TaurosApp_Mistral_Ready',
+        language: 'JavaScript',
+        stars: 0
+      },
+      {
+        name: 'psychic-carnival',
+        description: 'Deno-based chat application',
+        status: 'development',
+        url: 'https://github.com/Lucifer-AI-666/psychic-carnival',
+        language: 'TypeScript',
+        stars: 0
+      },
+      {
+        name: 'locchio.com',
+        description: 'Website project',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/locchio.com',
+        language: 'HTML',
+        stars: 0
+      },
+      {
+        name: 'Ordo-ab-Chao-',
+        description: 'PWA Sistema AI Integrato con Tauros, Lucy e Copilot',
+        status: 'active',
+        url: 'https://github.com/Lucifer-AI-666/Ordo-ab-Chao-',
+        language: 'JavaScript',
+        stars: 0
+      }
+    ];
+
+    // Vercel Projects (placeholder - integrazione vera richiede API)
+    const vercelProjects = [
+      {
+        name: 'TaurosApp',
+        status: 'active',
+        url: 'https://vercel.com',
+        lastDeploy: '2 ore fa',
+        domain: 'taurosapp.vercel.app'
+      },
+      {
+        name: 'Locchio.com',
+        status: 'active',
+        url: 'https://vercel.com',
+        lastDeploy: '1 giorno fa',
+        domain: 'locchio.vercel.app'
+      },
+      {
+        name: 'Psychic Carnival',
+        status: 'development',
+        url: 'https://vercel.com',
+        lastDeploy: '3 giorni fa',
+        domain: 'psychic-carnival.vercel.app'
+      }
+    ];
+
+    // All Projects
+    const allProjects = [
+      {
+        name: '🤖 TauroBot',
+        description: 'Bot Telegram AI con Ollama, memoria conversazionale e sintesi vocale italiana',
+        status: 'active',
+        local: '/Users/dib/Taurosweb',
+        actions: ['Avvia', 'Config', 'Logs', 'GitHub']
+      },
+      {
+        name: '🧠 Lucy AI',
+        description: 'Assistente AI per analisi, coding e automazione',
+        status: 'development',
+        local: '/Users/dib/lucy',
+        actions: ['Avvia', 'Config', 'GitHub']
+      },
+      {
+        name: '🔧 Copilot Agent',
+        description: 'Agent privato per coding con AI locale',
+        status: 'development',
+        local: '/Users/dib/Ordo-ab-Chao-/copilot-agent',
+        actions: ['Setup', 'Config']
+      },
+      {
+        name: '⚡ Ordo ab Chao',
+        description: 'PWA Mission Control completa',
+        status: 'active',
+        local: '/Users/dib/Ordo-ab-Chao-',
+        actions: ['Avvia', 'Build', 'Deploy', 'GitHub']
+      },
+      {
+        name: '📰 NEA Bot',
+        description: 'Bot Telegram per news e aggiornamenti',
+        status: 'active',
+        local: '/Users/dib/NEA_bot',
+        actions: ['Avvia', 'GitHub']
+      },
+      {
+        name: '🌐 Locchio.com',
+        description: 'Website principale',
+        status: 'active',
+        local: '/Users/dib/locchio.com',
+        actions: ['Apri', 'Deploy', 'GitHub']
+      }
+    ];
+
+    // Social Links
+    const socialLinks = [
+      { name: 'GitHub', icon: '🐙', handle: '@Lucifer-AI-666', url: 'https://github.com/Lucifer-AI-666' },
+      { name: 'WhatsApp', icon: '💬', handle: '+39 333 525 5525', url: 'https://wa.me/393335255525' },
+      { name: 'Telegram', icon: '✈️', handle: '@TauroBot', url: 'https://t.me/TauroBot' },
+      { name: 'Email', icon: '📧', handle: 'contact@lucifer-ai.dev', url: 'mailto:contact@lucifer-ai.dev' },
+      { name: 'Vercel', icon: '▲', handle: 'Lucifer-AI-666', url: 'https://vercel.com/lucifer-ai-666' },
+      { name: 'LinkedIn', icon: '💼', handle: 'Lucifer AI', url: '#' },
+      { name: 'Twitter', icon: '🐦', handle: '@Lucifer_AI_666', url: '#' },
+      { name: 'Discord', icon: '💬', handle: 'Lucifer#6666', url: '#' }
+    ];
+
+    // Render GitHub Repos
+    function renderGitHubRepos() {
+      const container = document.getElementById('githubRepos');
+      container.innerHTML = githubRepos.map(repo => `
+        <div class="project-card">
+          <h3>🐙 ${repo.name}</h3>
+          <span class="project-status status-${repo.status}">${repo.status.toUpperCase()}</span>
+          <p>${repo.description}</p>
+          <p style="color: #666; font-size: 0.9em;">
+            <strong>Linguaggio:</strong> ${repo.language} |
+            <strong>Stars:</strong> ⭐ ${repo.stars}
+          </p>
+          <div class="project-actions">
+            <a href="${repo.url}" target="_blank" class="btn btn-github">🐙 Apri Repo</a>
+            <button class="btn btn-secondary" onclick="cloneRepo('${repo.name}')">📥 Clone</button>
+            <button class="btn btn-secondary" onclick="openInVSCode('${repo.name}')">💻 VS Code</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Vercel Projects
+    function renderVercelProjects() {
+      const container = document.getElementById('vercelProjects');
+      container.innerHTML = vercelProjects.map(project => `
+        <div class="project-card">
+          <h3>▲ ${project.name}</h3>
+          <span class="project-status status-${project.status}">${project.status.toUpperCase()}</span>
+          <p><strong>Dominio:</strong> ${project.domain}</p>
+          <p><strong>Ultimo deploy:</strong> ${project.lastDeploy}</p>
+          <div class="project-actions">
+            <a href="https://${project.domain}" target="_blank" class="btn btn-primary">🌐 Visita</a>
+            <a href="${project.url}" target="_blank" class="btn btn-secondary">▲ Dashboard</a>
+            <button class="btn btn-secondary" onclick="deployToVercel('${project.name}')">🚀 Deploy</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render All Projects
+    function renderAllProjects() {
+      const container = document.getElementById('allProjects');
+      container.innerHTML = allProjects.map(project => `
+        <div class="project-card">
+          <h3>${project.name}</h3>
+          <span class="project-status status-${project.status}">${project.status.toUpperCase()}</span>
+          <p>${project.description}</p>
+          <p style="color: #666; font-size: 0.9em;"><strong>Path:</strong> ${project.local}</p>
+          <div class="project-actions">
+            ${project.actions.map(action => `
+              <button class="btn btn-secondary" onclick="projectAction('${project.name}', '${action}')">${action}</button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Social Links
+    function renderSocialLinks() {
+      const container = document.getElementById('socialLinks');
+      container.innerHTML = socialLinks.map(social => `
+        <a href="${social.url}" target="_blank" class="social-card">
+          <div class="social-icon">${social.icon}</div>
+          <div class="social-info">
+            <h4>${social.name}</h4>
+            <p>${social.handle}</p>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // Switch Tab
+    function switchTab(tabName) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Remove active from all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById(tabName).classList.add('active');
+
+      // Add active to selected tab
+      event.target.classList.add('active');
+    }
+
+    // Project Actions
+    function projectAction(name, action) {
+      alert(`🚀 Azione "${action}" su progetto "${name}"\n\nQuesta funzione verrà implementata per eseguire comandi reali sul sistema.`);
+    }
+
+    function cloneRepo(name) {
+      alert(`📥 Clonazione repository "${name}"\n\nComando: git clone https://github.com/Lucifer-AI-666/${name}`);
+    }
+
+    function openInVSCode(name) {
+      alert(`💻 Apertura "${name}" in VS Code\n\nComando: code ~/Projects/${name}`);
+    }
+
+    function deployToVercel(name) {
+      alert(`🚀 Deploy di "${name}" su Vercel\n\nComando: vercel --prod`);
+    }
+
+    function openWhatsApp(message) {
+      const url = `https://wa.me/393335255525?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    }
+
+    // Initialize
+    renderGitHubRepos();
+    renderVercelProjects();
+    renderAllProjects();
+    renderSocialLinks();
+  </script>
+</body>
+</html>
