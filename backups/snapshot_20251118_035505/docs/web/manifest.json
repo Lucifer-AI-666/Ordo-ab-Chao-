@@ -1,0 +1,101 @@
+{
+  "name": "Ordo ab Chao - Sistema AI Integrato",
+  "short_name": "Ordo AI",
+  "description": "Sistema integrato AI con Tauros, Lucy e Copilot Agent. Privacy-first, AI locale con Ollama e LLaMA2.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "development"],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "shortcuts": [
+    {
+      "name": "Avvia Tauros",
+      "short_name": "Tauros",
+      "description": "Apri TauroBot AI",
+      "url": "/tauros",
+      "icons": [{ "src": "icon-tauros.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Avvia Lucy",
+      "short_name": "Lucy",
+      "description": "Apri Lucy AI Assistant",
+      "url": "/lucy",
+      "icons": [{ "src": "icon-lucy.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Apri Dashboard Sistema",
+      "url": "/dashboard",
+      "icons": [{ "src": "icon-dashboard.png", "sizes": "192x192" }]
+    }
+  ]
+}

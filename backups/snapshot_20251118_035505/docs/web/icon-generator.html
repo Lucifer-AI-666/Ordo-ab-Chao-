@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ordo ab Chao - Icon Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #e4e4e4;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      background: linear-gradient(45deg, #00d4ff, #7b68ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    button {
+      padding: 15px 30px;
+      background: linear-gradient(45deg, #00d4ff, #7b68ee);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .icon-preview {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .icon-preview canvas {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .icon-preview p {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #00d4ff;
+    }
+
+    .status {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid rgba(0, 255, 0, 0.3);
+      border-radius: 10px;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    #downloadAll {
+      background: linear-gradient(45deg, #7b68ee, #00d4ff);
+      font-size: 1.2em;
+      padding: 20px 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Ordo ab Chao - Icon Generator ⚡</h1>
+    <p style="font-size: 1.2em; margin-bottom: 30px;">Genera tutte le icone PWA per il sistema</p>
+
+    <button id="generateAll">🎨 Genera Tutte le Icone</button>
+    <button id="downloadAll" style="display: none;">📥 Scarica Tutte le Icone</button>
+
+    <div class="status" id="status">
+      <span id="statusText">✅ Icone generate con successo!</span>
+    </div>
+
+    <div class="preview" id="preview"></div>
+  </div>
+
+  <script>
+    const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const specialIcons = [
+      { name: 'icon-tauros.png', size: 192, emoji: '🐂', color: '#ff4444' },
+      { name: 'icon-lucy.png', size: 192, emoji: '🧠', color: '#7b68ee' },
+      { name: 'icon-dashboard.png', size: 192, emoji: '📊', color: '#00d4ff' }
+    ];
+
+    let generatedIcons = [];
+
+    function drawIcon(canvas, size, type = 'main') {
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#1a1a2e');
+      gradient.addColorStop(0.5, '#00d4ff');
+      gradient.addColorStop(1, '#7b68ee');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Border
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = size * 0.02;
+      ctx.strokeRect(0, 0, size, size);
+
+      // Symbol (lightning bolt)
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${size * 0.6}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⚡', size / 2, size / 2);
+
+      // Text
+      ctx.fillStyle = '#e4e4e4';
+      ctx.font = `bold ${size * 0.1}px Arial`;
+      ctx.fillText('ORDO', size / 2, size * 0.85);
+    }
+
+    function drawSpecialIcon(canvas, size, emoji, color) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+
+      // Background
+      const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, '#1a1a2e');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Border
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = size * 0.02;
+      ctx.strokeRect(0, 0, size, size);
+
+      // Emoji
+      ctx.font = `${size * 0.5}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, size / 2, size / 2);
+    }
+
+    function generateIcons() {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+      generatedIcons = [];
+
+      // Generate main icons
+      iconSizes.forEach(size => {
+        const container = document.createElement('div');
+        container.className = 'icon-preview';
+
+        const canvas = document.createElement('canvas');
+        drawIcon(canvas, size);
+
+        const label = document.createElement('p');
+        label.textContent = `icon-${size}.png (${size}x${size})`;
+
+        container.appendChild(canvas);
+        container.appendChild(label);
+        preview.appendChild(container);
+
+        generatedIcons.push({
+          name: `icon-${size}.png`,
+          canvas: canvas
+        });
+      });
+
+      // Generate special icons
+      specialIcons.forEach(({ name, size, emoji, color }) => {
+        const container = document.createElement('div');
+        container.className = 'icon-preview';
+
+        const canvas = document.createElement('canvas');
+        drawSpecialIcon(canvas, size, emoji, color);
+
+        const label = document.createElement('p');
+        label.textContent = name;
+
+        container.appendChild(canvas);
+        container.appendChild(label);
+        preview.appendChild(container);
+
+        generatedIcons.push({
+          name: name,
+          canvas: canvas
+        });
+      });
+
+      document.getElementById('status').classList.add('show');
+      document.getElementById('downloadAll').style.display = 'inline-block';
+    }
+
+    function downloadIcon(name, canvas) {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+
+    function downloadAllIcons() {
+      let delay = 0;
+      generatedIcons.forEach(({ name, canvas }) => {
+        setTimeout(() => {
+          downloadIcon(name, canvas);
+        }, delay);
+        delay += 200; // Delay between downloads
+      });
+
+      setTimeout(() => {
+        alert('✅ Tutte le icone sono state scaricate!\n\n📁 Sposta i file nella cartella /web/ del progetto Ordo-ab-Chao');
+      }, delay + 500);
+    }
+
+    document.getElementById('generateAll').addEventListener('click', generateIcons);
+    document.getElementById('downloadAll').addEventListener('click', downloadAllIcons);
+
+    // Auto-generate on load
+    window.addEventListener('load', () => {
+      setTimeout(generateIcons, 500);
+    });
+  </script>
+</body>
+</html>

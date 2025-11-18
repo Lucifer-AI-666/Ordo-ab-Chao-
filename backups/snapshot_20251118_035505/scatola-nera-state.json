@@ -15,16 +15,8 @@
       "description": "Password cambiate dopo fix sicurezza",
       "files_count": 74,
       "size": 377224
-    },
-    {
-      "name": "snapshot_20251118_035505",
-      "timestamp": "20251118_035505",
-      "datetime": "2025-11-18T03:55:05.367614",
-      "description": "Password aggiornata per lucifer",
-      "files_count": 77,
-      "size": 380899
     }
   ],
-  "last_backup": "2025-11-18T03:55:05.367614",
-  "total_backups": 3
+  "last_backup": "2025-11-18T02:14:31.224113",
+  "total_backups": 2
 }

@@ -1,0 +1,9 @@
+{
+  "allowed_targets": [
+    "localhost",
+    "127.0.0.1",
+    "192.168.1.0/24"
+  ],
+  "last_updated": "YYYY-MM-DDTHH:MM:SSZ",
+  "_comment": "Copia questo file in allowlist.json e personalizza i target consentiti"
+}
