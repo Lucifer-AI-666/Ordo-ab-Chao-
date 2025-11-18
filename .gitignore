@@ -6,6 +6,7 @@ systemd/*.env
 keystore.jks
 *.keystore
 keystore.properties
+web/config.js
 
 # Log
 logs/

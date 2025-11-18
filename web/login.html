@@ -329,23 +329,17 @@
     </footer>
   </div>
 
+  <!-- Carica configurazione sicura -->
+  <script src="config.js"></script>
+
   <script>
-    // Configurazione utenti (in produzione: usare database locale crittografato)
-    const USERS = {
-      'admin': {
-        password: 'ordo2025',  // In produzione: hash SHA-256
-        role: 'admin',
-        name: 'Amministratore'
-      },
-      'lucifer': {
-        password: 'chaos666',  // In produzione: hash SHA-256
-        role: 'admin',
-        name: 'Lucifer-AI-666'
-      },
-      'user': {
-        password: 'user123',
+    // Carica utenti da config.js esterno (NON committato su GitHub)
+    // Se config.js non esiste, usa credenziali di fallback (SOLO per demo)
+    const USERS = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.users) ? AUTH_CONFIG.users : {
+      'demo': {
+        password: 'demo123',
         role: 'user',
-        name: 'Utente Standard'
+        name: 'Demo User'
       }
     };
 
