@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Panel - Ordo ab Chao">
+  <meta name="theme-color" content="#8B0000">
+  <title>👑 Admin Panel - Ordo ab Chao</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a0000 0%, #300000 50%, #1a0000 100%);
+      color: #e4e4e4;
+      min-height: 100vh;
+    }
+
+    /* Header Admin */
+    .admin-header {
+      background: linear-gradient(90deg, #8B0000, #FF4500);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(255, 69, 0, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .admin-header h1 {
+      font-size: 2em;
+      color: #FFD700;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .admin-header .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .admin-header .user-info span {
+      color: #FFD700;
+      font-weight: bold;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #FFD700;
+      color: #FFD700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #FFD700;
+      color: #8B0000;
+      transform: scale(1.05);
+    }
+
+    /* Container principale */
+    .admin-container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 40px;
+    }
+
+    /* Quick Access Grid */
+    .quick-access {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .quick-card {
+      background: linear-gradient(135deg, rgba(139, 0, 0, 0.3), rgba(255, 69, 0, 0.2));
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 15px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .quick-card:hover {
+      border-color: #FFD700;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .quick-card h3 {
+      color: #FFD700;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .quick-card p {
+      color: #ccc;
+      font-size: 0.95em;
+    }
+
+    .quick-card .icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    /* Sezione Statistiche */
+    .stats-section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .stats-section h2 {
+      color: #FFD700;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-box {
+      background: rgba(139, 0, 0, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-box .number {
+      font-size: 2.5em;
+      color: #FFD700;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .stat-box .label {
+      color: #ccc;
+      font-size: 0.95em;
+    }
+
+    /* Gestione Utenti */
+    .users-section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    .users-section h2 {
+      color: #FFD700;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .users-table th {
+      background: rgba(139, 0, 0, 0.5);
+      color: #FFD700;
+      padding: 15px;
+      text-align: left;
+      border-bottom: 2px solid #FFD700;
+    }
+
+    .users-table td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .users-table tr:hover {
+      background: rgba(255, 215, 0, 0.1);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+
+    .badge-admin {
+      background: linear-gradient(45deg, #FFD700, #FF8C00);
+      color: #000;
+    }
+
+    .badge-user {
+      background: rgba(100, 200, 255, 0.3);
+      color: #00d4ff;
+      border: 1px solid #00d4ff;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85em;
+      margin: 0 3px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete {
+      background: #ff4444;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background: #cc0000;
+    }
+
+    .btn-edit {
+      background: #ffaa00;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background: #cc8800;
+    }
+
+    /* Logs Section */
+    .logs-section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 15px;
+      padding: 30px;
+    }
+
+    .logs-section h2 {
+      color: #FFD700;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+
+    .log-entry {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 3px solid #FFD700;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    .log-entry .timestamp {
+      color: #888;
+      margin-right: 10px;
+    }
+
+    .log-entry .user {
+      color: #FFD700;
+      font-weight: bold;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      width: 100%;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px;
+      color: #e4e4e4;
+      font-size: 1em;
+      margin-bottom: 20px;
+    }
+
+    .search-bar:focus {
+      outline: none;
+      border-color: #FFD700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .admin-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .admin-container {
+        padding: 0 20px;
+      }
+
+      .quick-access {
+        grid-template-columns: 1fr;
+      }
+
+      .users-table {
+        font-size: 0.85em;
+      }
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #1a0000, #300000);
+      border: 2px solid #FFD700;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 50px rgba(255, 215, 0, 0.5);
+    }
+
+    .modal-content h3 {
+      color: #FFD700;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+
+    .modal-content button {
+      margin-top: 20px;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    .btn-confirm {
+      background: #ff4444;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .btn-cancel {
+      background: #666;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Admin -->
+  <div class="admin-header">
+    <h1>👑 ADMIN PANEL - Ordo ab Chao</h1>
+    <div class="user-info">
+      <span id="adminUsername">Admin</span>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <!-- Quick Access Cards -->
+    <div class="quick-access">
+      <a href="/index.html" class="quick-card">
+        <span class="icon">🎯</span>
+        <h3>Mission Control</h3>
+        <p>Dashboard principale del sistema</p>
+      </a>
+
+      <div class="quick-card" onclick="scrollToSection('users')">
+        <span class="icon">👥</span>
+        <h3>Gestione Utenti</h3>
+        <p>Visualizza e gestisci tutti gli utenti</p>
+      </div>
+
+      <div class="quick-card" onclick="scrollToSection('stats')">
+        <span class="icon">📊</span>
+        <h3>Statistiche</h3>
+        <p>Metriche e analytics del sistema</p>
+      </div>
+
+      <div class="quick-card" onclick="scrollToSection('logs')">
+        <span class="icon">📝</span>
+        <h3>Activity Logs</h3>
+        <p>Storia accessi e attività</p>
+      </div>
+
+      <a href="register.html" class="quick-card">
+        <span class="icon">➕</span>
+        <h3>Crea Utente</h3>
+        <p>Registra nuovo utente</p>
+      </a>
+
+      <div class="quick-card" onclick="exportData()">
+        <span class="icon">💾</span>
+        <h3>Export Dati</h3>
+        <p>Esporta database utenti</p>
+      </div>
+    </div>
+
+    <!-- Statistiche -->
+    <div class="stats-section" id="stats">
+      <h2>📊 Statistiche Sistema</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="number" id="totalUsers">0</span>
+          <span class="label">Utenti Totali</span>
+        </div>
+        <div class="stat-box">
+          <span class="number" id="adminUsers">0</span>
+          <span class="label">Amministratori</span>
+        </div>
+        <div class="stat-box">
+          <span class="number" id="activeUsers">0</span>
+          <span class="label">Sessioni Attive</span>
+        </div>
+        <div class="stat-box">
+          <span class="number" id="todayLogins">0</span>
+          <span class="label">Login Oggi</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestione Utenti -->
+    <div class="users-section" id="users">
+      <h2>👥 Gestione Utenti</h2>
+      <input type="text" class="search-bar" id="searchUsers" placeholder="🔍 Cerca utente per username, email o nome...">
+
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Ruolo</th>
+            <th>Registrato</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Popolato via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Activity Logs -->
+    <div class="logs-section" id="logs">
+      <h2>📝 Activity Logs</h2>
+      <div id="logsContainer">
+        <!-- Popolato via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Conferma Eliminazione -->
+  <div class="modal" id="deleteModal">
+    <div class="modal-content">
+      <h3>⚠️ Conferma Eliminazione</h3>
+      <p>Sei sicuro di voler eliminare l'utente <strong id="deleteUsername"></strong>?</p>
+      <p style="color: #ff6666; margin-top: 10px;">Questa azione è irreversibile!</p>
+      <button class="btn-confirm" onclick="confirmDelete()">🗑️ Elimina</button>
+      <button class="btn-cancel" onclick="closeModal()">✖️ Annulla</button>
+    </div>
+  </div>
+
+  <script>
+    const SESSION_KEY = 'ordo_session';
+    const USERS_KEY = 'ordo_users';
+    const LOGS_KEY = 'ordo_logs';
+    let currentDeleteUser = null;
+
+    // Check admin auth
+    function checkAdminAuth() {
+      const session = localStorage.getItem(SESSION_KEY);
+      if (!session) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      const sessionData = JSON.parse(session);
+
+      // Verifica se è admin
+      if (sessionData.role !== 'admin') {
+        alert('⛔ Accesso negato! Solo gli amministratori possono accedere a questa sezione.');
+        window.location.href = '/index.html';
+        return false;
+      }
+
+      // Mostra username
+      document.getElementById('adminUsername').textContent = sessionData.username;
+      return true;
+    }
+
+    // Logout
+    function logout() {
+      if (confirm('Vuoi davvero uscire?')) {
+        localStorage.removeItem(SESSION_KEY);
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Carica statistiche
+    function loadStats() {
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+      const logs = JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
+
+      const totalUsers = Object.keys(users).length;
+      const adminUsers = Object.values(users).filter(u => u.role === 'admin').length;
+
+      // Conta sessioni attive (ultime 24h)
+      const now = Date.now();
+      const activeUsers = logs.filter(log =>
+        log.action === 'login' &&
+        now - new Date(log.timestamp).getTime() < 24 * 60 * 60 * 1000
+      ).length;
+
+      // Login oggi
+      const today = new Date().toDateString();
+      const todayLogins = logs.filter(log =>
+        log.action === 'login' &&
+        new Date(log.timestamp).toDateString() === today
+      ).length;
+
+      document.getElementById('totalUsers').textContent = totalUsers;
+      document.getElementById('adminUsers').textContent = adminUsers;
+      document.getElementById('activeUsers').textContent = activeUsers;
+      document.getElementById('todayLogins').textContent = todayLogins;
+    }
+
+    // Carica utenti nella tabella
+    function loadUsers(searchTerm = '') {
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+      const tbody = document.getElementById('usersTableBody');
+      tbody.innerHTML = '';
+
+      Object.entries(users).forEach(([username, userData]) => {
+        // Filtro ricerca
+        if (searchTerm && !username.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            !(userData.email || '').toLowerCase().includes(searchTerm.toLowerCase()) &&
+            !(userData.name || '').toLowerCase().includes(searchTerm.toLowerCase())) {
+          return;
+        }
+
+        const row = document.createElement('tr');
+
+        const roleBadge = userData.role === 'admin'
+          ? '<span class="badge badge-admin">👑 ADMIN</span>'
+          : '<span class="badge badge-user">👤 USER</span>';
+
+        const registeredDate = userData.registeredAt
+          ? new Date(userData.registeredAt).toLocaleDateString('it-IT')
+          : 'N/A';
+
+        row.innerHTML = `
+          <td><strong>${username}</strong></td>
+          <td>${userData.name || 'N/A'}</td>
+          <td>${userData.email || 'N/A'}</td>
+          <td>${roleBadge}</td>
+          <td>${registeredDate}</td>
+          <td>
+            <button class="action-btn btn-edit" onclick="editUser('${username}')">✏️ Modifica</button>
+            <button class="action-btn btn-delete" onclick="deleteUser('${username}')">🗑️ Elimina</button>
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // Search users
+    document.getElementById('searchUsers')?.addEventListener('input', (e) => {
+      loadUsers(e.target.value);
+    });
+
+    // Elimina utente
+    function deleteUser(username) {
+      currentDeleteUser = username;
+      document.getElementById('deleteUsername').textContent = username;
+      document.getElementById('deleteModal').classList.add('show');
+    }
+
+    function confirmDelete() {
+      if (!currentDeleteUser) return;
+
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+      delete users[currentDeleteUser];
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+
+      addLog('delete_user', `Eliminato utente: ${currentDeleteUser}`);
+
+      closeModal();
+      loadUsers();
+      loadStats();
+
+      alert(`✅ Utente ${currentDeleteUser} eliminato con successo!`);
+    }
+
+    function closeModal() {
+      document.getElementById('deleteModal').classList.remove('show');
+      currentDeleteUser = null;
+    }
+
+    // Modifica utente (placeholder)
+    function editUser(username) {
+      alert(`Funzionalità "Modifica utente ${username}" in arrivo! 🚧`);
+    }
+
+    // Carica logs
+    function loadLogs() {
+      const logs = JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
+      const container = document.getElementById('logsContainer');
+
+      // Mostra ultimi 20 logs
+      const recentLogs = logs.slice(-20).reverse();
+
+      if (recentLogs.length === 0) {
+        container.innerHTML = '<p style="color: #888;">Nessun log disponibile</p>';
+        return;
+      }
+
+      container.innerHTML = recentLogs.map(log => {
+        const timestamp = new Date(log.timestamp).toLocaleString('it-IT');
+        return `
+          <div class="log-entry">
+            <span class="timestamp">[${timestamp}]</span>
+            <span class="user">${log.username || 'System'}</span>
+            - ${log.message}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Aggiungi log
+    function addLog(action, message) {
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+      const logs = JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
+
+      logs.push({
+        timestamp: new Date().toISOString(),
+        username: session.username || 'system',
+        action: action,
+        message: message
+      });
+
+      localStorage.setItem(LOGS_KEY, JSON.stringify(logs));
+    }
+
+    // Export dati
+    function exportData() {
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+      const logs = JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
+
+      const exportData = {
+        users: users,
+        logs: logs,
+        exportedAt: new Date().toISOString(),
+        exportedBy: JSON.parse(localStorage.getItem(SESSION_KEY) || '{}').username
+      };
+
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ordo-backup-${Date.now()}.json`;
+      link.click();
+
+      addLog('export', 'Esportazione dati completata');
+      alert('✅ Dati esportati con successo!');
+    }
+
+    // Scroll to section
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Init
+    if (checkAdminAuth()) {
+      loadStats();
+      loadUsers();
+      loadLogs();
+
+      // Log accesso admin panel
+      const session = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+      addLog('admin_access', `Accesso al pannello admin da ${session.username}`);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // CTRL/CMD + A = Scroll to stats
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+        scrollToSection('stats');
+      }
+      // CTRL/CMD + U = Scroll to users
+      if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+        e.preventDefault();
+        scrollToSection('users');
+      }
+      // CTRL/CMD + L = Scroll to logs
+      if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+        e.preventDefault();
+        scrollToSection('logs');
+      }
+    });
+  </script>
+</body>
+</html>

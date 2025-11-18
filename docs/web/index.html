@@ -177,6 +177,7 @@
         <span id="statusText">🟢 Sistema Online</span>
       </div>
       <button class="button install-button" id="installButton">📱 Installa App</button>
+      <button class="button" id="adminButton" style="background: linear-gradient(45deg, #FFD700, #FF8C00); margin-top: 10px; display: none;" onclick="window.location.href='admin.html'">👑 Admin Panel</button>
       <button class="button" onclick="logout()" style="background: linear-gradient(45deg, #ff4444, #cc0000); margin-top: 10px;">🚪 Logout</button>
     </header>
 
@@ -274,6 +275,12 @@
 
       // Mostra info utente
       console.log(`[Ordo] User: ${sessionData.username} | Role: ${sessionData.role}`);
+
+      // Mostra pulsante Admin Panel solo per admin
+      if (sessionData.role === 'admin') {
+        document.getElementById('adminButton').style.display = 'inline-block';
+      }
+
       return true;
     }
 
