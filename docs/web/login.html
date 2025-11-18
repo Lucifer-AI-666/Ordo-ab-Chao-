@@ -323,6 +323,12 @@
       </p>
     </div>
 
+    <div style="text-align: center; margin-top: 20px;">
+      <p style="color: #a0a0a0;">
+        Non hai un account? <a href="register.html" style="color: #00d4ff; text-decoration: none; font-weight: 600;">Registrati</a>
+      </p>
+    </div>
+
     <footer>
       <p>Ordo ab Chao &copy; 2025 | Lucifer-AI-666</p>
       <p><small>Sistema di autenticazione locale sicuro</small></p>
@@ -352,14 +358,20 @@
 
     function initAuth() {
       // Carica utenti da config (locale o pubblico)
-      // Se config non esiste, usa credenziali di fallback
-      const USERS = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.users) ? AUTH_CONFIG.users : {
+      const configUsers = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.users) ? AUTH_CONFIG.users : {
         'demo': {
           password: 'demo123',
           role: 'user',
           name: 'Demo User'
         }
       };
+
+      // Carica utenti registrati da localStorage
+      const USERS_KEY = 'ordo_users';
+      const registeredUsers = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+
+      // Merge: config users + registered users
+      const USERS = { ...configUsers, ...registeredUsers };
 
       // Make USERS global for other functions
       window.USERS = USERS;
