@@ -1,0 +1,24 @@
+// Ordo ab Chao - Configurazione Autenticazione
+// IMPORTANTE: Copia questo file in config.js e inserisci le TUE credenziali
+// NON committare config.js su GitHub!
+
+const AUTH_CONFIG = {
+  users: {
+    'admin': {
+      password: 'CAMBIA_QUESTA_PASSWORD',  // Cambia con password sicura
+      role: 'admin',
+      name: 'Amministratore'
+    },
+    'user': {
+      password: 'CAMBIA_QUESTA_PASSWORD',  // Cambia con password sicura
+      role: 'user',
+      name: 'Utente Standard'
+    }
+  },
+
+  // Configurazioni sessione
+  session: {
+    duration: 24 * 60 * 60 * 1000,  // 24 ore
+    rememberDuration: 30 * 24 * 60 * 60 * 1000  // 30 giorni
+  }
+};

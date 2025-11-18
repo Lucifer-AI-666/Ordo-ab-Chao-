@@ -7,8 +7,16 @@
       "description": "PWA completata con login e backup system",
       "files_count": 55,
       "size": 256315
+    },
+    {
+      "name": "snapshot_20251118_021430",
+      "timestamp": "20251118_021430",
+      "datetime": "2025-11-18T02:14:31.224113",
+      "description": "Password cambiate dopo fix sicurezza",
+      "files_count": 74,
+      "size": 377224
     }
   ],
-  "last_backup": "2025-11-17T21:49:45.659227",
-  "total_backups": 1
+  "last_backup": "2025-11-18T02:14:31.224113",
+  "total_backups": 2
 }

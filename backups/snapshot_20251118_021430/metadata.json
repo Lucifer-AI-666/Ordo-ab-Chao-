@@ -1,0 +1,379 @@
+{
+  "timestamp": "20251118_021430",
+  "datetime": "2025-11-18T02:14:31.224113",
+  "description": "Password cambiate dopo fix sicurezza",
+  "files_count": 74,
+  "total_size": 377224,
+  "files": {
+    "scatola-nera-state.json": {
+      "size": 344,
+      "modified": 1763412585.6600292,
+      "hash": "ea5197ced60987039c5cdbc0c2987848"
+    },
+    "avvia-pwa.sh": {
+      "size": 1423,
+      "modified": 1763412920.2621639,
+      "hash": "b68aa9dc1b4de6830dc216cd324abe7b"
+    },
+    "allowlist.example.json": {
+      "size": 215,
+      "modified": 1763411742.3352187,
+      "hash": "5c5a2f80266cf9f8956cdfa8c454c782"
+    },
+    "install.sh": {
+      "size": 1763,
+      "modified": 1763411742.3411589,
+      "hash": "caea87f5cf76cc99a1eac2dd6d293273"
+    },
+    "inizia.sh": {
+      "size": 4937,
+      "modified": 1763411742.3409858,
+      "hash": "a525e6cf7e5c2b09534ec1151adb41dc"
+    },
+    "controlla_commit.sh": {
+      "size": 349,
+      "modified": 1763411742.3367114,
+      "hash": "14e45f5a2c0f0e6472beb0fe87dd90aa"
+    },
+    "GUIDA_UTILIZZO.md": {
+      "size": 14419,
+      "modified": 1763427914.7178276,
+      "hash": "d718f4031d7ba44af0f1bfa86c56fd49"
+    },
+    "grok_dashboard_complete.html": {
+      "size": 1561,
+      "modified": 1763411742.34056,
+      "hash": "353696f4e2c6b2694797847a3e39f193"
+    },
+    "README.md": {
+      "size": 1598,
+      "modified": 1763411742.3347821,
+      "hash": "71544b870c4c1988b04025bf98c3a59d"
+    },
+    "scatola-nera.log": {
+      "size": 1256,
+      "modified": 1763428470.7835348,
+      "hash": "d097301dad886c089536642229d9903e"
+    },
+    "CopilotPrivateAgent.Modelfile": {
+      "size": 629,
+      "modified": 1763411742.3346796,
+      "hash": "37457ca599d565e861577dff7f25c3ca"
+    },
+    "scatola-nera.py": {
+      "size": 11753,
+      "modified": 1763412438.2017534,
+      "hash": "0d3a4851d0d248d64b39c04fba843306"
+    },
+    "README_PRIVATO_Version4.md": {
+      "size": 9622,
+      "modified": 1763411742.3350115,
+      "hash": "d14c621a138e06d12d98e5b12f2f570b"
+    },
+    "verifica.py": {
+      "size": 3041,
+      "modified": 1763411742.3423817,
+      "hash": "c3d5a6d0207eab83b4666166dcdbacf4"
+    },
+    "README_PRIVATO_Version4 (1).md": {
+      "size": 9622,
+      "modified": 1763411742.3348954,
+      "hash": "d14c621a138e06d12d98e5b12f2f570b"
+    },
+    "scripts_bootstrap_all_Version2.sh": {
+      "size": 5429,
+      "modified": 1763411742.3418906,
+      "hash": "3d7cde3e052458938e78fa540c7bcf00"
+    },
+    "genera-icone.py": {
+      "size": 6446,
+      "modified": 1763412962.348021,
+      "hash": "aca99d963c5ac54279cf5ec5497e9a6f"
+    },
+    "SECURITY.md": {
+      "size": 619,
+      "modified": 1763411742.3351154,
+      "hash": "b1060e70aaff0e2baed6fc1d91ebe9b3"
+    },
+    "controlla_commit.py": {
+      "size": 8427,
+      "modified": 1763411742.3365946,
+      "hash": "b21441ff345decb206681fbbac95c74a"
+    },
+    "inizia.py": {
+      "size": 6220,
+      "modified": 1763411742.3407836,
+      "hash": "bd25769ea0f8717bb21370847a44b29d"
+    },
+    "app/src/main/AndroidManifest.xml": {
+      "size": 746,
+      "modified": 1763411742.3356125,
+      "hash": "930ecb22efbab4e8998c1e0b85820720"
+    },
+    "app/src/main/res/layout/activity_main.xml": {
+      "size": 1964,
+      "modified": 1763411742.3363369,
+      "hash": "e9f11a0359096e2e43eea22d0ba7c04c"
+    },
+    "app/src/main/java/com/lucifer/ordoabchao/MainActivity.java": {
+      "size": 1842,
+      "modified": 1763411742.336116,
+      "hash": "79f43961e9570b9c5756cc4fbd1191c8"
+    },
+    "app/src/main/assets/index.html": {
+      "size": 1051,
+      "modified": 1763411742.3357823,
+      "hash": "f151b93a94f76f5c99c9651bacc7c704"
+    },
+    "web/icon-lucy.png": {
+      "size": 18130,
+      "modified": 1763412989.227979,
+      "hash": "596e7e3766c12ffe9c9d712ed73a642a"
+    },
+    "web/index.html": {
+      "size": 9468,
+      "modified": 1763426490.5166671,
+      "hash": "afa60c7754b5bcb19c56b906c898af29"
+    },
+    "web/icon-144.png": {
+      "size": 1695,
+      "modified": 1763412989.1590648,
+      "hash": "0594ec60a71454ac4f9a36cb122f27a3"
+    },
+    "web/icon-192.png": {
+      "size": 2266,
+      "modified": 1763412989.1682389,
+      "hash": "90f5726faa20b4e8a5d8ed39c0ce8c0f"
+    },
+    "web/icon-384.png": {
+      "size": 4628,
+      "modified": 1763412989.1806521,
+      "hash": "421675524ba96b3c2b101b8008d0e1ea"
+    },
+    "web/icon-dashboard.png": {
+      "size": 18072,
+      "modified": 1763412989.242762,
+      "hash": "6a7663b2e528cbee1015624342153e9c"
+    },
+    "web/icon-152.png": {
+      "size": 1820,
+      "modified": 1763412989.1632407,
+      "hash": "f6666138094fd49be59349f3126e0b2d"
+    },
+    "web/login.html": {
+      "size": 13322,
+      "modified": 1763428323.1207752,
+      "hash": "a7da5acd45fa6f20445f40279fb5a144"
+    },
+    "web/icon-tauros.png": {
+      "size": 16417,
+      "modified": 1763412989.2143404,
+      "hash": "331add2e74b12c0e700780eba1abd57f"
+    },
+    "web/icon-72.png": {
+      "size": 855,
+      "modified": 1763412989.1484475,
+      "hash": "4695438d863f58462fc7c938a01bb947"
+    },
+    "web/config.js": {
+      "size": 628,
+      "modified": 1763428449.5688,
+      "hash": "7df3e18e257f998f26624f5748acf4b6"
+    },
+    "web/icon-generator.html": {
+      "size": 7327,
+      "modified": 1763412375.524026,
+      "hash": "f992ce1a8de220483bd34e95275cebb5"
+    },
+    "web/projects.html": {
+      "size": 21749,
+      "modified": 1763426471.236538,
+      "hash": "2533d97edd14dbea9e4159b358374324"
+    },
+    "web/config.js.example": {
+      "size": 648,
+      "modified": 1763428264.8795938,
+      "hash": "c34087cc999cf8b7042afbc7a39cc573"
+    },
+    "web/icon-96.png": {
+      "size": 1137,
+      "modified": 1763412989.1516244,
+      "hash": "a710e82645f777157794a02b87f8a97c"
+    },
+    "web/README_SECURITY.md": {
+      "size": 1486,
+      "modified": 1763428346.0670109,
+      "hash": "ecb1b0bfc12b604cb3239586750a6eb4"
+    },
+    "web/manifest.json": {
+      "size": 2393,
+      "modified": 1763412082.7405381,
+      "hash": "43d13f066d121db86481cd1802f6d160"
+    },
+    "web/service-worker.js": {
+      "size": 5597,
+      "modified": 1763412333.0270686,
+      "hash": "abd484c0799a2d17e30b53f6ad08ae94"
+    },
+    "web/icon-128.png": {
+      "size": 1509,
+      "modified": 1763412989.155148,
+      "hash": "86cade2ae8305e12b7afcfde7a4d62c4"
+    },
+    "web/icon-512.png": {
+      "size": 6121,
+      "modified": 1763412989.2002544,
+      "hash": "420a3162e0969380b873b3496aa3a85e"
+    },
+    "docs/COMMIT_VERIFICATION.md": {
+      "size": 2506,
+      "modified": 1763411742.3398921,
+      "hash": "6e722c9fec38b79eb94c18cbbfeed5c1"
+    },
+    "docs/PERFORMANCE_IMPROVEMENTS.md": {
+      "size": 8129,
+      "modified": 1763411742.3400302,
+      "hash": "c061cadb1ba36b4a25def8c9be47c199"
+    },
+    "01-tauros/TaurosPrivateAgent.Modelfile": {
+      "size": 711,
+      "modified": 1763411742.334215,
+      "hash": "7ca74f4dafd0651c3a3c1aa3e5ec2810"
+    },
+    "01-tauros/README.md": {
+      "size": 360,
+      "modified": 1763411742.3341014,
+      "hash": "8d7a52353dd68fca1755b27c0a56e0d0"
+    },
+    "01-tauros/CopilotPrivateAgent.Modelfile": {
+      "size": 877,
+      "modified": 1763411742.3339672,
+      "hash": "e947f500b8874b8a49467bf44c0e11bc"
+    },
+    "02-lucy/requirements.txt": {
+      "size": 64,
+      "modified": 1763411742.334583,
+      "hash": "21df9fca0d0b24210557e2c6c80df255"
+    },
+    "02-lucy/LucyPrivateAgent.Modelfile": {
+      "size": 713,
+      "modified": 1763411742.3343842,
+      "hash": "16ad2e5e5716b690660cf3b981a632ad"
+    },
+    "02-lucy/README.md": {
+      "size": 388,
+      "modified": 1763411742.3344862,
+      "hash": "9ad092d569542011bb75b978e9195c7d"
+    },
+    "scripts/make-zip.sh": {
+      "size": 1101,
+      "modified": 1763411742.34168,
+      "hash": "4b6a3d328cf48f52546bf6ca062af69d"
+    },
+    "scripts/make-zip.ps1": {
+      "size": 1020,
+      "modified": 1763411742.3415194,
+      "hash": "37d25e283ebe2cf8d39023e0f860d8ae"
+    },
+    "copilot-agent/IMPLEMENTATION_SUMMARY.md": {
+      "size": 7325,
+      "modified": 1763411742.3368986,
+      "hash": "76a23281e47f4def530e22117e87bae1"
+    },
+    "copilot-agent/verify_copilot.py": {
+      "size": 7554,
+      "modified": 1763411742.339594,
+      "hash": "883170d5c18f7608b2a76cd6060073a0"
+    },
+    "copilot-agent/branding/README_DIBTAUROS.md": {
+      "size": 5678,
+      "modified": 1763411742.3371317,
+      "hash": "14af83c3ebede1235129ccec52c70c27"
+    },
+    "copilot-agent/branding/telegram_intro.txt": {
+      "size": 1140,
+      "modified": 1763411742.3374555,
+      "hash": "27bd5ed2987726c4268f351e7ef05927"
+    },
+    "copilot-agent/branding/splash.txt": {
+      "size": 3123,
+      "modified": 1763411742.3373525,
+      "hash": "2e644196152424a5964011859788a435"
+    },
+    "copilot-agent/branding/html_banner.html": {
+      "size": 3148,
+      "modified": 1763411742.3372483,
+      "hash": "482cafe01ae4b57943dd0e013dcac5ab"
+    },
+    "copilot-agent/core/copilot_integration.js": {
+      "size": 21564,
+      "modified": 1763411742.338364,
+      "hash": "0ec485e3e8af4a0903181dc953d03068"
+    },
+    "copilot-agent/core/web_server.py": {
+      "size": 4567,
+      "modified": 1763411742.3385146,
+      "hash": "2bafb0144402e00e7b75137f05656ed5"
+    },
+    "copilot-agent/core/copilot_agent.py": {
+      "size": 18445,
+      "modified": 1763411742.3381135,
+      "hash": "1f84e36d68533d1e72c619580206dfd2"
+    },
+    "copilot-agent/core/CopilotPrivateAgent.Modelfile": {
+      "size": 629,
+      "modified": 1763411742.3378928,
+      "hash": "37457ca599d565e861577dff7f25c3ca"
+    },
+    "copilot-agent/config/modes.json": {
+      "size": 1632,
+      "modified": 1763411742.3377361,
+      "hash": "fc3c8ffa0123533cdab10567b071f65f"
+    },
+    "copilot-agent/config/.env.copilot": {
+      "size": 1107,
+      "modified": 1763411742.3376243,
+      "hash": "491e23865f111bc9c732d7b7005d4fe0"
+    },
+    "copilot-agent/docs/INSTALLATION.md": {
+      "size": 5690,
+      "modified": 1763411742.3387058,
+      "hash": "34d36da5769113da3553943883d6ea01"
+    },
+    "copilot-agent/infrastructure/Dockerfile.copilot": {
+      "size": 2538,
+      "modified": 1763411742.3388796,
+      "hash": "dca6e64e715179e93fb32e424967972d"
+    },
+    "copilot-agent/infrastructure/requirements.txt": {
+      "size": 626,
+      "modified": 1763411742.339255,
+      "hash": "042c2399e21742c628b6f65842fd7d3b"
+    },
+    "copilot-agent/infrastructure/docker-compose.yml": {
+      "size": 4479,
+      "modified": 1763411742.3390539,
+      "hash": "45212a847fd5c2ab9b086793bd4f7b77"
+    },
+    "copilot-agent/infrastructure/setup_copilot_agent.sh": {
+      "size": 31618,
+      "modified": 1763411742.339424,
+      "hash": "acbd10a8fd974fc74ff5c8637047b32b"
+    },
+    "legal/DPA_GDPR_Template_IT.md": {
+      "size": 9418,
+      "modified": 1763411742.3413424,
+      "hash": "b1deb98715b9650f7bc724ad579b53c6"
+    },
+    "gateway/requirements.txt": {
+      "size": 66,
+      "modified": 1763411742.3403676,
+      "hash": "7e381f7568ad76f0e7e2cafdabdce02d"
+    },
+    "gateway/README.md": {
+      "size": 464,
+      "modified": 1763411742.3402042,
+      "hash": "7619f90d3a5bfe8daf71ad5721bf6f7d"
+    }
+  }
+}
