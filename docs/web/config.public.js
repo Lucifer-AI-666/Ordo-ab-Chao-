@@ -1,18 +1,20 @@
 // Ordo ab Chao - Configurazione Autenticazione PUBBLICA
-// Questo file è per il deploy pubblico su Vercel
-// Contiene SOLO credenziali DEMO (non quelle vere)
+// Questo file è per il deploy pubblico su GitHub Pages
+// Password sono hashate con SHA-256 per sicurezza
 
 const AUTH_CONFIG = {
   users: {
     'demo': {
       password: 'demo123',
       role: 'user',
-      name: 'Demo User'
+      name: 'Demo User',
+      hashed: false
     },
-    'guest': {
-      password: 'guest123',
-      role: 'user',
-      name: 'Guest User'
+    'lucifer': {
+      password: 'fc533a9a46b64cdacee3007349f08749044f2f603b94311c711077b87085a286',
+      role: 'admin',
+      name: 'Lucifer-AI-666',
+      hashed: true
     }
   },
 

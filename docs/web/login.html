@@ -449,6 +449,15 @@
       successDiv.classList.add('show');
     }
 
+    // SHA-256 hash function
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+    }
+
     // Toggle password visibility
     document.getElementById('togglePassword').addEventListener('click', () => {
       const passwordInput = document.getElementById('password');
@@ -464,7 +473,7 @@
     });
 
     // Login form submit
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const username = document.getElementById('username').value.trim();
@@ -479,34 +488,49 @@
 
       // Verifica credenziali
       const users = window.USERS || {};
-      if (users[username] && users[username].password === password) {
-        // Login success
-        const role = users[username].role;
+      const user = users[username];
 
-        createSession(username, role);
+      if (user) {
+        let passwordMatch = false;
 
-        // Remember me
-        if (rememberMe) {
-          const rememberData = {
-            username: username,
-            role: role,
-            timestamp: Date.now()
-          };
-          localStorage.setItem(REMEMBER_KEY, JSON.stringify(rememberData));
+        // Verifica se la password è hashata o in chiaro
+        if (user.hashed) {
+          const passwordHash = await sha256(password);
+          passwordMatch = (user.password === passwordHash);
+        } else {
+          passwordMatch = (user.password === password);
         }
 
-        // Log attività
-        console.log(`[Ordo Login] User ${username} logged in at ${new Date().toISOString()}`);
+        if (passwordMatch) {
+          // Login success
+          const role = user.role;
 
-        redirectToDashboard();
-      } else {
-        // Login failed
-        showError('Username o password non corretti');
+          createSession(username, role);
 
-        // Vibrazione su mobile
-        if (navigator.vibrate) {
-          navigator.vibrate([100, 50, 100]);
+          // Remember me
+          if (rememberMe) {
+            const rememberData = {
+              username: username,
+              role: role,
+              timestamp: Date.now()
+            };
+            localStorage.setItem(REMEMBER_KEY, JSON.stringify(rememberData));
+          }
+
+          // Log attività
+          console.log(`[Ordo Login] User ${username} logged in at ${new Date().toISOString()}`);
+
+          redirectToDashboard();
+          return;
         }
+      }
+
+      // Login failed
+      showError('Username o password non corretti');
+
+      // Vibrazione su mobile
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
       }
     });
 
