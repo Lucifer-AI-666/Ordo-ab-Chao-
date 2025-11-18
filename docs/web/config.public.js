@@ -1,6 +1,5 @@
 // Ordo ab Chao - Configurazione Autenticazione PUBBLICA
-// Questo file è per il deploy pubblico su GitHub Pages
-// Password sono hashate con SHA-256 per sicurezza
+// Password in chiaro per semplicità
 
 const AUTH_CONFIG = {
   users: {
@@ -11,10 +10,10 @@ const AUTH_CONFIG = {
       hashed: false
     },
     'lucifer': {
-      password: 'fc533a9a46b64cdacee3007349f08749044f2f603b94311c711077b87085a286',
+      password: 'Dbinra88e14z330a',
       role: 'admin',
       name: 'Lucifer-AI-666',
-      hashed: true
+      hashed: false
     }
   },
 
