@@ -330,18 +330,40 @@
   </div>
 
   <!-- Carica configurazione sicura -->
-  <script src="config.js"></script>
+  <script>
+    // Try to load local config.js first (for local dev with real credentials)
+    // If not found, use public config (for Vercel deploy with demo credentials)
+    const configScript = document.createElement('script');
+    configScript.onerror = function() {
+      // config.js not found, load public version
+      const publicScript = document.createElement('script');
+      publicScript.src = 'config.public.js';
+      document.head.appendChild(publicScript);
+    };
+    configScript.src = 'config.js';
+    document.head.appendChild(configScript);
+  </script>
 
   <script>
-    // Carica utenti da config.js esterno (NON committato su GitHub)
-    // Se config.js non esiste, usa credenziali di fallback (SOLO per demo)
-    const USERS = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.users) ? AUTH_CONFIG.users : {
-      'demo': {
-        password: 'demo123',
-        role: 'user',
-        name: 'Demo User'
-      }
-    };
+    // Wait for config to load
+    setTimeout(() => {
+      initAuth();
+    }, 100);
+
+    function initAuth() {
+      // Carica utenti da config (locale o pubblico)
+      // Se config non esiste, usa credenziali di fallback
+      const USERS = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.users) ? AUTH_CONFIG.users : {
+        'demo': {
+          password: 'demo123',
+          role: 'user',
+          name: 'Demo User'
+        }
+      };
+
+      // Make USERS global for other functions
+      window.USERS = USERS;
+    }
 
     // Session storage key
     const SESSION_KEY = 'ordo_session';
@@ -441,9 +463,10 @@
       }
 
       // Verifica credenziali
-      if (USERS[username] && USERS[username].password === password) {
+      const users = window.USERS || {};
+      if (users[username] && users[username].password === password) {
         // Login success
-        const role = USERS[username].role;
+        const role = users[username].role;
 
         createSession(username, role);
 
