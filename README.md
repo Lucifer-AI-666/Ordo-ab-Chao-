@@ -25,6 +25,33 @@ Istruzioni rapide:
 4. APK risultante: `app/build/outputs/apk/debug/app-debug.apk`
 5. Per testare la pagina web senza APK, apri `web/index.html` nel browser.
 
+## Gestione Account
+
+### Ricostituzione Account
+
+Per ricostituire completamente la configurazione dell'account (Dib Anouar):
+```bash
+# Ricostituzione completa dell'account
+python3 ricostituzione_account.py
+
+# Verifica configurazione account
+python3 verifica_account.py
+
+# Backup dell'account
+python3 backup_account.py
+```
+
+La ricostituzione account crea:
+- Nuovi token di sicurezza (Secret Key e API Token)
+- Configurazione account completa (account.json)
+- Allowlist configurata per target autorizzati
+- Struttura directory completa per log e configurazioni
+- Backup automatico della configurazione precedente
+
+**Importante**: I token di sicurezza generati sono unici e devono essere conservati in modo sicuro!
+
+Documentazione completa: [docs/account/README_ACCOUNT.md](docs/account/README_ACCOUNT.md)
+
 ## Verifica Repository
 
 Per verificare lo stato del repository e dei commit:
