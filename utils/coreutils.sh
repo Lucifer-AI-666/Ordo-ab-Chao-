@@ -37,28 +37,19 @@ ${YELLOW}Available Commands:${NC}
     ${BLUE}File Operations:${NC}
         list        Enhanced file listing with details
         search      Smart file search with pattern matching
-        compare     Compare files and directories
-        tree        Display directory tree structure
+        backup      Create timestamped backups
+        diskusage   Analyze disk usage
     
     ${BLUE}Text Processing:${NC}
-        grep        Enhanced grep with syntax highlighting
         count       Count lines, words, characters in files
-        diff        Smart diff with color output
     
     ${BLUE}System Information:${NC}
         sysinfo     Display system information
-        diskusage   Analyze disk usage
-        processes   Monitor running processes
     
-    ${BLUE}Security:${NC}
+    ${BLUE}Security & Development:${NC}
         checksum    Calculate and verify file checksums
-        perms       Check and fix file permissions
-        audit       Security audit of repository
-    
-    ${BLUE}Development:${NC}
         gitinfo     Display git repository information
         cleanup     Clean temporary and build files
-        backup      Create timestamped backups
     
 ${YELLOW}Examples:${NC}
     $(basename "$0") list -a          # List all files with details
@@ -103,7 +94,7 @@ main() {
             usage
             exit 0
             ;;
-        list|search|compare|tree|grep|count|diff|sysinfo|diskusage|processes|checksum|perms|audit|gitinfo|cleanup|backup)
+        list|search|backup|sysinfo|diskusage|checksum|gitinfo|cleanup|count)
             execute_command "$command" "$@"
             ;;
         *)

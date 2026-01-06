@@ -80,7 +80,12 @@ main() {
     if [[ "$search_type" == "name" ]]; then
         local find_opts=""
         [[ -n "$file_type" ]] && find_opts="-type $file_type"
-        [[ -n "$ignore_case" ]] && find_opts="$find_opts $ignore_case" || find_opts="$find_opts -name"
+        
+        if [[ -n "$ignore_case" ]]; then
+            find_opts="$find_opts -iname"
+        else
+            find_opts="$find_opts -name"
+        fi
         
         find "$search_path" $find_opts "$pattern" 2>/dev/null | while read -r file; do
             echo -e "${GREEN}✓${NC} $file"
