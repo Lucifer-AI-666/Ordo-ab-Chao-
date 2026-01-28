@@ -41,6 +41,30 @@ python3 verifica.py
 
 Vedi [docs/COMMIT_VERIFICATION.md](docs/COMMIT_VERIFICATION.md) per dettagli.
 
+## Creazione Nuova Repository/Progetto
+
+Per creare rapidamente una nuova repository e progetto:
+
+```bash
+# Usa lo script di inizializzazione
+./scripts/init-nuovo-progetto.sh <nome-progetto> [descrizione] [tipo]
+
+# Esempi:
+./scripts/init-nuovo-progetto.sh mio-bot "Bot Telegram AI" python
+./scripts/init-nuovo-progetto.sh mia-app "Applicazione web" nodejs
+./scripts/init-nuovo-progetto.sh mia-pwa "Progressive Web App" web
+```
+
+Lo script crea automaticamente:
+- ✅ Struttura directory appropriata
+- ✅ File di configurazione (.gitignore, README, LICENSE)
+- ✅ Inizializzazione Git con primo commit
+- ✅ Template base per il tipo di progetto scelto
+
+**Guida completa**: Vedi [docs/GUIDA_NUOVA_REPO.md](docs/GUIDA_NUOVA_REPO.md)
+
+**Template disponibili**: Vedi [templates/README.md](templates/README.md)
+
 Nota di sicurezza:
 - Questa app è minimale e richiede poche dipendenze. Disabilita JavaScript nella WebView per sicurezza.
 - Non eseguire l'APK su dispositivi che non controlli.
