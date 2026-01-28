@@ -65,6 +65,24 @@ Lo script crea automaticamente:
 
 **Template disponibili**: Vedi [templates/README.md](templates/README.md)
 
-Nota di sicurezza:
+### Configurazione
+
+Lo script può essere configurato tramite variabili d'ambiente:
+
+```bash
+# Personalizza directory progetti (default: ~/Projects)
+export PROJECTS_DIR="$HOME/MyProjects"
+
+# Personalizza GitHub username (default: da git config o 'Lucifer-AI-666')
+export GITHUB_USER="your-github-username"
+
+# Poi esegui lo script
+./scripts/init-nuovo-progetto.sh mio-progetto "Descrizione" python
+```
+
+---
+
+## Nota di Sicurezza (Android App)
+
 - Questa app è minimale e richiede poche dipendenze. Disabilita JavaScript nella WebView per sicurezza.
 - Non eseguire l'APK su dispositivi che non controlli.

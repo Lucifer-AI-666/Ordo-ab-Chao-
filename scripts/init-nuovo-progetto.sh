@@ -15,6 +15,11 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# Funzione per escape HTML entities (sicurezza)
+html_escape() {
+    echo "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g'
+}
+
 # Banner
 echo -e "${PURPLE}"
 echo "╔══════════════════════════════════════════════════════════╗"
@@ -58,15 +63,19 @@ fi
 PROJECT_NAME=$1
 PROJECT_DESC=${2:-"Nuovo progetto creato con Ordo ab Chao"}
 PROJECT_TYPE=${3:-"web"}
-PROJECTS_DIR="$HOME/Projects"
+
+# Configurabili via environment variables con defaults
+PROJECTS_DIR="${PROJECTS_DIR:-$HOME/Projects}"
+GITHUB_USER="${GITHUB_USER:-$(git config --global user.name || echo 'Lucifer-AI-666')}"
+
 PROJECT_PATH="$PROJECTS_DIR/$PROJECT_NAME"
-GITHUB_USER="Lucifer-AI-666"
 
 echo -e "${BLUE}📋 Configurazione:${NC}"
 echo -e "  Nome:        ${GREEN}$PROJECT_NAME${NC}"
 echo -e "  Descrizione: ${GREEN}$PROJECT_DESC${NC}"
 echo -e "  Tipo:        ${GREEN}$PROJECT_TYPE${NC}"
 echo -e "  Path:        ${GREEN}$PROJECT_PATH${NC}"
+echo -e "  GitHub User: ${GREEN}$GITHUB_USER${NC}"
 echo ""
 
 # Verifica se il progetto esiste già
@@ -184,7 +193,7 @@ create_nodejs_structure() {
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "echo \\"Error: no test specified\\" && exit 1"
+    "test": "echo \"No tests specified yet. Add tests in tests/ directory.\""
   },
   "keywords": [],
   "author": "$GITHUB_USER",
@@ -242,6 +251,10 @@ EOF
 create_web_structure() {
     echo -e "${YELLOW}🌐 Creazione struttura Web/PWA...${NC}"
     
+    # Escape HTML per sicurezza
+    local SAFE_PROJECT_NAME=$(html_escape "$PROJECT_NAME")
+    local SAFE_PROJECT_DESC=$(html_escape "$PROJECT_DESC")
+    
     # Directories
     mkdir -p css js images docs
     
@@ -252,16 +265,16 @@ create_web_structure() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="$PROJECT_DESC">
-    <title>$PROJECT_NAME</title>
+    <meta name="description" content="$SAFE_PROJECT_DESC">
+    <title>$SAFE_PROJECT_NAME</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
 </head>
 <body>
     <header>
-        <h1>⚡ $PROJECT_NAME ⚡</h1>
-        <p>$PROJECT_DESC</p>
+        <h1>⚡ $SAFE_PROJECT_NAME ⚡</h1>
+        <p>$SAFE_PROJECT_DESC</p>
     </header>
     
     <main>
@@ -347,12 +360,15 @@ if ('serviceWorker' in navigator) {
 }
 EOF
     
-    # manifest.json
+    # manifest.json (JSON escape - replace " with \")
+    local JSON_PROJECT_NAME=$(echo "$PROJECT_NAME" | sed 's/"/\\"/g')
+    local JSON_PROJECT_DESC=$(echo "$PROJECT_DESC" | sed 's/"/\\"/g')
+    
     cat > manifest.json << EOF
 {
-  "name": "$PROJECT_NAME",
-  "short_name": "$PROJECT_NAME",
-  "description": "$PROJECT_DESC",
+  "name": "$JSON_PROJECT_NAME",
+  "short_name": "$JSON_PROJECT_NAME",
+  "description": "$JSON_PROJECT_DESC",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#6366f1",
