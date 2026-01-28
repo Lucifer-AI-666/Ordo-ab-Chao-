@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    if (__DEV__) {
+    if (typeof __DEV__ !== 'undefined' && __DEV__) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
   }

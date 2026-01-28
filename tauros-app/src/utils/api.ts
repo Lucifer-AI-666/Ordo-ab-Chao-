@@ -49,8 +49,8 @@ const validateBackendUrl = (url: string): string => {
       throw new Error('Invalid protocol for backend URL');
     }
 
-    // Return a normalized URL string (remove trailing slash)
-    return parsed.origin + parsed.pathname.replace(/\/$/, '');
+    // Return only the origin (protocol + host + port) for clean API base URL
+    return parsed.origin;
   } catch {
     throw new Error('Invalid backend URL');
   }

@@ -42,7 +42,7 @@ export const StatusScreen: React.FC<StatusScreenProps> = ({ navigation }) => {
       setServices(statuses);
       setLastUpdated(new Date());
     } catch (error) {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Error fetching statuses:', error);
       }
       // Set all services as unknown on error

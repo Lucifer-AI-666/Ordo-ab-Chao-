@@ -98,7 +98,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     try {
       await settingsAPI.setNotifications(value);
     } catch (error) {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Error saving notifications preference:', error);
       }
     }

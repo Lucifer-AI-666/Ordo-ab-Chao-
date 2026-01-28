@@ -32,7 +32,7 @@ const ChatScreen = lazy(() =>
       default: module.ChatScreen 
     }))
     .catch(error => {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Failed to load ChatScreen module', error);
       }
       throw error;
@@ -45,7 +45,7 @@ const StatusScreen = lazy(() =>
       default: module.StatusScreen 
     }))
     .catch(error => {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Failed to load StatusScreen module', error);
       }
       throw error;
@@ -58,7 +58,7 @@ const SettingsScreen = lazy(() =>
       default: module.SettingsScreen 
     }))
     .catch(error => {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Failed to load SettingsScreen module', error);
       }
       throw error;

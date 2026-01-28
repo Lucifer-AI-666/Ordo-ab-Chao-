@@ -34,7 +34,7 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
         const history = await chatAPI.getChatHistory();
         setChatHistory(history);
       } catch (error) {
-        if (__DEV__) {
+        if (typeof __DEV__ !== 'undefined' && __DEV__) {
           console.error('Error loading chat history:', error);
         }
       }
@@ -70,7 +70,7 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
       await chatAPI.saveChatMessage(newMessage);
 
     } catch (error) {
-      if (__DEV__) {
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
         console.error('Chat error:', error);
       }
       
