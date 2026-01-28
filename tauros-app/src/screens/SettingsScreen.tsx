@@ -33,8 +33,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     const loadSettings = async () => {
       const url = await settingsAPI.getBackendUrl();
       const model = await settingsAPI.getAIModel();
+      const notifs = await settingsAPI.getNotifications();
       setBackendUrl(url);
       setSelectedModel(model);
+      setNotifications(notifs);
     };
     loadSettings();
   }, []);
@@ -91,8 +93,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
   }, []);
 
   // Handle notifications toggle
-  const handleNotificationsToggle = useCallback((value: boolean) => {
+  const handleNotificationsToggle = useCallback(async (value: boolean) => {
     setNotifications(value);
+    try {
+      await settingsAPI.setNotifications(value);
+    } catch (error) {
+      if (__DEV__) {
+        console.error('Error saving notifications preference:', error);
+      }
+    }
   }, []);
 
   // Handle about press

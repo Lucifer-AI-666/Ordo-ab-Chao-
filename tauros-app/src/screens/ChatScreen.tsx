@@ -24,7 +24,6 @@ import { chatAPI, APIError, ChatMessage } from '../utils/api';
 export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
   // State Management
   const [message, setMessage] = useState<string>('');
-  const [currentResponse, setCurrentResponse] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
@@ -34,11 +33,10 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
       try {
         const history = await chatAPI.getChatHistory();
         setChatHistory(history);
-        if (history.length > 0) {
-          setCurrentResponse(history[history.length - 1].response);
-        }
       } catch (error) {
-        console.error('Error loading chat history:', error);
+        if (__DEV__) {
+          console.error('Error loading chat history:', error);
+        }
       }
     };
     loadHistory();
@@ -58,7 +56,6 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
     try {
       const response = await chatAPI.sendMessage(messageToSend);
       const responseText = response.response || 'Risposta non disponibile';
-      setCurrentResponse(responseText);
 
       // Create and save message
       const newMessage: ChatMessage = {
@@ -73,14 +70,15 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
       await chatAPI.saveChatMessage(newMessage);
 
     } catch (error) {
-      console.error('Chat error:', error);
+      if (__DEV__) {
+        console.error('Chat error:', error);
+      }
       
       let errorMessage = 'Errore nel contatto con TAUROS.';
       if (error instanceof APIError) {
         errorMessage = error.getUserMessage();
       }
       
-      setCurrentResponse(errorMessage);
       Alert.alert('Errore', errorMessage);
     } finally {
       setIsLoading(false);
@@ -115,7 +113,6 @@ export const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
           onPress: async () => {
             await chatAPI.clearChatHistory();
             setChatHistory([]);
-            setCurrentResponse('');
           }
         },
       ]

@@ -27,21 +27,42 @@ import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 // Lazy-loaded screens for optimal performance
 const ChatScreen = lazy(() => 
-  import('./src/screens/ChatScreen').then(module => ({ 
-    default: module.ChatScreen 
-  }))
+  import('./src/screens/ChatScreen')
+    .then(module => ({ 
+      default: module.ChatScreen 
+    }))
+    .catch(error => {
+      if (__DEV__) {
+        console.error('Failed to load ChatScreen module', error);
+      }
+      throw error;
+    })
 );
 
 const StatusScreen = lazy(() => 
-  import('./src/screens/StatusScreen').then(module => ({ 
-    default: module.StatusScreen 
-  }))
+  import('./src/screens/StatusScreen')
+    .then(module => ({ 
+      default: module.StatusScreen 
+    }))
+    .catch(error => {
+      if (__DEV__) {
+        console.error('Failed to load StatusScreen module', error);
+      }
+      throw error;
+    })
 );
 
 const SettingsScreen = lazy(() => 
-  import('./src/screens/SettingsScreen').then(module => ({ 
-    default: module.SettingsScreen 
-  }))
+  import('./src/screens/SettingsScreen')
+    .then(module => ({ 
+      default: module.SettingsScreen 
+    }))
+    .catch(error => {
+      if (__DEV__) {
+        console.error('Failed to load SettingsScreen module', error);
+      }
+      throw error;
+    })
 );
 
 // Stack Navigator

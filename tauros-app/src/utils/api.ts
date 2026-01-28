@@ -11,6 +11,7 @@ const STORAGE_KEYS = {
   BACKEND_URL: 'tauros_backend_url',
   AI_MODEL: 'tauros_ai_model',
   CHAT_HISTORY: 'tauros_chat_history',
+  NOTIFICATIONS: 'tauros_notifications',
 } as const;
 
 // Default configuration
@@ -30,6 +31,30 @@ export const AI_MODELS = [
 ] as const;
 
 export type AIModelId = typeof AI_MODELS[number]['id'];
+
+// Helper to validate AI model ID
+const isValidAIModel = (model: string): model is AIModelId => {
+  return AI_MODELS.some(m => m.id === model);
+};
+
+// Helper to validate and normalize backend URLs
+const validateBackendUrl = (url: string): string => {
+  const trimmedUrl = url.trim();
+
+  try {
+    const parsed = new URL(trimmedUrl);
+
+    // Only allow HTTP(S) backends
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      throw new Error('Invalid protocol for backend URL');
+    }
+
+    // Return a normalized URL string (remove trailing slash)
+    return parsed.origin + parsed.pathname.replace(/\/$/, '');
+  } catch {
+    throw new Error('Invalid backend URL');
+  }
+};
 
 // Request/Response types
 export interface ChatRequest {
@@ -118,20 +143,33 @@ export const settingsAPI = {
   getBackendUrl: async (): Promise<string> => {
     try {
       const url = await AsyncStorage.getItem(STORAGE_KEYS.BACKEND_URL);
-      return url || DEFAULT_CONFIG.BASE_URL;
+      if (!url) {
+        return DEFAULT_CONFIG.BASE_URL;
+      }
+
+      try {
+        return validateBackendUrl(url);
+      } catch {
+        // If the stored URL is invalid, fall back to default
+        return DEFAULT_CONFIG.BASE_URL;
+      }
     } catch {
       return DEFAULT_CONFIG.BASE_URL;
     }
   },
 
   setBackendUrl: async (url: string): Promise<void> => {
-    await AsyncStorage.setItem(STORAGE_KEYS.BACKEND_URL, url);
+    const validatedUrl = validateBackendUrl(url);
+    await AsyncStorage.setItem(STORAGE_KEYS.BACKEND_URL, validatedUrl);
   },
 
   getAIModel: async (): Promise<AIModelId> => {
     try {
       const model = await AsyncStorage.getItem(STORAGE_KEYS.AI_MODEL);
-      return (model as AIModelId) || DEFAULT_CONFIG.AI_MODEL;
+      if (model && isValidAIModel(model)) {
+        return model;
+      }
+      return DEFAULT_CONFIG.AI_MODEL;
     } catch {
       return DEFAULT_CONFIG.AI_MODEL;
     }
@@ -139,6 +177,19 @@ export const settingsAPI = {
 
   setAIModel: async (model: AIModelId): Promise<void> => {
     await AsyncStorage.setItem(STORAGE_KEYS.AI_MODEL, model);
+  },
+
+  getNotifications: async (): Promise<boolean> => {
+    try {
+      const value = await AsyncStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
+      return value !== 'false'; // Default to true
+    } catch {
+      return true;
+    }
+  },
+
+  setNotifications: async (enabled: boolean): Promise<void> => {
+    await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, String(enabled));
   },
 };
 
@@ -236,7 +287,9 @@ export const chatAPI = {
         JSON.stringify(trimmedHistory)
       );
     } catch (error) {
-      console.error('Error saving chat message:', error);
+      if (typeof __DEV__ !== 'undefined' && __DEV__) {
+        console.error('Error saving chat message:', error);
+      }
     }
   },
 

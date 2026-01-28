@@ -42,7 +42,9 @@ export const StatusScreen: React.FC<StatusScreenProps> = ({ navigation }) => {
       setServices(statuses);
       setLastUpdated(new Date());
     } catch (error) {
-      console.error('Error fetching statuses:', error);
+      if (__DEV__) {
+        console.error('Error fetching statuses:', error);
+      }
       // Set all services as unknown on error
       setServices([
         { name: 'FastAPI', status: 'offline', message: 'Errore di connessione' },
