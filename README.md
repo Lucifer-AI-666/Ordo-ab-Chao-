@@ -41,6 +41,48 @@ python3 verifica.py
 
 Vedi [docs/COMMIT_VERIFICATION.md](docs/COMMIT_VERIFICATION.md) per dettagli.
 
-Nota di sicurezza:
+## Creazione Nuova Repository/Progetto
+
+Per creare rapidamente una nuova repository e progetto:
+
+```bash
+# Usa lo script di inizializzazione
+./scripts/init-nuovo-progetto.sh <nome-progetto> [descrizione] [tipo]
+
+# Esempi:
+./scripts/init-nuovo-progetto.sh mio-bot "Bot Telegram AI" python
+./scripts/init-nuovo-progetto.sh mia-app "Applicazione web" nodejs
+./scripts/init-nuovo-progetto.sh mia-pwa "Progressive Web App" web
+```
+
+Lo script crea automaticamente:
+- ✅ Struttura directory appropriata
+- ✅ File di configurazione (.gitignore, README, LICENSE)
+- ✅ Inizializzazione Git con primo commit
+- ✅ Template base per il tipo di progetto scelto
+
+**Guida completa**: Vedi [docs/GUIDA_NUOVA_REPO.md](docs/GUIDA_NUOVA_REPO.md)
+
+**Template disponibili**: Vedi [templates/README.md](templates/README.md)
+
+### Configurazione
+
+Lo script può essere configurato tramite variabili d'ambiente:
+
+```bash
+# Personalizza directory progetti (default: ~/Projects)
+export PROJECTS_DIR="$HOME/MyProjects"
+
+# Personalizza GitHub username (default: da git config o 'Lucifer-AI-666')
+export GITHUB_USER="your-github-username"
+
+# Poi esegui lo script
+./scripts/init-nuovo-progetto.sh mio-progetto "Descrizione" python
+```
+
+---
+
+## Nota di Sicurezza (Android App)
+
 - Questa app è minimale e richiede poche dipendenze. Disabilita JavaScript nella WebView per sicurezza.
 - Non eseguire l'APK su dispositivi che non controlli.
