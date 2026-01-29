@@ -25,6 +25,24 @@ Istruzioni rapide:
 4. APK risultante: `app/build/outputs/apk/debug/app-debug.apk`
 5. Per testare la pagina web senza APK, apri `web/index.html` nel browser.
 
+## Core Utilities
+
+The project includes a comprehensive suite of Unix utilities for development and security operations:
+
+```bash
+# Quick access
+./coreutils <command> [options]
+
+# Common commands
+./coreutils gitinfo          # Repository information
+./coreutils sysinfo          # System information
+./coreutils cleanup          # Clean temporary files
+./coreutils search "*.py"    # Find Python files
+./coreutils checksum verify  # Verify file integrity
+```
+
+See [docs/COREUTILS.md](docs/COREUTILS.md) and [utils/README.md](utils/README.md) for complete documentation.
+
 ## Verifica Repository
 
 Per verificare lo stato del repository e dei commit:
@@ -37,6 +55,9 @@ python3 controlla_commit.py
 
 # Verifica inizializzazione
 python3 verifica.py
+
+# Using coreutils
+./coreutils gitinfo
 ```
 
 Vedi [docs/COMMIT_VERIFICATION.md](docs/COMMIT_VERIFICATION.md) per dettagli.
