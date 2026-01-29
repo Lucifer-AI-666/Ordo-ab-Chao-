@@ -45,3 +45,26 @@ android-app/local.properties
 .idea/
 .DS_Store
 Thumbs.db
+
+# Account sensitive files (added by ricostituzione_account.py)
+*.backup.*
+.env.local
+.env.copilot
+copilot-agent/config/.env.copilot
+copilot-agent/config/.env.*.backup.*
+copilot-agent/config/account.json
+**/logs/*.log
+**/logs/*.jsonl
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+# Allow example files
+!*.example
+!**/.env*.example
+
+# Backups (account backups contain sensitive data)
+backups/
+*.tar.gz
+*.zip
+
+copilot-agent/config/.env*
