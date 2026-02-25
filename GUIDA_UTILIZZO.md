@@ -7,9 +7,10 @@
 4. [Dashboard Principale](#dashboard-principale)
 5. [Mission Control](#mission-control)
 6. [Gestione Progetti](#gestione-progetti)
-7. [Backup con Scatola Nera](#backup-con-scatola-nera)
-8. [Integrazione Social](#integrazione-social)
-9. [Troubleshooting](#troubleshooting)
+7. [🆕 Creazione Nuove Repository](#creazione-nuove-repository)
+8. [Backup con Scatola Nera](#backup-con-scatola-nera)
+9. [Integrazione Social](#integrazione-social)
+10. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -387,8 +388,14 @@ La scatola nera esclude:
 
 #### 1. Nuovo Progetto
 ```bash
-# Vai su GitHub
-# Clona repository da Mission Control
+# METODO RAPIDO: Usa lo script di inizializzazione (CONSIGLIATO)
+cd ~/Ordo-ab-Chao-
+./scripts/init-nuovo-progetto.sh nome-progetto "Descrizione" tipo
+
+# Il progetto è creato in ~/Projects/nome-progetto
+# Tipi: python, nodejs, web
+
+# OPPURE: Clone progetto esistente
 git clone https://github.com/Lucifer-AI-666/nome-repo
 cd nome-repo
 
@@ -400,6 +407,8 @@ npm install                        # Node.js
 cd ~/Ordo-ab-Chao-
 python3 scatola-nera.py snapshot "Aggiunto nuovo progetto"
 ```
+
+📚 **Vedi**: [Guida Creazione Nuove Repository](docs/QUICK_START_NUOVA_REPO.md)
 
 #### 2. Sviluppo
 ```bash
@@ -426,6 +435,79 @@ git push
 # o manualmente:
 vercel --prod
 ```
+
+---
+
+## 🆕 Creazione Nuove Repository
+
+Ordo ab Chao include un sistema completo per creare rapidamente nuove repository con strutture ottimizzate.
+
+### Quick Start (1 minuto)
+
+```bash
+# Vai alla cartella Ordo ab Chao
+cd ~/Ordo-ab-Chao-
+
+# Esegui lo script di inizializzazione
+./scripts/init-nuovo-progetto.sh nome-progetto "Descrizione" tipo
+
+# Tipi disponibili: python, nodejs, web
+```
+
+### Esempi Pratici
+
+**Bot Telegram (Python):**
+```bash
+./scripts/init-nuovo-progetto.sh tauros-bot "Bot Telegram AI" python
+cd ~/Projects/tauros-bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Web App (Node.js):**
+```bash
+./scripts/init-nuovo-progetto.sh my-api "REST API" nodejs
+cd ~/Projects/my-api
+npm install
+npm start
+```
+
+**Progressive Web App:**
+```bash
+./scripts/init-nuovo-progetto.sh dashboard "Dashboard Admin" web
+cd ~/Projects/dashboard
+python3 -m http.server 8000
+```
+
+### Cosa Viene Creato
+
+Lo script genera automaticamente:
+- ✅ Struttura directory appropriata per il tipo
+- ✅ README.md completo e personalizzato
+- ✅ LICENSE (MIT)
+- ✅ .gitignore configurato
+- ✅ File di configurazione base
+- ✅ Inizializzazione Git con primo commit
+
+### Collegare a GitHub
+
+```bash
+# 1. Crea repository su GitHub
+# https://github.com/new
+
+# 2. Collega e push
+cd ~/Projects/nome-progetto
+git remote add origin git@github.com:Lucifer-AI-666/nome-progetto.git
+git push -u origin main
+```
+
+### Risorse Complete
+
+- 📖 **Quick Start**: [docs/QUICK_START_NUOVA_REPO.md](docs/QUICK_START_NUOVA_REPO.md)
+- 📚 **Guida Completa**: [docs/GUIDA_NUOVA_REPO.md](docs/GUIDA_NUOVA_REPO.md)
+- 🎯 **Esempi Integrazione**: [docs/ESEMPI_INTEGRAZIONE_MISSION_CONTROL.md](docs/ESEMPI_INTEGRAZIONE_MISSION_CONTROL.md)
+- 📊 **Documentazione Sistema**: [docs/SISTEMA_NUOVE_REPO.md](docs/SISTEMA_NUOVE_REPO.md)
 
 ---
 
