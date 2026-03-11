@@ -1,5 +1,5 @@
 // Ordo ab Chao - Configurazione Autenticazione PUBBLICA
-// Password in chiaro per semplicità
+// Solo credenziali demo - NON usare password reali in questo file!
 
 const AUTH_CONFIG = {
   users: {
@@ -7,12 +7,6 @@ const AUTH_CONFIG = {
       password: 'demo123',
       role: 'user',
       name: 'Demo User',
-      hashed: false
-    },
-    'lucifer': {
-      password: 'Dbinra88e14z330a',
-      role: 'admin',
-      name: 'Lucifer-AI-666',
       hashed: false
     }
   },
