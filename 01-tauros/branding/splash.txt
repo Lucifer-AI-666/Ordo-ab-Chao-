@@ -1,0 +1,24 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║  ████████╗ █████╗ ██╗   ██╗██████╗  ██████╗ ███████╗                        ║
+║     ██╔══╝██╔══██╗██║   ██║██╔══██╗██╔═══██╗██╔════╝                        ║
+║     ██║   ███████║██║   ██║██████╔╝██║   ██║███████╗                        ║
+║     ██║   ██╔══██║██║   ██║██╔══██╗██║   ██║╚════██║                        ║
+║     ██║   ██║  ██║╚██████╔╝██║  ██║╚██████╔╝███████║                        ║
+║     ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝                        ║
+║                                                                              ║
+║                    Private Agent • DibTauroS Framework                      ║
+║                              Ordo ab Chao                                   ║
+║                                                                              ║
+║  ╔══════════════════════════════════════════════════════════════════════╗   ║
+║  ║  🔒 PRIVACY-FIRST CYBERSECURITY FRAMEWORK                           ║   ║
+║  ║  🛡️  Owner: Dib Anouar                                              ║   ║
+║  ║  📜 License: LUP v1.0 (Personal & Non-Commercial Use Only)         ║   ║
+║  ║  🎯 Purpose: Ethical cybersecurity operations & OSINT              ║   ║
+║  ║  ⚖️  Compliance: Local operations only, no external data sharing   ║   ║
+║  ╚══════════════════════════════════════════════════════════════════════╝   ║
+║                                                                              ║
+║  Modes: DEFEND (default) | TEST (requires "Wassim" keyword)                 ║
+║  Security: Allowlist-based targets, audit logging, privilege controls       ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝

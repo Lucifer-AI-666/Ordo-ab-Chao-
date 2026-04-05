@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  tauros-agent:
+    build:
+      context: ..
+      dockerfile: infrastructure/Dockerfile.tauros
+    container_name: tauros-agent
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8788:8788"
+    environment:
+      - TAUROS_HOST=0.0.0.0
+      - TAUROS_PORT=8788
+      - MONICA_DISABLE=0
+      - LOG_LEVEL=INFO
+    volumes:
+      - tauros-logs:/app/logs
+      - ../allowlist.json:/app/config/allowlist.json:ro
+    networks:
+      - tauros-net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: tauros-ollama
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    networks:
+      - tauros-net
+    profiles:
+      - with-ollama
+
+volumes:
+  tauros-logs:
+  ollama-models:
+
+networks:
+  tauros-net:
+    driver: bridge
+    internal: false
