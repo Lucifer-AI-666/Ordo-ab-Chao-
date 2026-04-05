@@ -273,8 +273,8 @@ class TaurosPrivateAgent:
             return result
 
         except Exception as e:
-            error_msg = f"Operation failed: {str(e)}"
-            self.logger.error(error_msg)
+            error_msg = "Operation failed due to an internal error"
+            self.logger.error("execute_operation error: %s", e, exc_info=True)
             return {
                 "status": "error",
                 "message": error_msg,

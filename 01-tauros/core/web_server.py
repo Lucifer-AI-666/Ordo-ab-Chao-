@@ -9,6 +9,7 @@ License: LUP v1.0 (personal and non-commercial use only)
 
 import os
 import json
+import logging
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, FileResponse
@@ -31,6 +32,7 @@ app = FastAPI(
 )
 
 agent = TaurosPrivateAgent()
+_server_log = logging.getLogger("TaurosWebServer")
 
 class OperationRequest(BaseModel):
     prompt: str
@@ -66,8 +68,6 @@ async def web_interface():
 @app.get("/tauros/status")
 async def get_status():
     """Get agent status"""
-    import logging as _logging
-    _server_log = _logging.getLogger("TaurosWebServer")
     try:
         return agent.get_status()
     except Exception as e:
@@ -77,8 +77,6 @@ async def get_status():
 @app.post("/tauros/execute")
 async def execute_operation(request: OperationRequest):
     """Execute cybersecurity operation"""
-    import logging as _logging
-    _server_log = _logging.getLogger("TaurosWebServer")
     try:
         result = agent.execute_operation(
             prompt=request.prompt,
