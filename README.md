@@ -1,46 +1,60 @@
-# Ordo-ab-Chao - Minimal Android App + Webpage
+# Ordo-ab-Chao
 
-Questo commit crea una app Android nativa minimale e una pagina web integrata negli assets.
+App Android minimale con pagina web locale integrata negli asset.
 
-Struttura proposta:
-- app/: modulo Android minimale
-  - src/main/AndroidManifest.xml
-  - src/main/java/com/lucifer/ordoabchao/MainActivity.java
-  - src/main/res/layout/activity_main.xml
-  - src/main/assets/index.html
-- build.gradle (root)
-- settings.gradle
-- web/index.html (opzionale, copia di assets)
+## Contenuto del progetto
 
-Prerequisiti per build:
-- JDK 11+ (o JDK compatibile con Gradle/AGP in uso)
-- Android SDK (Android 34 platform se possibile)
-- Gradle wrapper (opzionale; puoi usare il gradle installato o creare il wrapper)
+```
+app/
+  src/main/AndroidManifest.xml
+  src/main/java/com/lucifer/ordoabchao/MainActivity.java
+  src/main/res/layout/activity_main.xml
+  src/main/assets/index.html
+build.gradle
+settings.gradle
+```
 
-Istruzioni rapide:
-1. Posiziona i file nelle cartelle indicate.
-2. Imposta `local.properties` con il percorso SDK (es. `sdk.dir=C:\Users\You\AppData\Local\Android\Sdk` su Windows).
-3. Esegui (da root del progetto):
-   - `./gradlew assembleDebug`  (o `gradlew.bat assembleDebug` su Windows)
-4. APK risultante: `app/build/outputs/apk/debug/app-debug.apk`
-5. Per testare la pagina web senza APK, apri `web/index.html` nel browser.
+## Requisiti
 
-## Verifica Repository
+- JDK 11+
+- Android SDK (compileSdk/targetSdk 34)
+- Gradle installato nel sistema (in questo repository non è presente il wrapper `gradlew`)
 
-Per verificare lo stato del repository e dei commit:
+## Build APK (debug)
+
+1. Crea/aggiorna `local.properties` nella root del repo con il path SDK:
+
+   ```properties
+   sdk.dir=/percorso/al/tuo/Android/Sdk
+   ```
+
+2. Esegui la build dalla root:
+
+   ```bash
+   gradle assembleDebug
+   ```
+
+3. APK generato in:
+
+   `app/build/outputs/apk/debug/app-debug.apk`
+
+## Comportamento app
+
+- `MainActivity` carica `file:///android_asset/index.html`
+- WebView con JavaScript disabilitato per default
+- Permesso Internet presente nel manifest
+
+## Script utili repository
+
 ```bash
-# Verifica completa (Python - consigliato)
 python3 controlla_commit.py
-
-# Verifica rapida (Shell)
 ./controlla_commit.sh
-
-# Verifica inizializzazione
 python3 verifica.py
 ```
 
-Vedi [docs/COMMIT_VERIFICATION.md](docs/COMMIT_VERIFICATION.md) per dettagli.
+Dettagli in `docs/COMMIT_VERIFICATION.md`.
 
-Nota di sicurezza:
-- Questa app è minimale e richiede poche dipendenze. Disabilita JavaScript nella WebView per sicurezza.
-- Non eseguire l'APK su dispositivi che non controlli.
+## Sicurezza
+
+- Mantieni JavaScript disabilitato in WebView se non strettamente necessario
+- Installa ed esegui l’APK solo su dispositivi fidati
