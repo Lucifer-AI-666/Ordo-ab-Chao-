@@ -45,7 +45,14 @@ _server_log = logging.getLogger("TaurosWebServer")
 
 def _is_placeholder_token(token: str) -> bool:
     normalized = token.strip().lower()
-    return not normalized or "change_this_in_production" in normalized
+    placeholder_markers = (
+        "change_this_in_production",
+        "your_api_token_here",
+        "your_secret_key_here",
+        "changeme",
+        "replace_me",
+    )
+    return not normalized or any(marker in normalized for marker in placeholder_markers)
 
 def _require_real_operation_token(request: Request):
     token = os.getenv("TAUROS_API_TOKEN", "").strip()
