@@ -188,17 +188,17 @@ def check_configuration():
     print("\n⚙️ Checking Configuration...")
 
     config_files = [
-        ("config/.env.tauros", "Environment configuration"),
-        ("config/allowlist.json", "Target allowlist"),
-        ("config/modes.json", "Operational modes")
+        (["config/.env.tauros", "config/.env.tauros.example"], "Environment configuration"),
+        (["config/allowlist.json"], "Target allowlist"),
+        (["config/modes.json"], "Operational modes")
     ]
 
-    for file_path, description in config_files:
-        path = Path(file_path)
-        if path.exists():
+    for file_paths, description in config_files:
+        path = next((Path(file_path) for file_path in file_paths if Path(file_path).exists()), None)
+        if path is not None:
             print(f"✅ {description}: Found")
             try:
-                if file_path.endswith('.json'):
+                if path.name.endswith('.json'):
                     with open(path, 'r') as f:
                         data = json.load(f)
                         print(f"   Valid JSON with {len(data)} keys")
@@ -209,7 +209,7 @@ def check_configuration():
             except Exception as e:
                 print(f"   ⚠️ Error reading file: {e}")
         else:
-            print(f"❌ {description}: Missing ({file_path})")
+            print(f"❌ {description}: Missing ({', '.join(file_paths)})")
 
 
 def check_branding():

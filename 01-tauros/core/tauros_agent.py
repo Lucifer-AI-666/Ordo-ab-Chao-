@@ -76,16 +76,33 @@ class TaurosPrivateAgent:
     def _setup_logging(self):
         """Setup secure logging with SHA-256 audit trail"""
         log_file = self.logs_dir / "tauros_agent.log"
-
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler(sys.stdout)
-            ]
-        )
         self.logger = logging.getLogger("TaurosPrivateAgent")
+        self.logger.setLevel(logging.INFO)
+        self.logger.propagate = False
+
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+
+        has_file_handler = any(
+            isinstance(handler, logging.FileHandler) and Path(handler.baseFilename) == log_file
+            for handler in self.logger.handlers
+        )
+        if not has_file_handler:
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setFormatter(formatter)
+            self.logger.addHandler(file_handler)
+
+        has_stdout_handler = any(
+            isinstance(handler, logging.StreamHandler)
+            and not isinstance(handler, logging.FileHandler)
+            and getattr(handler, "stream", None) is sys.stdout
+            for handler in self.logger.handlers
+        )
+        if not has_stdout_handler:
+            stream_handler = logging.StreamHandler(sys.stdout)
+            stream_handler.setFormatter(formatter)
+            self.logger.addHandler(stream_handler)
 
         self._update_log_chain()
 

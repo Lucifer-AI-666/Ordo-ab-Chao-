@@ -8,14 +8,12 @@ License: LUP v1.0 (personal and non-commercial use only)
 """
 
 import os
-import json
+import secrets
 import logging
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from typing import Optional
 
 try:
     import aiofiles
@@ -23,7 +21,18 @@ try:
 except ImportError:
     HAS_AIOFILES = False
 
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = None
+
 from tauros_agent import TaurosPrivateAgent
+
+CONFIG_DIR = Path(__file__).parent.parent / "config"
+ENV_FILE = CONFIG_DIR / ".env.tauros"
+
+if load_dotenv and ENV_FILE.exists():
+    load_dotenv(ENV_FILE)
 
 app = FastAPI(
     title="TaurosPrivateAgent API",
@@ -33,6 +42,23 @@ app = FastAPI(
 
 agent = TaurosPrivateAgent()
 _server_log = logging.getLogger("TaurosWebServer")
+
+def _is_placeholder_token(token: str) -> bool:
+    normalized = token.strip().lower()
+    return not normalized or "change_this_in_production" in normalized
+
+def _require_real_operation_token(request: Request):
+    token = os.getenv("TAUROS_API_TOKEN", "").strip()
+    if _is_placeholder_token(token):
+        raise HTTPException(
+            status_code=503,
+            detail="Real execution is disabled until TAUROS_API_TOKEN is configured"
+        )
+
+    authorization = request.headers.get("Authorization", "")
+    scheme, _, provided_token = authorization.partition(" ")
+    if scheme.lower() != "bearer" or not secrets.compare_digest(provided_token.strip(), token):
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 class OperationRequest(BaseModel):
     prompt: str
@@ -75,13 +101,16 @@ async def get_status():
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.post("/tauros/execute")
-async def execute_operation(request: OperationRequest):
+async def execute_operation(operation: OperationRequest, request: Request):
     """Execute cybersecurity operation"""
     try:
+        if not operation.dry_run:
+            _require_real_operation_token(request)
+
         result = agent.execute_operation(
-            prompt=request.prompt,
-            target=request.target,
-            dry_run=request.dry_run
+            prompt=operation.prompt,
+            target=operation.target,
+            dry_run=operation.dry_run
         )
         return result
     except Exception as e:

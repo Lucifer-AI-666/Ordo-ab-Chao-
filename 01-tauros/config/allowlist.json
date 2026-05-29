@@ -1,0 +1,9 @@
+{
+  "allowed_targets": [
+    "localhost",
+    "127.0.0.1",
+    "192.168.1.0/24"
+  ],
+  "last_updated": "2026-04-05T19:06:13Z",
+  "_comment": "Default safe Tauros allowlist; customize as needed for local/private targets"
+}

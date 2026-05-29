@@ -61,6 +61,13 @@ install_dependencies() {
 setup_config() {
     info "Setting up configuration..."
 
+    if [ ! -f "$TAUROS_DIR/config/.env.tauros" ] && [ -f "$TAUROS_DIR/config/.env.tauros.example" ]; then
+        cp "$TAUROS_DIR/config/.env.tauros.example" "$TAUROS_DIR/config/.env.tauros"
+        warn "Copied .env.tauros.example to config/.env.tauros - update secrets before real operations."
+    else
+        info ".env.tauros already exists or no example template was found."
+    fi
+
     # Copy example allowlist if none exists
     if [ ! -f "$TAUROS_DIR/config/allowlist.json" ]; then
         if [ -f "$TAUROS_DIR/../allowlist.example.json" ]; then

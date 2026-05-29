@@ -1,7 +1,9 @@
 # Secrets & credenziali
 *.env
+01-tauros/config/.env.tauros
 *.key
 allowlist.json
+!01-tauros/config/allowlist.json
 systemd/*.env
 keystore.jks
 *.keystore

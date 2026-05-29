@@ -78,9 +78,15 @@ docker compose -f infrastructure/docker-compose.yml --profile with-ollama up -d
 ## Configuration
 
 ### Environment Variables
-Edit `config/.env.tauros` to customize your installation:
+Copy the template and edit `config/.env.tauros` to customize your installation:
 
 ```bash
+cp config/.env.tauros.example config/.env.tauros
+```
+
+Then configure values such as:
+
+```dotenv
 MONICA_DISABLE=0      # Emergency kill switch (0=enabled, 1=disabled)
 TAUROS_MODE=DEFEND    # Default operational mode
 TAUROS_HOST=127.0.0.1

@@ -16,7 +16,7 @@ services:
       - LOG_LEVEL=INFO
     volumes:
       - tauros-logs:/app/logs
-      - ../allowlist.json:/app/config/allowlist.json:ro
+      - ../config/allowlist.json:/app/config/allowlist.json:ro
     networks:
       - tauros-net
     deploy:
