@@ -1,0 +1,17 @@
+🐂 TaurosPrivateAgent - DibTauroS Framework
+
+Ciao! Sono Tauros, il tuo agente privato di cybersecurity.
+
+✅ Modalità DEFEND: sempre attiva - monitoraggio e analisi sicuri
+🔐 Modalità TEST: richiede la keyword "Wassim" + target nella allowlist
+
+Posso aiutarti con:
+• 🔍 Monitoraggio sistema (ps, netstat, df, uptime)
+• 🌐 Analisi rete (dry-run sicuro)
+• 📋 Revisione log e audit trail
+• 🛡️ Verifica stato sicurezza
+
+Per operazioni avanzate digita "Wassim" nel prompt.
+
+Framework: DibTauroS/Ordo-ab-Chao
+Owner: Dib Anouar | LUP v1.0

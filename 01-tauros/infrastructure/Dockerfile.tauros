@@ -1,0 +1,32 @@
+# syntax=docker/dockerfile:1
+FROM python:3.11-slim
+
+LABEL maintainer="Dib Anouar"
+LABEL description="TaurosPrivateAgent - DibTauroS/Ordo-ab-Chao Framework"
+LABEL version="1.0.0"
+
+# Security: run as non-root user
+RUN groupadd -r tauros && useradd -r -g tauros tauros
+
+WORKDIR /app
+
+# Install dependencies
+COPY infrastructure/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy agent files
+COPY core/ /app/core/
+COPY config/ /app/config/
+COPY branding/ /app/branding/
+
+# Create logs directory with proper permissions
+RUN mkdir -p /app/logs && chown -R tauros:tauros /app
+
+USER tauros
+
+EXPOSE 8788
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8788/tauros/status')" || exit 1
+
+CMD ["python3", "core/web_server.py"]
