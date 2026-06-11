@@ -1,4 +1,5 @@
-# Vercel ignore file
+# Vercel ignore - only ignore build artifacts, private stuff and heavy agent code.
+# We WANT static assets (html, md, branding) to be served on the anouar site.
 backups/
 *.log
 .git/
@@ -6,31 +7,27 @@ backups/
 node_modules/
 __pycache__/
 *.pyc
-*.py
-*.sh
+# Keep top level docs and dashboard; ignore deep agent implementation dirs
+01-tauros/
+02-lucy/
+app/
+gateway/
+copilot-agent/
+scripts/
+legal/
+# Ignore raw scripts and python entrypoints (these are for local/dev)
+inizia.*
+install.sh
+scripts_bootstrap_all_Version2.sh
 controlla_commit.*
 verifica.py
 scatola-nera.py
 genera-icone.py
 avvia-pwa.sh
+*.Modelfile
 CREDENZIALI_ORDO.txt
-README.md
-GUIDA_UTILIZZO.md
-docs/
-copilot-agent/
-gateway/
-legal/
-scripts/
-01-tauros/
-02-lucy/
-app/
+allowlist.example.json
 build.gradle
 settings.gradle
-grok_dashboard_complete.html
-inizia.*
-install.sh
-scripts_bootstrap_all_Version2.sh
-allowlist.example.json
-*.Modelfile
-SECURITY.md
+# Private/long readmes can stay ignored if desired
 README_PRIVATO_Version4*.md
