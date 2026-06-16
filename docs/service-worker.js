@@ -1,32 +1,48 @@
 // Ordo ab Chao - Service Worker
 // Privacy-first PWA con cache offline
 
-const CACHE_NAME = 'ordo-ab-chao-v1.0.0';
-const CACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-72.png',
-  '/icon-96.png',
-  '/icon-128.png',
-  '/icon-144.png',
-  '/icon-152.png',
-  '/icon-192.png',
-  '/icon-384.png',
-  '/icon-512.png',
-  '/icon-tauros.png',
-  '/icon-lucy.png',
-  '/icon-dashboard.png'
+const STATIC_CACHE_NAME = 'ordo-ab-chao-static-v1.1.0';
+const RUNTIME_CACHE_NAME = 'ordo-ab-chao-runtime-v1.1.0';
+const APP_SHELL = [
+  '',
+  'index.html',
+  'login.html',
+  'register.html',
+  'reset-password.html',
+  'projects.html',
+  'admin.html',
+  'quick-login.html',
+  'manifest.json',
+  'config.public.js',
+  'icon-72.png',
+  'icon-96.png',
+  'icon-128.png',
+  'icon-144.png',
+  'icon-152.png',
+  'icon-192.png',
+  'icon-384.png',
+  'icon-512.png',
+  'icon-tauros.png',
+  'icon-lucy.png',
+  'icon-dashboard.png'
 ];
+
+function resolveAppUrl(path = '') {
+  return new URL(path, self.registration.scope).toString();
+}
+
+function shouldCacheResponse(response) {
+  return response && response.ok && (response.type === 'basic' || response.type === 'default');
+}
 
 // Install Event - Cache risorse statiche
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing...');
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(STATIC_CACHE_NAME)
       .then((cache) => {
         console.log('[Service Worker] Caching assets');
-        return cache.addAll(CACHE_ASSETS);
+        return cache.addAll(APP_SHELL.map((asset) => resolveAppUrl(asset)));
       })
       .then(() => {
         console.log('[Service Worker] Installation complete');
@@ -46,7 +62,7 @@ self.addEventListener('activate', (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames.map((cache) => {
-            if (cache !== CACHE_NAME) {
+            if (![STATIC_CACHE_NAME, RUNTIME_CACHE_NAME].includes(cache)) {
               console.log('[Service Worker] Deleting old cache:', cache);
               return caches.delete(cache);
             }
@@ -62,71 +78,80 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event - Strategia Cache-First per risorse statiche, Network-First per API
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   const url = new URL(event.request.url);
+
+  if (url.origin !== self.location.origin) {
+    return;
+  }
 
   // API requests - Network First
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Clone per salvare in cache
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
+          if (shouldCacheResponse(response)) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
           return response;
         })
         .catch(() => {
-          // Fallback su cache se offline
           return caches.match(event.request);
         })
     );
     return;
   }
 
-  // Dynamic routes - Network First con fallback
-  if (url.pathname.match(/^\/(tauros|lucy|copilot|dashboard|share)/)) {
+  if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
+        .then((response) => {
+          if (shouldCacheResponse(response)) {
+            const responseClone = response.clone();
+            caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
         .catch(() => {
-          // Fallback su index.html per SPA routing
-          return caches.match('/index.html');
+          return caches.match(event.request, { ignoreSearch: true })
+            .then((cachedPage) => cachedPage || caches.match(resolveAppUrl('login.html')));
         })
     );
     return;
   }
 
-  // Static assets - Cache First
+  // Static assets - Stale While Revalidate
   event.respondWith(
-    caches.match(event.request)
+    caches.match(event.request, { ignoreSearch: true })
       .then((cachedResponse) => {
-        if (cachedResponse) {
-          // Ritorna dalla cache e aggiorna in background
-          fetch(event.request)
-            .then((response) => {
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, response);
-              });
-            })
-            .catch(() => {
-              // Network non disponibile, ignora
-            });
-          return cachedResponse;
-        }
-
-        // Non in cache, fetch dalla rete
-        return fetch(event.request)
+        const fetchPromise = fetch(event.request)
           .then((response) => {
-            // Salva in cache per future richieste
-            if (response.status === 200) {
+            if (shouldCacheResponse(response)) {
               const responseClone = response.clone();
-              caches.open(CACHE_NAME).then((cache) => {
+              caches.open(RUNTIME_CACHE_NAME).then((cache) => {
                 cache.put(event.request, responseClone);
               });
             }
             return response;
-          });
+          })
+          .catch(() => null);
+
+        if (cachedResponse) {
+          event.waitUntil(fetchPromise);
+          return cachedResponse;
+        }
+
+        return fetchPromise.then((response) => response || caches.match(resolveAppUrl('index.html')));
       })
+      .catch(() => caches.match(resolveAppUrl('index.html')))
   );
 });
 
@@ -148,8 +173,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: event.data ? event.data.text() : 'Notifica da Ordo ab Chao',
-    icon: '/icon-192.png',
-    badge: '/icon-72.png',
+    icon: resolveAppUrl('icon-192.png'),
+    badge: resolveAppUrl('icon-72.png'),
     vibrate: [200, 100, 200],
     tag: 'ordo-notification',
     requireInteraction: false
@@ -166,7 +191,7 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   event.waitUntil(
-    clients.openWindow('/')
+    clients.openWindow(resolveAppUrl('index.html'))
   );
 });
 
@@ -192,8 +217,8 @@ self.addEventListener('message', (event) => {
 
   if (event.data.type === 'CACHE_URLS') {
     event.waitUntil(
-      caches.open(CACHE_NAME).then((cache) => {
-        return cache.addAll(event.data.urls);
+      caches.open(RUNTIME_CACHE_NAME).then((cache) => {
+        return cache.addAll(event.data.urls.map((url) => resolveAppUrl(url)));
       })
     );
   }

@@ -2,7 +2,9 @@
   "name": "Ordo ab Chao - Sistema AI Integrato",
   "short_name": "Ordo AI",
   "description": "Sistema integrato AI con Tauros, Lucy e Copilot Agent. Privacy-first, AI locale con Ollama e LLaMA2.",
-  "start_url": "/",
+  "id": "./",
+  "start_url": "./login.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#1a1a2e",
@@ -58,15 +60,8 @@
     }
   ],
   "categories": ["productivity", "utilities", "development"],
-  "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "540x720",
-      "type": "image/png"
-    }
-  ],
   "share_target": {
-    "action": "/share",
+    "action": "./share",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
@@ -80,21 +75,21 @@
       "name": "Avvia Tauros",
       "short_name": "Tauros",
       "description": "Apri TauroBot AI",
-      "url": "/tauros",
+      "url": "./projects.html#projects",
       "icons": [{ "src": "icon-tauros.png", "sizes": "192x192" }]
     },
     {
       "name": "Avvia Lucy",
       "short_name": "Lucy",
       "description": "Apri Lucy AI Assistant",
-      "url": "/lucy",
+      "url": "./projects.html#projects",
       "icons": [{ "src": "icon-lucy.png", "sizes": "192x192" }]
     },
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Apri Dashboard Sistema",
-      "url": "/dashboard",
+      "url": "./projects.html#overview",
       "icons": [{ "src": "icon-dashboard.png", "sizes": "192x192" }]
     }
   ]

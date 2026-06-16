@@ -366,12 +366,12 @@
     </header>
 
     <div class="nav-tabs">
-      <div class="tab active" onclick="switchTab('overview')">📊 Overview</div>
-      <div class="tab" onclick="switchTab('github')">🐙 GitHub Repos</div>
-      <div class="tab" onclick="switchTab('vercel')">▲ Vercel</div>
-      <div class="tab" onclick="switchTab('projects')">🚀 Progetti</div>
-      <div class="tab" onclick="switchTab('social')">🌐 Social</div>
-      <div class="tab" onclick="switchTab('whatsapp')">💬 WhatsApp</div>
+      <div class="tab active" data-tab="overview" onclick="switchTab('overview')">📊 Overview</div>
+      <div class="tab" data-tab="github" onclick="switchTab('github')">🐙 GitHub Repos</div>
+      <div class="tab" data-tab="vercel" onclick="switchTab('vercel')">▲ Vercel</div>
+      <div class="tab" data-tab="projects" onclick="switchTab('projects')">🚀 Progetti</div>
+      <div class="tab" data-tab="social" onclick="switchTab('social')">🌐 Social</div>
+      <div class="tab" data-tab="whatsapp" onclick="switchTab('whatsapp')">💬 WhatsApp</div>
     </div>
 
     <!-- OVERVIEW -->
@@ -465,8 +465,10 @@
     // Authentication check
     const SESSION_KEY = 'ordo_session';
     if (!localStorage.getItem(SESSION_KEY)) {
-      window.location.href = '/login.html';
+      window.location.href = 'login.html';
     }
+
+    const VALID_TABS = new Set(['overview', 'github', 'vercel', 'projects', 'social', 'whatsapp']);
 
     // GitHub Repositories Data
     const githubRepos = [
@@ -684,6 +686,10 @@
 
     // Switch Tab
     function switchTab(tabName) {
+      if (!VALID_TABS.has(tabName)) {
+        return;
+      }
+
       // Hide all sections
       document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
@@ -698,7 +704,14 @@
       document.getElementById(tabName).classList.add('active');
 
       // Add active to selected tab
-      event.target.classList.add('active');
+      const activeTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+      if (activeTab) {
+        activeTab.classList.add('active');
+      }
+
+      if (window.location.hash !== `#${tabName}`) {
+        window.history.replaceState(null, '', `#${tabName}`);
+      }
     }
 
     // Project Actions
@@ -728,6 +741,8 @@
     renderVercelProjects();
     renderAllProjects();
     renderSocialLinks();
+    switchTab(window.location.hash.slice(1) || 'overview');
+    window.addEventListener('hashchange', () => switchTab(window.location.hash.slice(1) || 'overview'));
   </script>
 </body>
 </html>

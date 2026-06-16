@@ -1,35 +1,51 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Ordo ab Chao - Script Avvio PWA
 # Avvia il server web e apre il browser
 
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOCS_DIR="${SCRIPT_DIR}/docs"
+PORT="${PORT:-8000}"
+URL="http://localhost:${PORT}/login.html"
+
 echo "🔥 ORDO AB CHAO - Avvio PWA 🔥"
 echo ""
-echo "📂 Directory: /Users/dib/Ordo-ab-Chao-/web"
-echo "🌐 URL: http://localhost:8000"
+echo "📂 Directory: ${DOCS_DIR}"
+echo "🌐 URL: ${URL}"
 echo ""
 
-# Controlla se porta 8000 è già in uso
-if lsof -Pi :8000 -sTCP:LISTEN -t >/dev/null ; then
-    echo "⚠️  Porta 8000 già in uso!"
-    echo "🔄 Fermando processo esistente..."
-    kill -9 $(lsof -t -i:8000)
-    sleep 1
+if [ ! -d "${DOCS_DIR}" ]; then
+    echo "❌ Directory docs non trovata: ${DOCS_DIR}"
+    exit 1
 fi
 
-# Vai nella cartella web
-cd /Users/dib/Ordo-ab-Chao-/web
+# Controlla se la porta è già in uso
+if command -v lsof >/dev/null 2>&1 && lsof -Pi :"${PORT}" -sTCP:LISTEN -t >/dev/null ; then
+    echo "⚠️  Porta ${PORT} già in uso!"
+    echo "🔄 Fermando processo esistente..."
+    existing_pid="$(lsof -t -iTCP:${PORT} -sTCP:LISTEN | head -n 1)"
+    if [ -n "${existing_pid}" ]; then
+        kill "${existing_pid}" || true
+        sleep 1
+    fi
+fi
+
+open_browser() {
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "${URL}" >/dev/null 2>&1 &
+    elif command -v open >/dev/null 2>&1; then
+        open "${URL}" >/dev/null 2>&1 &
+    elif command -v start >/dev/null 2>&1; then
+        start "${URL}" >/dev/null 2>&1 &
+    else
+        echo "ℹ️  Apri manualmente: ${URL}"
+    fi
+}
 
 echo "🚀 Avvio server web..."
 echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  🔐 CREDENZIALI LOGIN:"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  Admin:   admin / ordo2025"
-echo "  Lucifer: lucifer / chaos666"
-echo "  User:    user / user123"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
-echo "✅ Server in esecuzione su http://localhost:8000"
+echo "✅ Server in esecuzione su ${URL}"
 echo "🌐 Apertura browser automatica..."
 echo ""
 echo "⚠️  Premi CTRL+C per fermare il server"
@@ -39,7 +55,7 @@ echo ""
 sleep 2
 
 # Apri browser
-open http://localhost:8000/login.html
+open_browser
 
 # Avvia server Python
-python3 -m http.server 8000
+python3 -m http.server "${PORT}" --directory "${DOCS_DIR}"

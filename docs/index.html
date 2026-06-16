@@ -185,7 +185,7 @@
       <div class="card">
         <h2>🚀 Mission Control</h2>
         <p>Centro comando per gestire TUTTI i progetti GitHub, Vercel, social e WhatsApp in un unico posto.</p>
-        <button class="button" onclick="window.location.href='/projects.html'">Apri Mission Control</button>
+        <button class="button" onclick="navigateTo('projects.html#projects')">Apri Mission Control</button>
       </div>
 
       <div class="card">
@@ -252,13 +252,22 @@
   <script>
     // Authentication Check
     const SESSION_KEY = 'ordo_session';
+    const APP_BASE_URL = new URL('./', window.location.href);
+
+    function resolveAppUrl(path = '') {
+      return new URL(path, APP_BASE_URL).href;
+    }
+
+    function navigateTo(path) {
+      window.location.href = resolveAppUrl(path);
+    }
 
     function checkAuthentication() {
       const session = localStorage.getItem(SESSION_KEY);
 
       if (!session) {
         // Non autenticato, redirect a login
-        window.location.href = '/login.html';
+        navigateTo('login.html');
         return false;
       }
 
@@ -269,7 +278,7 @@
       if (now - sessionData.timestamp > 24 * 60 * 60 * 1000) {
         // Sessione scaduta
         localStorage.removeItem(SESSION_KEY);
-        window.location.href = '/login.html';
+        navigateTo('login.html');
         return false;
       }
 
@@ -288,7 +297,7 @@
     function logout() {
       localStorage.removeItem(SESSION_KEY);
       localStorage.removeItem('ordo_remember');
-      window.location.href = '/login.html';
+      navigateTo('login.html');
     }
 
     // Check auth on load
@@ -320,45 +329,55 @@
     // Service Worker Registration
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
+        navigator.serviceWorker.register(resolveAppUrl('service-worker.js'), { scope: APP_BASE_URL.href })
           .then(reg => console.log('Service Worker registered:', reg))
           .catch(err => console.log('Service Worker registration failed:', err));
       });
     }
 
     // Status Check
+    function updateStatus(isOnline, text) {
+      const status = document.getElementById('status');
+      const statusText = document.getElementById('statusText');
+
+      status.classList.toggle('offline', !isOnline);
+      statusText.textContent = text;
+    }
+
     function checkStatus() {
-      fetch('/api/status')
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById('statusText').textContent = '🟢 Sistema Online';
-        })
-        .catch(err => {
-          document.getElementById('status').classList.add('offline');
-          document.getElementById('statusText').textContent = '🔴 Sistema Offline';
-        });
+      const isOffline = !navigator.onLine;
+      const isControlled = Boolean(navigator.serviceWorker && navigator.serviceWorker.controller);
+
+      if (isOffline) {
+        updateStatus(false, '🟠 Modalità Offline (cache attiva)');
+        return;
+      }
+
+      updateStatus(true, isControlled ? '🟢 Sistema Online' : '🟡 Sistema Online');
     }
 
     // Navigation Functions
     function openTauros() {
-      window.location.href = '/tauros';
+      navigateTo('projects.html#projects');
     }
 
     function openLucy() {
-      window.location.href = '/lucy';
+      navigateTo('projects.html#projects');
     }
 
     function openCopilot() {
-      window.location.href = '/copilot';
+      navigateTo('projects.html#projects');
     }
 
     function openDashboard() {
-      window.location.href = '/dashboard';
+      navigateTo('projects.html#overview');
     }
 
     // Check status on load
     checkStatus();
     setInterval(checkStatus, 30000); // Every 30 seconds
+    window.addEventListener('online', checkStatus);
+    window.addEventListener('offline', checkStatus);
   </script>
 </body>
 </html>

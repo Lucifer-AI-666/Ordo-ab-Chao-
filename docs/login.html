@@ -340,6 +340,19 @@
 
   <!-- Carica configurazione sicura -->
   <script>
+    const APP_BASE_URL = new URL('./', window.location.href);
+
+    function resolveAppUrl(path = '') {
+      return new URL(path, APP_BASE_URL).href;
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register(resolveAppUrl('service-worker.js'), { scope: APP_BASE_URL.href })
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
+
     // Try to load local config.js first (for local dev with real credentials)
     // If not found, use public config (for Vercel deploy with demo credentials)
     const configScript = document.createElement('script');
@@ -425,7 +438,7 @@
     function redirectToDashboard() {
       showSuccess('Login effettuato! Reindirizzamento...');
       setTimeout(() => {
-        window.location.href = '/index.html';
+        window.location.href = resolveAppUrl('index.html');
       }, 1000);
     }
 
