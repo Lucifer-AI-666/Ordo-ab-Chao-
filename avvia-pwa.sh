@@ -21,7 +21,7 @@ if [ ! -d "${DOCS_DIR}" ]; then
 fi
 
 # Controlla se la porta è già in uso
-if command -v lsof >/dev/null 2>&1 && lsof -Pi :"${PORT}" -sTCP:LISTEN -t >/dev/null ; then
+if command -v lsof >/dev/null 2>&1 && lsof -iTCP:"${PORT}" -sTCP:LISTEN -t >/dev/null ; then
     echo "⚠️  Porta ${PORT} già in uso!"
     echo "🔄 Fermando processo esistente..."
     existing_pid="$(lsof -t -iTCP:"${PORT}" -sTCP:LISTEN | head -n 1)"
@@ -33,7 +33,7 @@ if command -v lsof >/dev/null 2>&1 && lsof -Pi :"${PORT}" -sTCP:LISTEN -t >/dev/
         sleep 1
     fi
 
-    if lsof -Pi :"${PORT}" -sTCP:LISTEN -t >/dev/null 2>&1; then
+    if lsof -iTCP:"${PORT}" -sTCP:LISTEN -t >/dev/null 2>&1; then
         echo "❌ La porta ${PORT} è ancora occupata. Chiudi il processo esistente e riprova."
         exit 1
     fi

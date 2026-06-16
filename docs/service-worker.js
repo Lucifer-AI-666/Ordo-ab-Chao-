@@ -3,6 +3,7 @@
 
 const STATIC_CACHE_NAME = 'ordo-ab-chao-static-v1.1.0';
 const RUNTIME_CACHE_NAME = 'ordo-ab-chao-runtime-v1.1.0';
+const APP_BASE_URL = new URL('./', self.location.href);
 const APP_SHELL = [
   'index.html',
   'login.html',
@@ -27,7 +28,7 @@ const APP_SHELL = [
 ];
 
 function resolveAppUrl(path = '') {
-  return new URL(path, self.registration.scope).toString();
+  return new URL(path, APP_BASE_URL).toString();
 }
 
 function shouldCacheResponse(response) {
@@ -35,8 +36,15 @@ function shouldCacheResponse(response) {
   return response && response.ok && (response.type === 'basic' || response.type === 'default');
 }
 
-function getOfflineFallback() {
-  return caches.match(resolveAppUrl('index.html'));
+async function getOfflineFallback() {
+  const cachedResponse = await caches.match(resolveAppUrl('index.html'));
+  return cachedResponse || new Response('Offline', {
+    status: 503,
+    statusText: 'Offline',
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8'
+    }
+  });
 }
 
 // Install Event - Cache risorse statiche

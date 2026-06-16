@@ -470,6 +470,10 @@
       return new URL(path, APP_BASE_URL).href;
     }
 
+    function getCurrentTab() {
+      return window.location.hash.slice(1) || 'overview';
+    }
+
     if (!localStorage.getItem(SESSION_KEY)) {
       window.location.href = resolveAppUrl('login.html');
     }
@@ -748,8 +752,8 @@
     renderVercelProjects();
     renderAllProjects();
     renderSocialLinks();
-    switchTab(window.location.hash.slice(1) || 'overview');
-    window.addEventListener('hashchange', () => switchTab(window.location.hash.slice(1) || 'overview'));
+    switchTab(getCurrentTab());
+    window.addEventListener('hashchange', () => switchTab(getCurrentTab()));
   </script>
 </body>
 </html>
