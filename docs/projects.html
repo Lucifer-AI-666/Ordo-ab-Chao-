@@ -693,6 +693,7 @@
     // Switch Tab
     function switchTab(tabName) {
       if (!VALID_TABS.has(tabName)) {
+        console.warn(`[Mission Control] Tab non valida: ${tabName}`);
         return;
       }
 

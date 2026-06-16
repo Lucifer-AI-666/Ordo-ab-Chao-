@@ -31,7 +31,12 @@ function resolveAppUrl(path = '') {
 }
 
 function shouldCacheResponse(response) {
+  // Cache only successful same-origin responses; skip opaque/error responses.
   return response && response.ok && (response.type === 'basic' || response.type === 'default');
+}
+
+function getOfflineFallback() {
+  return caches.match(resolveAppUrl('index.html'));
 }
 
 // Install Event - Cache risorse statiche
@@ -121,7 +126,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           return caches.match(event.request, { ignoreSearch: true })
-            .then((cachedPage) => cachedPage || caches.match(resolveAppUrl('index.html')));
+            .then((cachedPage) => cachedPage || getOfflineFallback());
         })
     );
     return;
@@ -148,9 +153,9 @@ self.addEventListener('fetch', (event) => {
           return cachedResponse;
         }
 
-        return fetchPromise.then((response) => response || caches.match(resolveAppUrl('index.html')));
+        return fetchPromise.then((response) => response || getOfflineFallback());
       })
-      .catch(() => caches.match(resolveAppUrl('index.html')))
+      .catch(() => getOfflineFallback())
   );
 });
 
