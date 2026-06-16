@@ -4,7 +4,6 @@
 const STATIC_CACHE_NAME = 'ordo-ab-chao-static-v1.1.0';
 const RUNTIME_CACHE_NAME = 'ordo-ab-chao-runtime-v1.1.0';
 const APP_SHELL = [
-  '',
   'index.html',
   'login.html',
   'register.html',
@@ -122,7 +121,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           return caches.match(event.request, { ignoreSearch: true })
-            .then((cachedPage) => cachedPage || caches.match(resolveAppUrl('login.html')));
+            .then((cachedPage) => cachedPage || caches.match(resolveAppUrl('index.html')));
         })
     );
     return;

@@ -3,7 +3,7 @@
   "short_name": "Ordo AI",
   "description": "Sistema integrato AI con Tauros, Lucy e Copilot Agent. Privacy-first, AI locale con Ollama e LLaMA2.",
   "id": "./",
-  "start_url": "./login.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#1a1a2e",

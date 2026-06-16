@@ -464,8 +464,14 @@
   <script>
     // Authentication check
     const SESSION_KEY = 'ordo_session';
+    const APP_BASE_URL = new URL('./', window.location.href);
+
+    function resolveAppUrl(path = '') {
+      return new URL(path, APP_BASE_URL).href;
+    }
+
     if (!localStorage.getItem(SESSION_KEY)) {
-      window.location.href = 'login.html';
+      window.location.href = resolveAppUrl('login.html');
     }
 
     const VALID_TABS = new Set(['overview', 'github', 'vercel', 'projects', 'social', 'whatsapp']);

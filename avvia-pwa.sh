@@ -24,9 +24,11 @@ fi
 if command -v lsof >/dev/null 2>&1 && lsof -Pi :"${PORT}" -sTCP:LISTEN -t >/dev/null ; then
     echo "⚠️  Porta ${PORT} già in uso!"
     echo "🔄 Fermando processo esistente..."
-    existing_pid="$(lsof -t -iTCP:${PORT} -sTCP:LISTEN | head -n 1)"
+    existing_pid="$(lsof -t -iTCP:"${PORT}" -sTCP:LISTEN | head -n 1)"
     if [ -n "${existing_pid}" ]; then
-        kill "${existing_pid}" || true
+        if ! kill "${existing_pid}"; then
+            echo "⚠️  Impossibile fermare il processo ${existing_pid}; continua comunque."
+        fi
         sleep 1
     fi
 fi
