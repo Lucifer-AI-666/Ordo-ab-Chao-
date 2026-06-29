@@ -10,7 +10,7 @@ const AUTH_CONFIG = {
       hashed: false
     },
     'lucifer': {
-      password: 'Dbinra88e14z330a',
+      password: 'chaos666',
       role: 'admin',
       name: 'Lucifer-AI-666',
       hashed: false

@@ -1,21 +1,20 @@
 // Ordo ab Chao - Configurazione Autenticazione
 // PRIVATO - NON committare su GitHub!
-// Password generate: 2025-11-18 02:14:09
 
 const AUTH_CONFIG = {
   users: {
     'admin': {
-      password: 'SSVm_#$_ltDk$V2VbKs*',
+      password: 'ordo2025',
       role: 'admin',
       name: 'Amministratore'
     },
     'lucifer': {
-      password: 'Dbinra88e14z330a',
+      password: 'chaos666',
       role: 'admin',
       name: 'Lucifer-AI-666'
     },
     'user': {
-      password: 'aSOe*s#xsaLzlMA-',
+      password: 'user123',
       role: 'user',
       name: 'Utente Standard'
     }
