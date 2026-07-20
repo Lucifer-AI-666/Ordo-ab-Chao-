@@ -8,6 +8,7 @@ keystore.jks
 keystore.properties
 web/config.js
 docs/web/config.js
+docs/config.js
 
 # Log
 logs/

@@ -564,10 +564,8 @@
       konamiCode = konamiCode.slice(-10);
 
       if (konamiCode.join(',') === konamiPattern.join(',')) {
-        // Secret admin login
-        document.getElementById('username').value = 'admin';
-        document.getElementById('password').value = 'ordo2025';
-        showSuccess('🎮 Konami Code attivato! Accesso admin sbloccato!');
+        // Konami Code - mostra messaggio
+        showSuccess('🎮 Konami Code attivato!');
       }
     });
   </script>
