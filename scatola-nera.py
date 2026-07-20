@@ -11,6 +11,7 @@ import sys
 import json
 import shutil
 import hashlib
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -258,6 +259,77 @@ class ScatolaNera:
 
         return True
 
+    def analizza(self):
+        """Analizza i dati degli snapshot e fornisce insights sul progetto.
+
+        Mostra il trend di file count e dimensione per ogni snapshot,
+        calcola la crescita totale tra il primo e l'ultimo snapshot,
+        e identifica i file modificati più frequentemente confrontando
+        gli hash tra snapshot consecutivi. I risultati vengono scritti nel log.
+        """
+        self.log("=" * 60)
+        self.log("🔍 ANALISI DATI - Ordo ab Chao")
+        self.log("=" * 60)
+
+        if not self.state['snapshots']:
+            self.log("⚠️ Nessuno snapshot disponibile per l'analisi")
+            self.log("💡 Crea prima uno snapshot con: python3 scatola-nera.py snapshot")
+            return
+
+        snapshots = self.state['snapshots']
+        self.log(f"📦 Snapshot analizzati: {len(snapshots)}")
+        self.log(f"📅 Primo snapshot: {snapshots[0]['datetime']}")
+        self.log(f"📅 Ultimo snapshot: {snapshots[-1]['datetime']}")
+
+        # Trend dimensione e file count
+        self.log("\n📊 TREND NEL TEMPO:")
+        self.log(f"  {'Snapshot':<30} {'File':<8} {'Dimensione (MB)':<18}")
+        self.log("  " + "-" * 56)
+        for snap in snapshots:
+            size_mb = snap['size'] / 1024 / 1024
+            self.log(f"  {snap['name']:<30} {snap['files_count']:<8} {size_mb:<18.2f}")
+
+        # Crescita totale
+        if len(snapshots) > 1:
+            first = snapshots[0]
+            last = snapshots[-1]
+            file_delta = last['files_count'] - first['files_count']
+            size_delta_mb = (last['size'] - first['size']) / 1024 / 1024
+            self.log(f"\n📈 CRESCITA TOTALE:")
+            self.log(f"  File: {'+' if file_delta >= 0 else ''}{file_delta}")
+            self.log(f"  Dimensione: {'+' if size_delta_mb >= 0 else ''}{size_delta_mb:.2f} MB")
+
+        # Analisi file più modificati (confronto snapshot consecutivi)
+        changed_counter = Counter()
+        for i in range(1, len(snapshots)):
+            prev_snap = snapshots[i - 1]
+            curr_snap = snapshots[i]
+            prev_path = self.backup_dir / prev_snap['name'] / 'metadata.json'
+            curr_path = self.backup_dir / curr_snap['name'] / 'metadata.json'
+
+            if not prev_path.exists() or not curr_path.exists():
+                continue
+
+            with open(prev_path, 'r', encoding='utf-8') as f:
+                prev_meta = json.load(f)
+            with open(curr_path, 'r', encoding='utf-8') as f:
+                curr_meta = json.load(f)
+
+            for file_path, info in curr_meta.get('files', {}).items():
+                prev_info = prev_meta.get('files', {}).get(file_path)
+                if prev_info is None or info.get('hash') != prev_info.get('hash'):
+                    changed_counter[file_path] += 1
+
+        if changed_counter:
+            top_changed = changed_counter.most_common(10)
+            self.log(f"\n🔄 FILE PIÙ MODIFICATI (top {len(top_changed)}):")
+            for file_path, count in top_changed:
+                self.log(f"  {count:>4}x  {file_path}")
+
+        self.log("\n" + "=" * 60)
+        self.log("✅ ANALISI COMPLETATA")
+        self.log("=" * 60)
+
     def create_incremental_backup(self):
         """Crea backup incrementale (solo file modificati)"""
         self.log("🔄 Backup incrementale in corso...")
@@ -314,10 +386,12 @@ def main():
         print("  python3 scatola-nera.py backup                  - Crea backup incrementale")
         print("  python3 scatola-nera.py list                    - Elenca snapshot")
         print("  python3 scatola-nera.py restore <nome>          - Ripristina snapshot")
+        print("  python3 scatola-nera.py analizza                - Analizza dati e fornisce insights")
         print("\nEsempi:")
         print("  python3 scatola-nera.py snapshot \"PWA completata\"")
         print("  python3 scatola-nera.py backup")
-        print("  python3 scatola-nera.py restore snapshot_20250117_143022\n")
+        print("  python3 scatola-nera.py restore snapshot_20250117_143022")
+        print("  python3 scatola-nera.py analizza\n")
         sys.exit(0)
 
     command = sys.argv[1].lower()
@@ -338,6 +412,9 @@ def main():
             sys.exit(1)
         snapshot_name = sys.argv[2]
         scatola.restore_snapshot(snapshot_name)
+
+    elif command == 'analizza':
+        scatola.analizza()
 
     else:
         print(f"❌ Comando sconosciuto: {command}")
